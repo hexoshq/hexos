@@ -1,4 +1,5 @@
 import { DocsThemeConfig, ThemeSwitch, useConfig } from "nextra-theme-docs";
+
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useRouter } from "next/router";
 
@@ -6,7 +7,7 @@ const Head = () => {
   const { asPath, defaultLocale, locale } = useRouter();
   const { frontMatter, title } = useConfig();
 
-  const siteUrl = "https://hexos.iludolf.com.br";
+  const siteUrl = "https://hexos.xyz";
   const url =
     siteUrl + (defaultLocale === locale ? asPath : `/${locale}${asPath}`);
 
@@ -98,7 +99,7 @@ const theme: DocsThemeConfig = {
     ),
   },
   project: {
-    link: "https://github.com/iLudolf/mcp-adapter",
+    link: "https://github.com/hexoshq/hexos",
   },
   footer: {
     content: (
@@ -107,7 +108,7 @@ const theme: DocsThemeConfig = {
           MIT © {new Date().getFullYear()}{" "}
           <a
             style={{ textDecoration: "underline" }}
-            href="https://github.com/iLudolf/mcp-adapter/graphs/contributors"
+            href="https://github.com/hexoshq/hexos/graphs/contributors"
           >
             The Contributors
           </a>

@@ -565,10 +565,10 @@ export default function Home() {
                   <h1>Hexos - MCP Client</h1>
                   <p>
                     Manage and configure your MCP servers.
-                    <a href="https://github.com/modelcontextprotocol" target="_blank" rel="noreferrer">
+                    <a href="https://github.com/hexoshq/hexos" target="_blank" rel="noreferrer">
                       GitHub Repo
                     </a>
-                    <a href="https://modelcontextprotocol.io/introduction" target="_blank" rel="noreferrer">
+                    <a href="https://hexos.xyz" target="_blank" rel="noreferrer">
                       Documentation
                     </a>
                   </p>
