@@ -1,0 +1,49 @@
+---
+title: "TransportMessage"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-core/src/types.ts" sourceLine="255" packageName="@hexos/react-core" />
+
+Message payload sent from the frontend client to the backend via the transport layer.
+
+Related: [AgentTransport](/docs/react-core/transport/agent-transport#agenttransport) defines the send contract,
+[RuntimeInput](/docs/common/runtime/runtime-input#runtimeinput) is the server-side equivalent.
+
+```ts
+interface TransportMessage {
+    type: 'send-message';
+    message: string;
+    conversationId: string;
+    context?: Record<string, unknown>;
+}
+```
+
+<div className="members-wrapper">
+
+### type
+
+<MemberInfo kind="property" type={`'send-message'`} />
+
+
+### message
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### conversationId
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### context
+
+<MemberInfo kind="property" type={`Record<string, unknown>`} />
+
+
+
+
+</div>

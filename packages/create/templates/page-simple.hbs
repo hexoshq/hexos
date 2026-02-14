@@ -1,0 +1,49 @@
+'use client';
+
+import { AgentProvider } from '@hexos/react-core';
+import { AgentUIProvider, ChatWindow, ToolApprovalContainer, type AgentInfo } from '@hexos/react-ui';
+
+const agents: AgentInfo[] = [
+{{#each agents}}
+  {
+    id: '{{this.id}}',
+    name: '{{this.name}}',
+    description: '{{this.description}}',
+  },
+{{/each}}
+];
+
+export default function Home() {
+  return (
+    <AgentUIProvider>
+      <AgentProvider
+        config=\{{
+          endpoint: '/api/agent/chat',
+          agents: [{{{agentIds}}}],
+          transport: 'sse',
+        }}
+      >
+        <main style=\{{ height: '100vh' }}>
+          <ChatWindow
+            variant="default"
+            showAgentBadges
+            showHandoffs
+            showAgentStatus
+            handoffVariant="inline"
+            agents={agents}
+            placeholder="Type a message..."
+            suggestions={['What can you help me with?', 'What tools do you have?']}
+            suggestionsTitle=""
+            emptyState={
+              <div style=\{{ textAlign: 'center', color: '#6b7280', maxWidth: '20rem', margin: '0 auto' }}>
+                <p style=\{{ fontSize: '1.05rem', fontWeight: 600, marginBottom: '0.5rem' }}>Welcome to {{appTitle}}</p>
+                <p style=\{{ fontSize: '0.85rem', margin: 0 }}>{{appDescription}}</p>
+              </div>
+            }
+          />
+        </main>
+        <ToolApprovalContainer />
+      </AgentProvider>
+    </AgentUIProvider>
+  );
+}

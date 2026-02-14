@@ -1,0 +1,39 @@
+---
+title: "AssertNever"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/shared-utils.ts" sourceLine="53" packageName="@hexos/common" />
+
+Exhaustiveness check helper for discriminated union switch statements.
+
+Place in the `default` case of a switch over a discriminated union. If a new variant
+is added to the union but not handled, TypeScript emits a compile-time error because
+the value is no longer assignable to `never`. Always throws at runtime as a safety net.
+
+*Example*
+
+```typescript
+type Status = 'pending' | 'completed' | 'error';
+function handle(s: Status) {
+  switch (s) {
+    case 'pending': return 'waiting';
+    case 'completed': return 'done';
+    case 'error': return 'failed';
+    default: return assertNever(s);
+  }
+}
+```
+
+```ts
+function assertNever(value: never): never
+```
+Parameters
+
+### value
+
+<MemberInfo kind="parameter" type={`never`} />
+

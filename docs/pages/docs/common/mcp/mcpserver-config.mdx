@@ -1,0 +1,16 @@
+---
+title: "MCPServerConfig"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="450" packageName="@hexos/common" />
+
+Union type for MCP server configurations, supporting both STDIO and SSE transports.
+
+Use [isMCPSSEConfig](/docs/common/mcp/is-mcpsseconfig#ismcpsseconfig) and [isMCPStdioConfig](/docs/common/mcp/is-mcpstdio-config#ismcpstdioconfig) type guards to narrow the type.
+
+```ts
+type MCPServerConfig = MCPStdioServerConfig | MCPSSEServerConfig
+```

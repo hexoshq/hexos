@@ -1,0 +1,30 @@
+---
+title: "Textarea"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+
+<GenerationInfo sourceFile="packages/react-ui/src/primitives/Textarea.tsx" sourceLine="47" packageName="@hexos/react-ui" />
+
+Auto-resizing textarea component.
+
+Provides a textarea that automatically adjusts its height based on content when `autoResize` is enabled.
+Height is constrained between `minHeight` and `maxHeight` props.
+
+The component recalculates height on every onChange event, expanding or contracting to fit content
+while respecting the maximum height constraint with scrolling.
+
+Uses imperative handle to expose the internal ref while supporting forwarded refs from parent components.
+
+*Example*
+
+```tsx
+<Textarea
+  autoResize
+  minHeight={80}
+  maxHeight={200}
+  placeholder="Type a message..."
+/>
+```
+

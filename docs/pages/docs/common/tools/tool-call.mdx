@@ -1,0 +1,65 @@
+---
+title: "ToolCall"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="267" packageName="@hexos/common" />
+
+Tracks a single tool invocation from the LLM, including its lifecycle state and result.
+
+Created when the LLM requests tool execution. The `status` field tracks the call through
+its lifecycle: `pending` → `running` → `completed` or `error`. Results and errors are
+populated once execution finishes.
+
+Related: [ToolDefinition](/docs/common/tools/tool-definition#tooldefinition) defines the callable tool, [RuntimeEvent](/docs/common/core-types/runtime-event#runtimeevent) streams
+tool call progress, [ToolCallRenderer](/docs/react-ui/ui-components/tool-call-renderer#toolcallrenderer) displays execution in the UI.
+
+```ts
+interface ToolCall {
+    id: string;
+    name: string;
+    args: unknown;
+    result?: unknown;
+    status: 'pending' | 'running' | 'completed' | 'error';
+    error?: string;
+}
+```
+
+<div className="members-wrapper">
+
+### id
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### name
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### args
+
+<MemberInfo kind="property" type={`unknown`} />
+
+
+### result
+
+<MemberInfo kind="property" type={`unknown`} />
+
+
+### status
+
+<MemberInfo kind="property" type={`'pending' | 'running' | 'completed' | 'error'`} />
+
+
+### error
+
+<MemberInfo kind="property" type={`string`} />
+
+
+
+
+</div>

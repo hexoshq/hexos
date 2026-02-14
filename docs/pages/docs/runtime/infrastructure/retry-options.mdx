@@ -1,0 +1,65 @@
+---
+title: "RetryOptions"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/utils/retry.ts" sourceLine="14" packageName="@hexos/runtime" />
+
+Options for configuring exponential backoff retry behavior.
+
+Controls the number of attempts, delay progression, and error classification for
+[retryWithBackoff](/docs/runtime/infrastructure/retry-with-backoff#retrywithbackoff). The optional `shouldRetry` predicate allows overriding the
+default [isRetryableError](/docs/runtime/infrastructure/is-retryable-error#isretryableerror) logic for custom error handling.
+
+Related: [NormalizedRetryConfig](/docs/runtime/infrastructure/normalized-retry-config#normalizedretryconfig) provides the runtime defaults,
+[RetryConfig](/docs/common/infrastructure/retry-config#retryconfig) is the user-facing configuration.
+
+```ts
+interface RetryOptions {
+    maxAttempts: number;
+    initialDelayMs: number;
+    maxDelayMs: number;
+    multiplier: number;
+    jitter: boolean;
+    shouldRetry?: (error: unknown) => boolean;
+}
+```
+
+<div className="members-wrapper">
+
+### maxAttempts
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### initialDelayMs
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### maxDelayMs
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### multiplier
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### jitter
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### shouldRetry
+
+<MemberInfo kind="property" type={`(error: unknown) => boolean`} />
+
+
+
+
+</div>

@@ -1,0 +1,57 @@
+---
+title: "UseAgentAction"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-core/src/hooks/useAgentAction.ts" sourceLine="57" packageName="@hexos/react-core" />
+
+Hook that registers a frontend action the agent can trigger, with optimistic update support.
+
+Actions are like [FrontendToolDefinition](/docs/react-core/tools/frontend-tool-definition#frontendtooldefinition)s but designed for state mutations.
+They support optimistic updates (apply changes immediately before the async handler
+resolves) and automatic rollback on errors. An optional `confirmationMessage` triggers
+a confirmation dialog before execution.
+
+The action is registered in [frontendToolsAtom](/docs/react-core/state-management/frontend-tools-atom#frontendtoolsatom) so the agent can invoke it.
+Execution state is tracked globally in [executingActionsAtom](/docs/react-core/state-management/executing-actions-atom#executingactionsatom) for observability.
+The action is automatically unregistered when the component unmounts.
+
+Related: [ActionDefinition](/docs/react-core/hooks/action-definition#actiondefinition) defines the action structure,
+[useAgentTool](/docs/react-core/hooks/use-agent-tool#useagenttool) is for read-only tools, [ActionConfirmDialog](/docs/react-ui/ui-components/action-confirm-dialog#actionconfirmdialog) renders
+confirmation UI when `confirmationMessage` is set.
+
+*Example*
+
+```tsx
+const { execute, isExecuting, error } = useAgentAction({
+  name: 'add_todo_item',
+  description: 'Adds a new item to the todo list',
+  inputSchema: z.object({
+    title: z.string(),
+    priority: z.enum(['low', 'medium', 'high']),
+  }),
+  handler: async (input) => {
+    await api.createTodoItem(input);
+  },
+  optimisticUpdate: (input) => {
+    setItems(prev => [...prev, { ...input, id: 'temp-' + Date.now(), status: 'pending' }]);
+  },
+  rollback: (input, error) => {
+    setItems(prev => prev.filter(item => !item.id.startsWith('temp-')));
+    toast.error('Failed to add item: ' + error.message);
+  },
+});
+```
+
+```ts
+function useAgentAction<TInput>(definition: ActionDefinition<TInput>): UseAgentActionReturn<TInput>
+```
+Parameters
+
+### definition
+
+<MemberInfo kind="parameter" type={`<a href='/docs/react-core/hooks/action-definition#actiondefinition'>ActionDefinition</a><TInput>`} />
+

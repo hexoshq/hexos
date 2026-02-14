@@ -1,0 +1,68 @@
+---
+title: "AgentConfig"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="781" packageName="@hexos/common" />
+
+Frontend configuration for connecting to an Hexos backend endpoint.
+
+Passed to [useAgent](/docs/react-core/hooks/use-agent#useagent) hook or [AgentProvider](/docs/react-core/hooks/agent-provider#agentprovider) to establish the client-server
+connection. The `headers` field supports both static objects and async functions for
+dynamic authentication (e.g., refreshing JWT tokens before each request).
+
+The `enableReasoning` flag requests extended thinking content from the LLM, which
+arrives as `reasoning-delta` [RuntimeEvent](/docs/common/core-types/runtime-event#runtimeevent)s.
+
+Related: [SSETransport](/docs/react-core/transport/ssetransport#ssetransport) uses this to connect, [useAgent](/docs/react-core/hooks/use-agent#useagent) accepts this as input,
+[AgentProvider](/docs/react-core/hooks/agent-provider#agentprovider) can initialize with this config.
+
+```ts
+interface AgentConfig {
+    endpoint: string;
+    agents?: string[];
+    transport?: 'sse' | 'websocket';
+    headers?: Record<string, string> | (() => Promise<Record<string, string>>);
+    conversationId?: string;
+    enableReasoning?: boolean;
+}
+```
+
+<div className="members-wrapper">
+
+### endpoint
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### agents
+
+<MemberInfo kind="property" type={`string[]`} />
+
+
+### transport
+
+<MemberInfo kind="property" type={`'sse' | 'websocket'`} />
+
+
+### headers
+
+<MemberInfo kind="property" type={`Record<string, string> | (() => Promise<Record<string, string>>)`} />
+
+
+### conversationId
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### enableReasoning
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+
+
+</div>

@@ -1,0 +1,37 @@
+---
+title: "ProviderHooks"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/providers/shared/types.ts" sourceLine="43" packageName="@hexos/runtime" />
+
+Optional lifecycle hooks for tool execution.
+
+Providers call these hooks before and after tool execution, enabling
+instrumentation, logging, or custom behavior injection.
+
+```ts
+interface ProviderHooks {
+    onToolCall?: (toolName: string, args: unknown) => void | Promise<void>;
+    onToolResult?: (toolName: string, result: unknown) => void | Promise<void>;
+}
+```
+
+<div className="members-wrapper">
+
+### onToolCall
+
+<MemberInfo kind="property" type={`(toolName: string, args: unknown) => void | Promise<void>`} />
+
+
+### onToolResult
+
+<MemberInfo kind="property" type={`(toolName: string, result: unknown) => void | Promise<void>`} />
+
+
+
+
+</div>

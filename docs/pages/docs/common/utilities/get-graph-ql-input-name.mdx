@@ -1,0 +1,34 @@
+---
+title: "GetGraphQlInputName"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/shared-utils.ts" sourceLine="204" packageName="@hexos/common" />
+
+Resolves the GraphQL input field name for a given field configuration.
+
+Relation-type fields receive a suffix: `Id` for single relations and `Ids` for list
+relations. Non-relation fields return their name unchanged. This convention aligns
+with common GraphQL input patterns where relation fields reference IDs rather than
+full objects.
+
+*Example*
+
+```typescript
+getGraphQlInputName({ name: 'author', type: 'relation' });       // => 'authorId'
+getGraphQlInputName({ name: 'tags', type: 'relation', list: true }); // => 'tagIds'
+getGraphQlInputName({ name: 'title', type: 'string' });          // => 'title'
+```
+
+```ts
+function getGraphQlInputName(config: { name: string; type: string; list?: boolean }): string
+```
+Parameters
+
+### config
+
+<MemberInfo kind="parameter" type={`{ name: string; type: string; list?: boolean }`} />
+

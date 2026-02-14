@@ -1,0 +1,45 @@
+---
+title: "MessageBubble"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-ui/src/components/MessageBubble.tsx" sourceLine="56" packageName="@hexos/react-ui" />
+
+Individual message bubble component for rendering a single agent message.
+
+Displays message content with optional avatar, timestamp, agent name, and action buttons.
+Automatically extracts and renders message parts including reasoning, tool calls, and tool results.
+
+The component respects display configuration from [useDisplayConfig](/docs/react-ui/ui-theme/use-display-config#usedisplayconfig) to control tool call
+visibility for white-label applications. If the display config hides all tool information,
+tool calls are not rendered even if `showToolCalls` is true.
+
+Tool results are matched to their corresponding tool calls by `toolCallId` and rendered together
+in [ToolCallRenderer](/docs/react-ui/ui-components/tool-call-renderer#toolcallrenderer) components.
+
+Related components: [ToolCallRenderer](/docs/react-ui/ui-components/tool-call-renderer#toolcallrenderer), [ReasoningDisplay](/docs/react-ui/ui-components/reasoning-display#reasoningdisplay)
+
+*Example*
+
+```tsx
+<MessageBubble
+  message={message}
+  showAvatar
+  showTimestamp
+  showReasoning
+  isStreaming={isLastMessage && isStreaming}
+/>
+```
+
+```ts
+function MessageBubble(props: MessageBubbleProps): React.ReactElement
+```
+Parameters
+
+### props
+
+<MemberInfo kind="parameter" type={`<a href='/docs/react-ui/ui-components/message-bubble-props#messagebubbleprops'>MessageBubbleProps</a>`} />
+

@@ -1,0 +1,51 @@
+---
+title: "ToolCallResult"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="635" packageName="@hexos/common" />
+
+Summary of a completed tool execution, including timing information.
+
+Returned as part of [RuntimeOutput](/docs/common/runtime/runtime-output#runtimeoutput) after a non-streaming conversation turn.
+The `duration` field measures execution time in milliseconds, useful for performance monitoring.
+
+Related: [ToolCall](/docs/common/tools/tool-call#toolcall) is the in-flight representation, [ToolDefinition](/docs/common/tools/tool-definition#tooldefinition) defines the tool.
+
+```ts
+interface ToolCallResult {
+    toolName: string;
+    args: unknown;
+    result: unknown;
+    duration: number;
+}
+```
+
+<div className="members-wrapper">
+
+### toolName
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### args
+
+<MemberInfo kind="property" type={`unknown`} />
+
+
+### result
+
+<MemberInfo kind="property" type={`unknown`} />
+
+
+### duration
+
+<MemberInfo kind="property" type={`number`} />
+
+
+
+
+</div>

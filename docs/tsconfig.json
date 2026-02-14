@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig/nextjs.json",
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "plugins": [{ "name": "next" }],
+    "paths": {
+      "@/docs/*": ["./*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "pages/index.mdx"],
+  "exclude": ["node_modules"]
+}
+
+

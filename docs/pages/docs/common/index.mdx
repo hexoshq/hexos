@@ -1,0 +1,107 @@
+---
+title: "Common"
+generated: true
+---
+
+import { LinkCard } from '@/docs/components/docs/LinkCard'
+
+Shared types, enums, and utilities for the Hexos framework.
+
+This package provides the foundational type contracts used across all Hexos packages — frontend (`react-core`, `react-ui`) and backend (`runtime`).
+
+## Installation
+
+```bash
+npm install @hexos/common
+```
+
+**Peer dependency:** `zod ^3.0.0`
+
+## What's Included
+
+### LLM Provider Enums
+
+```typescript
+import { LLMProvider, AnthropicModel, OpenAIModel, OllamaModel } from '@hexos/common';
+
+LLMProvider.Anthropic  // 'anthropic'
+LLMProvider.OpenAI     // 'openai'
+LLMProvider.Ollama     // 'ollama'
+LLMProvider.Google     // 'google'
+LLMProvider.Azure      // 'azure'
+```
+
+### Core Types
+
+| Type | Description |
+|------|-------------|
+| `ModelConfig` | LLM provider connection configuration (provider, model, apiKey, temperature) |
+| `AgentDefinition` | Complete agent specification (id, name, model, systemPrompt, tools, handoffs) |
+| `RuntimeConfig` | Master runtime configuration (agents, MCP servers, hooks, limits) |
+| `ToolDefinition` | Tool contract with Zod input schema, execute function, and approval flag |
+| `ToolContext` | Execution context passed to tools (agentId, conversationId, userId) |
+| `AgentMessage` | Conversation message with role, content, tool calls, and attachments |
+| `RuntimeEvent` | Discriminated union of all streaming events (text, tool calls, handoffs, errors) |
+
+### MCP Types
+
+| Type | Description |
+|------|-------------|
+| `MCPServerConfig` | Union of STDIO and SSE server configurations |
+| `MCPStdioServerConfig` | Local MCP server via child process |
+| `MCPSSEServerConfig` | Remote MCP server via HTTP SSE |
+| `MCPToolInfo` | Tool metadata discovered from an MCP server |
+
+### Transport Types
+
+| Type | Description |
+|------|-------------|
+| `AgentConfig` | Frontend connection configuration (endpoint, headers, transport) |
+| `TransportMessage` | Outbound message payload from client to server |
+| `AgentTransport` | Abstract transport interface (connect, send, onMessage, disconnect) |
+| `TransportEvent` | Alias for `RuntimeEvent` on the frontend |
+
+### Tool Approval & Handoff Types
+
+| Type | Description |
+|------|-------------|
+| `ToolApproval` | Pending approval request |
+| `ApprovalDecision` | User's approve/reject response |
+| `HandoffResult` | Marker object signaling agent-to-agent transition |
+| `HandoffRecord` | Historical record of a handoff |
+
+### Infrastructure Types
+
+| Type | Description |
+|------|-------------|
+| `RateLimitConfig` | Sliding window rate limiting configuration |
+| `RetryConfig` | Exponential backoff retry configuration |
+| `RuntimeHooks` | Lifecycle callbacks (onAgentStart, onToolCall, onHandoff, etc.) |
+
+### Utility Functions
+
+```typescript
+import {
+  isHandoffResult,    // Type guard for HandoffResult
+  isMCPSSEConfig,     // Type guard for MCPSSEServerConfig
+  isMCPStdioConfig,   // Type guard for MCPStdioServerConfig
+  notNullOrUndefined, // Array filter for null/undefined
+  assertNever,        // Exhaustiveness check for discriminated unions
+} from '@hexos/common';
+```
+
+## License
+
+MIT
+
+
+## API Reference
+
+<LinkCard href="/docs/common/agent-config" title="Agent Config" />
+<LinkCard href="/docs/common/core-types" title="Core Types" />
+<LinkCard href="/docs/common/infrastructure" title="Infrastructure" />
+<LinkCard href="/docs/common/mcp" title="Mcp" />
+<LinkCard href="/docs/common/runtime" title="Runtime" />
+<LinkCard href="/docs/common/tools" title="Tools" />
+<LinkCard href="/docs/common/transport" title="Transport" />
+<LinkCard href="/docs/common/utilities" title="Utilities" />

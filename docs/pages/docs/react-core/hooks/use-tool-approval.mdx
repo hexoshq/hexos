@@ -1,0 +1,54 @@
+---
+title: "UseToolApproval"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+
+<GenerationInfo sourceFile="packages/react-core/src/hooks/useToolApproval.ts" sourceLine="78" packageName="@hexos/react-core" />
+
+Hook for managing human-in-the-loop tool approval workflows.
+
+Provides access to pending [ToolApprovalRequest](/docs/react-core/tools/tool-approval-request#toolapprovalrequest)s and methods to approve or
+reject them. Sends [ApprovalDecision](/docs/react-core/tools/approval-decision#approvaldecision)s to the server via the [AgentTransport](/docs/react-core/transport/agent-transport#agenttransport)
+stored in [transportAtom](/docs/react-core/state-management/transport-atom#transportatom), and removes resolved requests from [pendingToolCallsAtom](/docs/react-core/state-management/pending-tool-calls-atom#pendingtoolcallsatom).
+
+Includes batch operations (`approveAll`, `rejectAll`) and submission state tracking.
+
+Related: [ToolApprovalDialog](/docs/react-ui/ui-components/tool-approval-dialog#toolapprovaldialog) renders the approval UI, [pendingToolCallsAtom](/docs/react-core/state-management/pending-tool-calls-atom#pendingtoolcallsatom)
+stores pending requests, [SSETransport](/docs/react-core/transport/ssetransport#ssetransport).sendApproval() transmits decisions,
+[AgentRuntime](/docs/runtime/agent-runtime/#agentruntime).submitApproval() processes them server-side.
+
+*Example*
+
+```tsx
+function ApprovalDialog() {
+  const { pending, approve, reject, isSubmitting } = useToolApproval();
+
+  return (
+    <>
+      {pending.map((request) => (
+        <Dialog key={request.toolCallId}>
+          <p>Allow {request.toolName}?</p>
+          <button
+            onClick={() => approve(request.toolCallId)}
+            disabled={isSubmitting}
+          >
+            Allow
+          </button>
+          <button
+            onClick={() => reject(request.toolCallId, 'User denied')}
+            disabled={isSubmitting}
+          >
+            Deny
+          </button>
+        </Dialog>
+      ))}
+    </>
+  );
+}
+```
+
+```ts
+function useToolApproval(): UseToolApprovalReturn
+```

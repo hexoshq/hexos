@@ -1,0 +1,50 @@
+---
+title: "Attachment"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="286" packageName="@hexos/common" />
+
+File or media attachment associated with a message.
+
+Supports image, file, and audio types. The `data` field contains the content
+as a base64 string or data URI. Attachments are sent with user messages via
+[TransportMessage](/docs/react-core/transport/transport-message#transportmessage) and stored in [AgentMessage](/docs/react-core/core-types/agent-message#agentmessage).
+
+```ts
+interface Attachment {
+    type: 'image' | 'file' | 'audio';
+    name: string;
+    data: string;
+    mimeType: string;
+}
+```
+
+<div className="members-wrapper">
+
+### type
+
+<MemberInfo kind="property" type={`'image' | 'file' | 'audio'`} />
+
+
+### name
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### data
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### mimeType
+
+<MemberInfo kind="property" type={`string`} />
+
+
+
+
+</div>

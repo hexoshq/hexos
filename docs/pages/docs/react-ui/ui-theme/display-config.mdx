@@ -1,0 +1,49 @@
+---
+title: "DisplayConfig"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-ui/src/theme/AgentUIProvider.tsx" sourceLine="55" packageName="@hexos/react-ui" />
+
+Display configuration for white-label customization of the chat interface.
+
+Provides control over tool execution visibility and streaming indicator behavior.
+Used by [AgentUIProvider](/docs/react-ui/ui-theme/agent-uiprovider#agentuiprovider) to configure the visual presentation of agent activity.
+
+```ts
+interface DisplayConfig {
+    toolDisplayMode?: ToolDisplayMode;
+    toolDisplayOptions?: ToolDisplayOptions;
+    streamingIndicatorText?: string;
+    hideStreamingIndicator?: boolean;
+}
+```
+
+<div className="members-wrapper">
+
+### toolDisplayMode
+
+<MemberInfo kind="property" type={`<a href='/docs/react-ui/ui-theme/tool-display-mode#tooldisplaymode'>ToolDisplayMode</a>`} />
+
+
+### toolDisplayOptions
+
+<MemberInfo kind="property" type={`<a href='/docs/react-ui/ui-theme/tool-display-options#tooldisplayoptions'>ToolDisplayOptions</a>`} />
+
+
+### streamingIndicatorText
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### hideStreamingIndicator
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+
+
+</div>

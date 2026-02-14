@@ -1,0 +1,72 @@
+---
+title: "ActionExecutionState"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-core/src/types.ts" sourceLine="194" packageName="@hexos/react-core" />
+
+Tracks the execution state of an action for global observability.
+
+Stored in [executingActionsAtom](/docs/react-core/state-management/executing-actions-atom#executingactionsatom) and updated by [useAgentAction](/docs/react-core/hooks/use-agent-action#useagentaction).
+
+```ts
+interface ActionExecutionState {
+    id: string;
+    name: string;
+    args: unknown;
+    status: 'executing' | 'completed' | 'failed';
+    result?: unknown;
+    error?: string;
+    startedAt: Date;
+    completedAt?: Date;
+}
+```
+
+<div className="members-wrapper">
+
+### id
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### name
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### args
+
+<MemberInfo kind="property" type={`unknown`} />
+
+
+### status
+
+<MemberInfo kind="property" type={`'executing' | 'completed' | 'failed'`} />
+
+
+### result
+
+<MemberInfo kind="property" type={`unknown`} />
+
+
+### error
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### startedAt
+
+<MemberInfo kind="property" type={`Date`} />
+
+
+### completedAt
+
+<MemberInfo kind="property" type={`Date`} />
+
+
+
+
+</div>

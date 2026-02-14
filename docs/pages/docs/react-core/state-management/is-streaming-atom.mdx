@@ -1,0 +1,15 @@
+---
+title: "IsStreamingAtom"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+
+<GenerationInfo sourceFile="packages/react-core/src/atoms/index.ts" sourceLine="45" packageName="@hexos/react-core" />
+
+Indicates whether the agent is currently streaming a response.
+
+Set to `true` on `message-start` events and `false` on `stream-complete` or `error`.
+Used by [StreamingIndicator](/docs/react-ui/ui-components/streaming-indicator#streamingindicator) and [InputComposer](/docs/react-ui/ui-components/input-composer#inputcomposer) to show loading state
+and disable input during streaming.
+

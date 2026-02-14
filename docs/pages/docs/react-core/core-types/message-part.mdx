@@ -1,0 +1,24 @@
+---
+title: "MessagePart"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+
+<GenerationInfo sourceFile="packages/react-core/src/types.ts" sourceLine="39" packageName="@hexos/react-core" />
+
+Discriminated union of structured content parts within an [AgentMessage](/docs/react-core/core-types/agent-message#agentmessage).
+
+Enables rich message rendering: text blocks, tool call/result pairs, reasoning
+(extended thinking), and inline images. The `type` field discriminates each variant.
+
+Related: [ToolCallState](/docs/react-core/core-types/tool-call-state#toolcallstate) tracks tool execution progress,
+[MessageBubble](/docs/react-ui/ui-components/message-bubble#messagebubble) renders parts, [ReasoningDisplay](/docs/react-ui/ui-components/reasoning-display#reasoningdisplay) shows reasoning blocks.
+
+```ts
+type MessagePart = | { type: 'text'; content: string }
+  | { type: 'tool-call'; toolCallId: string; toolName: string; args: unknown; state: ToolCallState }
+  | { type: 'tool-result'; toolCallId: string; result: unknown }
+  | { type: 'reasoning'; content: string; isVisible: boolean }
+  | { type: 'image'; url: string; alt?: string }
+```

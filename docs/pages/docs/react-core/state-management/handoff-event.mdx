@@ -1,0 +1,55 @@
+---
+title: "HandoffEvent"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-core/src/atoms/index.ts" sourceLine="152" packageName="@hexos/react-core" />
+
+Represents a recorded agent handoff event for UI display.
+
+Created by [addHandoffAtom](/docs/react-core/state-management/add-handoff-atom#addhandoffatom) when an `agent-handoff` [TransportEvent](/docs/react-core/transport/transport-event#transportevent)
+is received. Displayed by [HandoffIndicator](/docs/react-ui/ui-components/handoff-indicator#handoffindicator).
+
+```ts
+interface HandoffEvent {
+    id: string;
+    fromAgent: string;
+    toAgent: string;
+    reason: string;
+    timestamp: Date;
+}
+```
+
+<div className="members-wrapper">
+
+### id
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### fromAgent
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### toAgent
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### reason
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### timestamp
+
+<MemberInfo kind="property" type={`Date`} />
+
+
+
+
+</div>

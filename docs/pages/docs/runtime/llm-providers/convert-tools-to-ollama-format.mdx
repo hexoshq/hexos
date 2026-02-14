@@ -1,0 +1,29 @@
+---
+title: "ConvertToolsToOllamaFormat"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/providers/ollama/tools.ts" sourceLine="35" packageName="@hexos/runtime" />
+
+Converts Hexos tool definitions to Ollama's function calling format.
+
+Transforms internal ToolDefinition objects into the format expected by Ollama's
+chat API. Each tool is mapped to a function definition with its name, description,
+and Zod schema converted to JSON Schema format.
+
+```ts
+function convertToolsToOllamaFormat(tools: ToolDefinition[], toJsonSchema: (schema: unknown) => Record<string, unknown>): OllamaTool[]
+```
+Parameters
+
+### tools
+
+<MemberInfo kind="parameter" type={`<a href='/docs/common/tools/tool-definition#tooldefinition'>ToolDefinition</a>[]`} />
+
+### toJsonSchema
+
+<MemberInfo kind="parameter" type={`(schema: unknown) => Record<string, unknown>`} />
+

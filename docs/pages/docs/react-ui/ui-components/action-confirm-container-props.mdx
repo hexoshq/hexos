@@ -1,0 +1,41 @@
+---
+title: "ActionConfirmContainerProps"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-ui/src/components/ActionConfirmDialog.tsx" sourceLine="140" packageName="@hexos/react-ui" />
+
+Props for the [ActionConfirmContainer](/docs/react-ui/ui-components/action-confirm-container#actionconfirmcontainer) component.
+
+```ts
+interface ActionConfirmContainerProps {
+    className?: string;
+    renderDialog?: (props: {
+    actionName: string;
+    args: unknown;
+    message: string;
+    onConfirm: () => void;
+    onCancel: () => void;
+    isExecuting: boolean;
+  }) => React.ReactNode;
+}
+```
+
+<div className="members-wrapper">
+
+### className
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### renderDialog
+
+<MemberInfo kind="property" type={`(props: {     actionName: string;     args: unknown;     message: string;     onConfirm: () => void;     onCancel: () => void;     isExecuting: boolean;   }) => React.ReactNode`} />
+
+
+
+
+</div>

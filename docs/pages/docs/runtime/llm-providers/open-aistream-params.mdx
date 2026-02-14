@@ -1,0 +1,70 @@
+---
+title: "OpenAIStreamParams"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/providers/openai/stream.ts" sourceLine="11" packageName="@hexos/runtime" />
+
+Parameters for streaming chat completions with the OpenAI provider.
+
+```ts
+interface OpenAIStreamParams {
+    client: OpenAI;
+    input: RuntimeInput;
+    agent: AgentDefinition;
+    messageId: string;
+    currentAgentId: string;
+    tools?: OpenAI.Chat.Completions.ChatCompletionTool[];
+    dependencies: ProviderDependencies;
+    maxIterationsExceededCode: string;
+}
+```
+
+<div className="members-wrapper">
+
+### client
+
+<MemberInfo kind="property" type={`OpenAI`} />
+
+
+### input
+
+<MemberInfo kind="property" type={`<a href='/docs/common/runtime/runtime-input#runtimeinput'>RuntimeInput</a>`} />
+
+
+### agent
+
+<MemberInfo kind="property" type={`<a href='/docs/common/agent-config/agent-definition#agentdefinition'>AgentDefinition</a>`} />
+
+
+### messageId
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### currentAgentId
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### tools
+
+<MemberInfo kind="property" type={`OpenAI.Chat.Completions.ChatCompletionTool[]`} />
+
+
+### dependencies
+
+<MemberInfo kind="property" type={`<a href='/docs/runtime/llm-providers/provider-dependencies#providerdependencies'>ProviderDependencies</a>`} />
+
+
+### maxIterationsExceededCode
+
+<MemberInfo kind="property" type={`string`} />
+
+
+
+
+</div>

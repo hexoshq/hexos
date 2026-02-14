@@ -1,0 +1,53 @@
+---
+title: "ToolContext"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="123" packageName="@hexos/common" />
+
+Execution context passed to every tool invocation, carrying conversation and agent metadata.
+
+Provides identifiers for the active agent, conversation, and optional user. The `frontendContext`
+field carries arbitrary client-side data sent with each request, enabling per-client behavior
+such as dynamic approval requirements or environment-specific logic.
+
+Related: [ToolDefinition](/docs/common/tools/tool-definition#tooldefinition) receives this during execution,
+[AgentRuntime](/docs/runtime/agent-runtime/#agentruntime) builds this from [RuntimeInput](/docs/common/runtime/runtime-input#runtimeinput).
+
+```ts
+interface ToolContext {
+    agentId: string;
+    conversationId: string;
+    userId?: string;
+    frontendContext?: Record<string, unknown>;
+}
+```
+
+<div className="members-wrapper">
+
+### agentId
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### conversationId
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### userId
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### frontendContext
+
+<MemberInfo kind="property" type={`Record<string, unknown>`} />
+
+
+
+
+</div>

@@ -1,0 +1,24 @@
+---
+title: "GetHandoffTargetFromToolName"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/tools/handoff.ts" sourceLine="102" packageName="@hexos/runtime" />
+
+Extracts the target agent ID from a handoff tool name.
+
+Strips the `handoff_to_` prefix to recover the original agent ID.
+Returns null if the tool name is not a handoff tool.
+
+```ts
+function getHandoffTargetFromToolName(toolName: string): string | null
+```
+Parameters
+
+### toolName
+
+<MemberInfo kind="parameter" type={`string`} />
+

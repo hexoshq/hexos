@@ -1,0 +1,46 @@
+---
+title: "AgentUIProvider"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-ui/src/theme/AgentUIProvider.tsx" sourceLine="247" packageName="@hexos/react-ui" />
+
+Theme and display configuration provider for Hexos UI components.
+
+Wraps the application to provide centralized theming and display configuration via React Context.
+Supports partial theme overrides that merge with defaults, and display configuration for
+white-labeling tool visibility and streaming indicators.
+
+All child Hexos UI components access theme and display settings via [useAgentUITheme](/docs/react-ui/ui-theme/use-agent-uitheme#useagentuitheme)
+and [useDisplayConfig](/docs/react-ui/ui-theme/use-display-config#usedisplayconfig) hooks.
+
+*Example*
+
+```tsx
+<AgentUIProvider
+  theme={{
+    colors: {
+      userBubble: '#8b5cf6',
+      primary: '#8b5cf6',
+    },
+  }}
+  displayConfig={{
+    toolDisplayMode: 'hidden',
+  }}
+>
+  <ChatWindow />
+</AgentUIProvider>
+```
+
+```ts
+function AgentUIProvider(props: AgentUIProviderProps): React.ReactElement
+```
+Parameters
+
+### props
+
+<MemberInfo kind="parameter" type={`<a href='/docs/react-ui/ui-theme/agent-uiprovider-props#agentuiproviderprops'>AgentUIProviderProps</a>`} />
+

@@ -1,0 +1,80 @@
+---
+title: "AgentUITheme"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-ui/src/theme/AgentUIProvider.tsx" sourceLine="125" packageName="@hexos/react-ui" />
+
+Theme configuration for Hexos UI components.
+
+Defines the visual styling system including colors, spacing, border radius, and fonts.
+Passed to [AgentUIProvider](/docs/react-ui/ui-theme/agent-uiprovider#agentuiprovider) for application-wide styling.
+
+```ts
+interface AgentUITheme {
+    colors: {
+    userBubble: string;
+    userBubbleText: string;
+    assistantBubble: string;
+    assistantBubbleText: string;
+    toolCall: string;
+    toolCallText: string;
+    reasoning: string;
+    reasoningText: string;
+    error: string;
+    errorText: string;
+    border: string;
+    background: string;
+    text: string;
+    textMuted: string;
+    primary: string;
+    primaryText: string;
+  };
+    spacing: {
+    xs: string;
+    sm: string;
+    md: string;
+    lg: string;
+    xl: string;
+  };
+    borderRadius: {
+    sm: string;
+    md: string;
+    lg: string;
+    full: string;
+  };
+    fonts: {
+    body: string;
+    mono: string;
+  };
+}
+```
+
+<div className="members-wrapper">
+
+### colors
+
+<MemberInfo kind="property" type={`{     userBubble: string;     userBubbleText: string;     assistantBubble: string;     assistantBubbleText: string;     toolCall: string;     toolCallText: string;     reasoning: string;     reasoningText: string;     error: string;     errorText: string;     border: string;     background: string;     text: string;     textMuted: string;     primary: string;     primaryText: string;   }`} />
+
+
+### spacing
+
+<MemberInfo kind="property" type={`{     xs: string;     sm: string;     md: string;     lg: string;     xl: string;   }`} />
+
+
+### borderRadius
+
+<MemberInfo kind="property" type={`{     sm: string;     md: string;     lg: string;     full: string;   }`} />
+
+
+### fonts
+
+<MemberInfo kind="property" type={`{     body: string;     mono: string;   }`} />
+
+
+
+
+</div>

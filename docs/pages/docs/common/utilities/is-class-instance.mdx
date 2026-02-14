@@ -1,0 +1,27 @@
+---
+title: "IsClassInstance"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/shared-utils.ts" sourceLine="88" packageName="@hexos/common" />
+
+Detects whether a value is an instance of a custom class (not a plain object).
+
+Distinguishes between plain objects (`{}`) and class instances by checking if the
+constructor name differs from `'Object'`. Handles null-prototype objects safely
+(created via `Object.create(null)`).
+
+Uses [isObject](/docs/common/utilities/is-object#isobject) internally to first confirm the value is an object.
+
+```ts
+function isClassInstance(item: any): boolean
+```
+Parameters
+
+### item
+
+<MemberInfo kind="parameter" type={`any`} />
+

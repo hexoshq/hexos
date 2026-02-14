@@ -1,0 +1,45 @@
+---
+title: "RuntimeOutput"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="618" packageName="@hexos/common" />
+
+Non-streaming response from a conversation turn via [AgentRuntime](/docs/runtime/agent-runtime/#agentruntime).invoke().
+
+Contains the final response text, the agent that handled the request, and a summary
+of all tool calls executed during the turn with their durations.
+
+Related: [RuntimeInput](/docs/common/runtime/runtime-input#runtimeinput) is the input, [ToolCallResult](/docs/common/runtime/tool-call-result#toolcallresult) details each tool execution.
+
+```ts
+interface RuntimeOutput {
+    response: string;
+    activeAgent: string;
+    toolCalls?: ToolCallResult[];
+}
+```
+
+<div className="members-wrapper">
+
+### response
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### activeAgent
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### toolCalls
+
+<MemberInfo kind="property" type={`<a href='/docs/common/runtime/tool-call-result#toolcallresult'>ToolCallResult</a>[]`} />
+
+
+
+
+</div>

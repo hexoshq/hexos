@@ -1,0 +1,805 @@
+'use client';
+
+import { type FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import { AgentProvider, useAgentAction } from '@hexos/react-core';
+import { AgentUIProvider, ChatWindow, ToolApprovalContainer, type AgentInfo } from '@hexos/react-ui';
+import { z } from 'zod';
+
+interface MCPServerStatus {
+  name: string;
+  connected: boolean;
+  toolCount: number;
+  tools: string[];
+  transport: 'stdio' | 'sse' | 'unknown';
+  isLocal: boolean;
+  command?: string;
+  args?: string[];
+  url?: string;
+}
+
+interface ExampleConfiguration {
+  id: string;
+  title: string;
+  description: string;
+  config: Record<string, unknown>;
+}
+
+type AddServerConnectionType = 'stdio' | 'sse';
+type AddServerModalMode = 'add' | 'edit';
+
+interface AddServerApiErrorResponse {
+  error?: string;
+}
+
+interface ExampleServerSeed {
+  name: string;
+  connectionType: AddServerConnectionType;
+  command: string;
+  arguments: string;
+  url: string;
+}
+
+const agents: AgentInfo[] = [
+  {
+    id: 'main',
+    name: 'Orquestrador Agent',
+    description: 'Responsible for coordinating interactions and delegating tasks among agents',
+  },
+  {
+    id: 'code',
+    name: 'Code Agent',
+    description: 'Specializes in coding tasks, such as writing, debugging, and optimizing code based on instructions from the Orquestrador agent',
+  },
+];
+
+const toggleThemeSchema = z.object({});
+
+const exampleConfigurations: ExampleConfiguration[] = [
+  {
+    id: 'math-service',
+    title: 'Math Service',
+    description: 'A simple Python server that can perform mathematical operations.',
+    config: {
+      math: {
+        command: 'python',
+        args: ['agent/math_server.py'],
+      },
+    },
+  },
+  {
+    id: 'web-search',
+    title: 'Web Search',
+    description: 'Connect to a search service via SSE.',
+    config: {
+      search: {
+        url: 'http://localhost:8000/search/events',
+        transport: 'sse',
+      },
+    },
+  },
+  {
+    id: 'full-stack',
+    title: 'Full Stack',
+    description: 'A combination of multiple services for comprehensive functionality.',
+    config: {
+      filesystem: {
+        command: 'npx',
+        args: ['-y', '@modelcontextprotocol/server-filesystem', './public'],
+      },
+      database: {
+        command: 'node',
+        args: ['scripts/db_server.js'],
+        transport: 'stdio',
+      },
+    },
+  },
+];
+
+function parseArguments(rawArgs: string): string[] {
+  const trimmed = rawArgs.trim();
+  if (!trimmed) {
+    return [];
+  }
+
+  if (trimmed.includes(',')) {
+    return trimmed
+      .split(',')
+      .map((arg) => arg.trim())
+      .filter(Boolean);
+  }
+
+  const matches = trimmed.match(/"([^"\\]|\\.)*"|'([^'\\]|\\.)*'|\S+/g);
+  if (!matches) {
+    return [];
+  }
+
+  return matches.map((token) => token.replace(/^['"]|['"]$/g, ''));
+}
+
+function isObjectRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
+}
+
+function toExampleServerSeed(config: Record<string, unknown>): { ok: true; seed: ExampleServerSeed } | { ok: false; error: string } {
+  const firstEntry = Object.entries(config)[0];
+  if (!firstEntry) {
+    return { ok: false, error: 'This example has no server configuration.' };
+  }
+
+  const [name, rawConfig] = firstEntry;
+  const normalizedName = name.trim();
+  if (!normalizedName) {
+    return { ok: false, error: 'The first server name in this example is invalid.' };
+  }
+
+  if (!isObjectRecord(rawConfig)) {
+    return { ok: false, error: `Server "${normalizedName}" must be an object configuration.` };
+  }
+
+  const command = typeof rawConfig.command === 'string' ? rawConfig.command.trim() : '';
+  const url = typeof rawConfig.url === 'string' ? rawConfig.url.trim() : '';
+  const connectionType: AddServerConnectionType =
+    rawConfig.transport === 'sse' || (url.length > 0 && command.length === 0) ? 'sse' : 'stdio';
+
+  if (connectionType === 'sse') {
+    if (!url) {
+      return { ok: false, error: `Server "${normalizedName}" is missing URL for SSE.` };
+    }
+
+    return {
+      ok: true,
+      seed: {
+        name: normalizedName,
+        connectionType: 'sse',
+        command: '',
+        arguments: '',
+        url,
+      },
+    };
+  }
+
+  if (!command) {
+    return { ok: false, error: `Server "${normalizedName}" is missing command for Standard IO.` };
+  }
+
+  if (rawConfig.args !== undefined && (!Array.isArray(rawConfig.args) || rawConfig.args.some((arg) => typeof arg !== 'string'))) {
+    return { ok: false, error: `Server "${normalizedName}" has invalid args. Expected an array of strings.` };
+  }
+
+  const args = ((rawConfig.args as string[] | undefined) ?? [])
+    .map((arg) => arg.trim())
+    .filter((arg) => arg.length > 0);
+
+  return {
+    ok: true,
+    seed: {
+      name: normalizedName,
+      connectionType: 'stdio',
+      command,
+      arguments: args.join(' '),
+      url: '',
+    },
+  };
+}
+
+function FrontendActions() {
+  useAgentAction({
+    name: 'toggle_theme',
+    description: 'Toggle between light and dark theme',
+    inputSchema: toggleThemeSchema,
+    handler: async () => {
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      console.log('[Action] Theme toggled');
+    },
+  });
+
+  return null;
+}
+
+function ServerRows({
+  servers,
+  onEdit,
+  onDelete,
+  isDeletingServer,
+}: {
+  servers: MCPServerStatus[];
+  onEdit: (server: MCPServerStatus) => void;
+  onDelete: (server: MCPServerStatus) => void;
+  isDeletingServer: (serverName: string) => boolean;
+}) {
+  const [expandedServer, setExpandedServer] = useState<string | null>(null);
+
+  if (servers.length === 0) {
+    return (
+      <div className="server-empty-state">
+        No servers configured. Click "Add Server" to get started.
+      </div>
+    );
+  }
+
+  return (
+    <ul className="server-list">
+      {servers.map((server) => {
+        const isExpanded = expandedServer === server.name;
+
+        return (
+          <li key={server.name} className="server-row-item">
+            <button
+              type="button"
+              className="server-row-trigger"
+              onClick={() => setExpandedServer(isExpanded ? null : server.name)}
+            >
+              <span className="server-row-main">
+                <span
+                  className={`server-dot ${server.connected ? 'is-connected' : 'is-disconnected'}`}
+                  aria-hidden
+                />
+                <span>{server.name}</span>
+              </span>
+              <span className="server-row-meta">
+                <span className="server-transport">{server.transport.toUpperCase()}</span>
+                <span className="server-tool-badge">{server.toolCount} tools</span>
+              </span>
+            </button>
+
+            {isExpanded && (
+              <div className="server-tools-panel">
+                {server.tools.length > 0 ? (
+                  <ul className="server-tools-list">
+                    {server.tools.map((tool) => (
+                      <li key={tool}>{tool}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="server-tools-empty">No tools discovered for this server yet.</p>
+                )}
+
+                {server.isLocal && (
+                  <div className="server-item-actions">
+                    <button type="button" className="btn-secondary" onClick={() => onEdit(server)}>
+                      Edit
+                    </button>
+                    <button
+                      type="button"
+                      className="btn-secondary btn-danger"
+                      onClick={() => onDelete(server)}
+                      disabled={isDeletingServer(server.name)}
+                    >
+                      {isDeletingServer(server.name) ? 'Deleting...' : 'Delete'}
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+export default function Home() {
+  const [mcpServers, setMcpServers] = useState<MCPServerStatus[]>([]);
+  const [isLoadingMcp, setIsLoadingMcp] = useState(true);
+  const [isExamplesOpen, setIsExamplesOpen] = useState(false);
+  const [addServerModalMode, setAddServerModalMode] = useState<AddServerModalMode>('add');
+  const [isAddServerModalOpen, setIsAddServerModalOpen] = useState(false);
+  const [editingOriginalServerName, setEditingOriginalServerName] = useState<string | null>(null);
+  const [addServerName, setAddServerName] = useState('');
+  const [addServerConnectionType, setAddServerConnectionType] =
+    useState<AddServerConnectionType>('stdio');
+  const [addServerCommand, setAddServerCommand] = useState('');
+  const [addServerArguments, setAddServerArguments] = useState('');
+  const [addServerUrl, setAddServerUrl] = useState('');
+  const [addServerError, setAddServerError] = useState<string | null>(null);
+  const [serverActionError, setServerActionError] = useState<string | null>(null);
+  const [isSubmittingAddServer, setIsSubmittingAddServer] = useState(false);
+  const [isDeletingServerName, setIsDeletingServerName] = useState<string | null>(null);
+
+  const metrics = useMemo(() => {
+    const total = mcpServers.length;
+    const stdio = mcpServers.filter((server) => server.transport === 'stdio').length;
+    const sse = mcpServers.filter((server) => server.transport === 'sse').length;
+
+    return { total, stdio, sse };
+  }, [mcpServers]);
+
+  const fetchMcpServers = useCallback(async () => {
+    try {
+      const res = await fetch('/api/mcp');
+      const data = (await res.json()) as { servers?: MCPServerStatus[] };
+      setMcpServers(Array.isArray(data.servers) ? data.servers : []);
+    } catch (error) {
+      console.error('Failed to fetch MCP servers:', error);
+    } finally {
+      setIsLoadingMcp(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void fetchMcpServers();
+  }, [fetchMcpServers]);
+
+  useEffect(() => {
+    if (!isAddServerModalOpen) {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && !isSubmittingAddServer) {
+        setIsAddServerModalOpen(false);
+      }
+    };
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isAddServerModalOpen, isSubmittingAddServer]);
+
+  const handleUseExample = (example: ExampleConfiguration) => {
+    setServerActionError(null);
+    setAddServerError(null);
+    setAddServerModalMode('add');
+    setEditingOriginalServerName(null);
+
+    const parsedSeed = toExampleServerSeed(example.config);
+    if (!parsedSeed.ok) {
+      setServerActionError(`Could not load "${example.title}" into Add Server modal: ${parsedSeed.error}`);
+      return;
+    }
+
+    setAddServerName(parsedSeed.seed.name);
+    setAddServerConnectionType(parsedSeed.seed.connectionType);
+    setAddServerCommand(parsedSeed.seed.command);
+    setAddServerArguments(parsedSeed.seed.arguments);
+    setAddServerUrl(parsedSeed.seed.url);
+    setIsAddServerModalOpen(true);
+  };
+
+  const resetAddServerForm = () => {
+    setAddServerModalMode('add');
+    setEditingOriginalServerName(null);
+    setAddServerName('');
+    setAddServerConnectionType('stdio');
+    setAddServerCommand('');
+    setAddServerArguments('');
+    setAddServerUrl('');
+    setAddServerError(null);
+  };
+
+  const handleAddServer = () => {
+    setServerActionError(null);
+    resetAddServerForm();
+    setIsAddServerModalOpen(true);
+  };
+
+  const handleEditServer = (server: MCPServerStatus) => {
+    if (!server.isLocal) {
+      return;
+    }
+
+    setServerActionError(null);
+    setAddServerModalMode('edit');
+    setEditingOriginalServerName(server.name);
+    setAddServerName(server.name);
+    setAddServerConnectionType(server.transport === 'sse' ? 'sse' : 'stdio');
+    setAddServerCommand(server.command ?? '');
+    setAddServerArguments(server.args?.join(' ') ?? '');
+    setAddServerUrl(server.url ?? '');
+    setAddServerError(null);
+    setIsAddServerModalOpen(true);
+  };
+
+  const closeAddServerModal = () => {
+    if (isSubmittingAddServer) {
+      return;
+    }
+    setIsAddServerModalOpen(false);
+    setAddServerError(null);
+  };
+
+  const handleConfirmAddServer = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const normalizedName = addServerName.trim();
+    if (!normalizedName) {
+      setAddServerError('Server name is required.');
+      return;
+    }
+
+    if (addServerConnectionType === 'stdio') {
+      const normalizedCommand = addServerCommand.trim();
+      if (!normalizedCommand) {
+        setAddServerError('Command is required for Standard IO.');
+        return;
+      }
+
+      const parsedArgs = parseArguments(addServerArguments);
+      setAddServerError(null);
+      setServerActionError(null);
+      setIsSubmittingAddServer(true);
+
+      try {
+        const res = await fetch('/api/mcp', {
+          method: addServerModalMode === 'add' ? 'POST' : 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            ...(addServerModalMode === 'edit' ? { originalName: editingOriginalServerName } : {}),
+            name: normalizedName,
+            transport: 'stdio',
+            command: normalizedCommand,
+            args: parsedArgs,
+          }),
+        });
+
+        const data = (await res.json().catch(() => null)) as AddServerApiErrorResponse | null;
+
+        if (!res.ok) {
+          setAddServerError(
+            data?.error ?? (addServerModalMode === 'add' ? 'Failed to add server.' : 'Failed to update server.')
+          );
+          return;
+        }
+
+        resetAddServerForm();
+        setIsAddServerModalOpen(false);
+        await fetchMcpServers();
+      } catch (error) {
+        console.error('Failed to add MCP server:', error);
+        setAddServerError(addServerModalMode === 'add' ? 'Failed to add server.' : 'Failed to update server.');
+      } finally {
+        setIsSubmittingAddServer(false);
+      }
+    } else {
+      const normalizedUrl = addServerUrl.trim();
+      if (!normalizedUrl) {
+        setAddServerError('URL is required for SSE.');
+        return;
+      }
+
+      setAddServerError(null);
+      setServerActionError(null);
+      setIsSubmittingAddServer(true);
+
+      try {
+        const res = await fetch('/api/mcp', {
+          method: addServerModalMode === 'add' ? 'POST' : 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            ...(addServerModalMode === 'edit' ? { originalName: editingOriginalServerName } : {}),
+            name: normalizedName,
+            transport: 'sse',
+            url: normalizedUrl,
+          }),
+        });
+
+        const data = (await res.json().catch(() => null)) as AddServerApiErrorResponse | null;
+
+        if (!res.ok) {
+          setAddServerError(
+            data?.error ?? (addServerModalMode === 'add' ? 'Failed to add server.' : 'Failed to update server.')
+          );
+          return;
+        }
+
+        resetAddServerForm();
+        setIsAddServerModalOpen(false);
+        await fetchMcpServers();
+      } catch (error) {
+        console.error('Failed to add MCP server:', error);
+        setAddServerError(addServerModalMode === 'add' ? 'Failed to add server.' : 'Failed to update server.');
+      } finally {
+        setIsSubmittingAddServer(false);
+      }
+    }
+  };
+
+  const handleDeleteServer = async (server: MCPServerStatus) => {
+    if (!server.isLocal) {
+      return;
+    }
+
+    const confirmed = window.confirm(`Delete MCP server "${server.name}"?`);
+    if (!confirmed) {
+      return;
+    }
+
+    setServerActionError(null);
+    setIsDeletingServerName(server.name);
+
+    try {
+      const res = await fetch('/api/mcp', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name: server.name }),
+      });
+
+      const data = (await res.json().catch(() => null)) as AddServerApiErrorResponse | null;
+      if (!res.ok) {
+        setServerActionError(data?.error ?? 'Failed to delete server.');
+        return;
+      }
+
+      await fetchMcpServers();
+
+      if (isAddServerModalOpen && editingOriginalServerName === server.name) {
+        setIsAddServerModalOpen(false);
+        resetAddServerForm();
+      }
+    } catch (error) {
+      console.error('Failed to delete MCP server:', error);
+      setServerActionError('Failed to delete server.');
+    } finally {
+      setIsDeletingServerName(null);
+    }
+  };
+
+  return (
+    <AgentUIProvider>
+      <AgentProvider
+        config={{
+          endpoint: '/api/agent/chat',
+          agents: ['main', 'code'],
+          transport: 'sse',
+          enableReasoning: true,
+        }}
+      >
+        <FrontendActions />
+
+        <main className="mcp-page">
+          <div className="mcp-layout">
+            <section className="mcp-main-panel">
+              <header className="mcp-header">
+                <div>
+                  <h1>Hexos - MCP Client</h1>
+                  <p>
+                    Manage and configure your MCP servers.
+                    <a href="https://github.com/modelcontextprotocol" target="_blank" rel="noreferrer">
+                      GitHub Repo
+                    </a>
+                    <a href="https://modelcontextprotocol.io/introduction" target="_blank" rel="noreferrer">
+                      Documentation
+                    </a>
+                  </p>
+                </div>
+                <div className="mcp-header-actions">
+                  <button type="button" className="btn-primary" onClick={handleAddServer}>
+                    + Add Server
+                  </button>
+                </div>
+              </header>
+
+              <div className="mcp-metrics-grid">
+                <article className="mcp-metric-card">
+                  <span>Total Servers</span>
+                  <strong>{metrics.total}</strong>
+                </article>
+                <article className="mcp-metric-card">
+                  <span>Stdio Servers</span>
+                  <strong>{metrics.stdio}</strong>
+                </article>
+                <article className="mcp-metric-card">
+                  <span>SSE Servers</span>
+                  <strong>{metrics.sse}</strong>
+                </article>
+              </div>
+
+              <section className="example-collapse">
+                <button
+                  type="button"
+                  className="example-collapse-toggle"
+                  onClick={() => setIsExamplesOpen((prev) => !prev)}
+                  aria-expanded={isExamplesOpen}
+                  aria-controls="example-configurations-content"
+                >
+                  <span>Example Configurations</span>
+                  <span className={`example-collapse-icon ${isExamplesOpen ? 'is-open' : ''}`}>⌃</span>
+                </button>
+
+                {isExamplesOpen && (
+                  <div id="example-configurations-content" className="mcp-panel-card example-collapse-content">
+                    <div className="example-list">
+                      {exampleConfigurations.map((example) => (
+                        <article key={example.id} className="example-card">
+                          <div className="example-card-header">
+                            <div>
+                              <h3>{example.title}</h3>
+                              <p>{example.description}</p>
+                            </div>
+                            <button
+                              type="button"
+                              className="btn-primary"
+                              onClick={() => handleUseExample(example)}
+                            >
+                              Use This {'->'}
+                            </button>
+                          </div>
+                          <pre>{JSON.stringify(example.config, null, 2)}</pre>
+                        </article>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </section>
+
+              <section className="mcp-panel-card server-list-card">
+                <h2>Server List</h2>
+                {serverActionError && <p className="server-action-error">{serverActionError}</p>}
+                {isLoadingMcp ? (
+                  <div className="server-loading-state">Loading MCP servers...</div>
+                ) : (
+                  <ServerRows
+                    servers={mcpServers}
+                    onEdit={handleEditServer}
+                    onDelete={handleDeleteServer}
+                    isDeletingServer={(serverName) => isDeletingServerName === serverName}
+                  />
+                )}
+              </section>
+            </section>
+
+            <aside className="mcp-chat-panel">
+              <div className="chat-panel-body">
+                <ChatWindow
+                  variant="default"
+                  showAgentBadges
+                  showHandoffs
+                  showAgentStatus
+                  handoffVariant="inline"
+                  agents={agents}
+                  placeholder="Type a message..."
+                  suggestions={['List server tools', 'Read files from public', 'What is the current time?']}
+                  suggestionsTitle=""
+                  emptyState={
+                    <div className="chat-empty-state">
+                      <p className="chat-empty-title">Welcome to Hexos</p>
+                      <p className="chat-empty-description">
+                        This demo showcases MCP server integration and multi-agent handoff.
+                      </p>
+                    </div>
+                  }
+                />
+              </div>
+            </aside>
+          </div>
+
+          {isAddServerModalOpen && (
+            <div className="modal-overlay" role="presentation" onClick={closeAddServerModal}>
+              <div
+                className="add-server-modal"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="add-server-modal-title"
+                onClick={(event) => event.stopPropagation()}
+              >
+                <div className="add-server-modal-header">
+                  <h2 id="add-server-modal-title">
+                    {addServerModalMode === 'add' ? '+ Add New Server' : 'Edit Server'}
+                  </h2>
+                  <button
+                    type="button"
+                    className="modal-close-btn"
+                    onClick={closeAddServerModal}
+                    aria-label="Close add server modal"
+                    disabled={isSubmittingAddServer}
+                  >
+                    ×
+                  </button>
+                </div>
+
+                <form className="add-server-form" onSubmit={handleConfirmAddServer}>
+                  <label htmlFor="server-name-input">Server Name</label>
+                  <input
+                    id="server-name-input"
+                    className="modal-input"
+                    placeholder="e.g., api-service, data-processor"
+                    value={addServerName}
+                    onChange={(event) => setAddServerName(event.target.value)}
+                    disabled={isSubmittingAddServer}
+                  />
+
+                  <label>Connection Type</label>
+                  <div className="connection-type-grid">
+                    <button
+                      type="button"
+                      className={`connection-type-btn ${addServerConnectionType === 'stdio' ? 'is-selected' : ''}`}
+                      onClick={() => {
+                        setAddServerConnectionType('stdio');
+                        setAddServerError(null);
+                      }}
+                      disabled={isSubmittingAddServer}
+                    >
+                      {'>_ Standard IO'}
+                    </button>
+                    <button
+                      type="button"
+                      className={`connection-type-btn ${addServerConnectionType === 'sse' ? 'is-selected' : ''}`}
+                      onClick={() => {
+                        setAddServerConnectionType('sse');
+                        setAddServerError(null);
+                      }}
+                      disabled={isSubmittingAddServer}
+                    >
+                      ◎ SSE
+                    </button>
+                  </div>
+
+                  {addServerConnectionType === 'stdio' ? (
+                    <>
+                      <label htmlFor="server-command-input">Command</label>
+                      <input
+                        id="server-command-input"
+                        className="modal-input"
+                        placeholder="e.g., python, node"
+                        value={addServerCommand}
+                        onChange={(event) => setAddServerCommand(event.target.value)}
+                        disabled={isSubmittingAddServer}
+                      />
+
+                      <label htmlFor="server-arguments-input">Arguments</label>
+                      <input
+                        id="server-arguments-input"
+                        className="modal-input"
+                        placeholder="e.g., path/to/script.py"
+                        value={addServerArguments}
+                        onChange={(event) => setAddServerArguments(event.target.value)}
+                        disabled={isSubmittingAddServer}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <label htmlFor="server-url-input">URL</label>
+                      <input
+                        id="server-url-input"
+                        className="modal-input"
+                        placeholder="e.g., http://localhost:8000/events"
+                        value={addServerUrl}
+                        onChange={(event) => setAddServerUrl(event.target.value)}
+                        disabled={isSubmittingAddServer}
+                      />
+                    </>
+                  )}
+
+                  {addServerError && <p className="modal-error">{addServerError}</p>}
+
+                  <div className="add-server-modal-actions">
+                    <button
+                      type="button"
+                      className="btn-secondary"
+                      onClick={closeAddServerModal}
+                      disabled={isSubmittingAddServer}
+                    >
+                      × Cancel
+                    </button>
+                    <button type="submit" className="btn-primary" disabled={isSubmittingAddServer}>
+                      {isSubmittingAddServer
+                        ? addServerModalMode === 'add'
+                          ? 'Adding...'
+                          : 'Saving...'
+                        : addServerModalMode === 'add'
+                          ? '+ Add Server'
+                          : 'Save Changes'}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+
+          <ToolApprovalContainer />
+        </main>
+      </AgentProvider>
+    </AgentUIProvider>
+  );
+}

@@ -1,0 +1,106 @@
+---
+title: "MessageListProps"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-ui/src/components/MessageList.tsx" sourceLine="13" packageName="@hexos/react-ui" />
+
+Props for the [MessageList](/docs/react-ui/ui-components/message-list#messagelist) component.
+
+```ts
+interface MessageListProps {
+    messages: AgentMessage[];
+    renderMessage?: (message: AgentMessage, index: number, isStreaming: boolean) => React.ReactNode;
+    virtualize?: boolean;
+    estimatedMessageHeight?: number;
+    className?: string;
+    showAvatars?: boolean;
+    showTimestamps?: boolean;
+    showAgentNames?: boolean;
+    showReasoning?: boolean;
+    autoScroll?: boolean;
+    isStreaming?: boolean;
+    handoffs?: HandoffEvent[];
+    showHandoffs?: boolean;
+    handoffVariant?: 'inline' | 'card';
+}
+```
+
+<div className="members-wrapper">
+
+### messages
+
+<MemberInfo kind="property" type={`<a href='/docs/react-core/core-types/agent-message#agentmessage'>AgentMessage</a>[]`} />
+
+
+### renderMessage
+
+<MemberInfo kind="property" type={`(message: <a href='/docs/react-core/core-types/agent-message#agentmessage'>AgentMessage</a>, index: number, isStreaming: boolean) => React.ReactNode`} />
+
+
+### virtualize
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### estimatedMessageHeight
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### className
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### showAvatars
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### showTimestamps
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### showAgentNames
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### showReasoning
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### autoScroll
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### isStreaming
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### handoffs
+
+<MemberInfo kind="property" type={`<a href='/docs/react-core/state-management/handoff-event#handoffevent'>HandoffEvent</a>[]`} />
+
+
+### showHandoffs
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### handoffVariant
+
+<MemberInfo kind="property" type={`'inline' | 'card'`} />
+
+
+
+
+</div>

@@ -1,0 +1,59 @@
+---
+title: "Semaphore"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/utils/semaphore.ts" sourceLine="42" packageName="@hexos/runtime" />
+
+FIFO semaphore that limits the number of concurrent async operations.
+
+When the concurrency limit is reached, subsequent `acquire()` calls queue up and wait
+for a slot to become available. Each successful acquire returns a `release` function that
+must be called when the operation completes to free the slot. The release function is
+idempotent — calling it multiple times has no effect.
+
+Queue entries can time out via the `timeoutMs` parameter, throwing a
+[SemaphoreTimeoutError](/docs/runtime/infrastructure/semaphore-timeout-error#semaphoretimeouterror). Used by [AgentRuntime](/docs/runtime/agent-runtime/#agentruntime) to limit concurrent tool
+executions via the `maxConcurrentToolExecutions` config.
+
+```ts
+class Semaphore {
+    constructor(limit: number)
+    acquire(timeoutMs: number, timeoutCode:  = 'SEMAPHORE_QUEUE_TIMEOUT', timeoutMessage:  = 'Semaphore acquire timeout') => Promise<() => void>;
+    getInUseCount() => number;
+    getQueueLength() => number;
+}
+```
+
+<div className="members-wrapper">
+
+### constructor
+
+<MemberInfo kind="method" type={`(limit: number) => Semaphore`} />
+
+
+### acquire
+
+<MemberInfo kind="method" type={`(timeoutMs: number, timeoutCode:  = 'SEMAPHORE_QUEUE_TIMEOUT', timeoutMessage:  = 'Semaphore acquire timeout') => Promise<() => void>`} />
+
+Acquires a concurrency slot, waiting in the FIFO queue if all slots are in use.
+
+Returns a release function that must be called when the operation finishes.
+If the caller waits longer than `timeoutMs`, the request is removed from the
+queue and a [SemaphoreTimeoutError](/docs/runtime/infrastructure/semaphore-timeout-error#semaphoretimeouterror) is thrown.
+### getInUseCount
+
+<MemberInfo kind="method" type={`() => number`} />
+
+
+### getQueueLength
+
+<MemberInfo kind="method" type={`() => number`} />
+
+
+
+
+</div>

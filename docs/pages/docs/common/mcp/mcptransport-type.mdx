@@ -1,0 +1,17 @@
+---
+title: "MCPTransportType"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="370" packageName="@hexos/common" />
+
+Discriminator for MCP server transport protocols.
+
+MCP servers can communicate via `stdio` (local process) or `sse` (HTTP Server-Sent Events).
+Used by [MCPServerConfig](/docs/common/mcp/mcpserver-config#mcpserverconfig) to determine the transport type.
+
+```ts
+type MCPTransportType = 'stdio' | 'sse'
+```

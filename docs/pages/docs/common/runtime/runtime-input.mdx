@@ -1,0 +1,53 @@
+---
+title: "RuntimeInput"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="600" packageName="@hexos/common" />
+
+Input payload for a conversation turn, containing the user message and context.
+
+Passed to [AgentRuntime](/docs/runtime/agent-runtime/#agentruntime).stream() or invoke() to initiate a conversation turn.
+The `context` field carries arbitrary frontend data that becomes available to tools
+via [ToolContext](/docs/common/tools/tool-context#toolcontext).frontendContext.
+
+Related: [RuntimeOutput](/docs/common/runtime/runtime-output#runtimeoutput) is the non-streaming response,
+[RuntimeEvent](/docs/common/core-types/runtime-event#runtimeevent) is the streaming response.
+
+```ts
+interface RuntimeInput {
+    message: string;
+    conversationId: string;
+    context?: Record<string, unknown>;
+    userId?: string;
+}
+```
+
+<div className="members-wrapper">
+
+### message
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### conversationId
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### context
+
+<MemberInfo kind="property" type={`Record<string, unknown>`} />
+
+
+### userId
+
+<MemberInfo kind="property" type={`string`} />
+
+
+
+
+</div>

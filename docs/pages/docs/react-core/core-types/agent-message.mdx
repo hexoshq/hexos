@@ -1,0 +1,70 @@
+---
+title: "AgentMessage"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-core/src/types.ts" sourceLine="17" packageName="@hexos/react-core" />
+
+Frontend representation of a message in the conversation, with structured parts for rich rendering.
+
+Includes a `parts` array for granular rendering of tool calls, reasoning blocks, and images.
+The `metadata` field allows attaching arbitrary data for custom rendering.
+
+Related: [MessagePart](/docs/react-core/core-types/message-part#messagepart) defines part types, [messagesAtom](/docs/react-core/state-management/messages-atom#messagesatom) stores the array,
+[MessageBubble](/docs/react-ui/ui-components/message-bubble#messagebubble) renders individual messages.
+
+```ts
+interface AgentMessage {
+    id: string;
+    role: 'user' | 'assistant' | 'system' | 'tool';
+    content: string;
+    createdAt: Date;
+    agentId?: string;
+    metadata?: Record<string, unknown>;
+    parts?: MessagePart[];
+}
+```
+
+<div className="members-wrapper">
+
+### id
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### role
+
+<MemberInfo kind="property" type={`'user' | 'assistant' | 'system' | 'tool'`} />
+
+
+### content
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### createdAt
+
+<MemberInfo kind="property" type={`Date`} />
+
+
+### agentId
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### metadata
+
+<MemberInfo kind="property" type={`Record<string, unknown>`} />
+
+
+### parts
+
+<MemberInfo kind="property" type={`<a href='/docs/react-core/core-types/message-part#messagepart'>MessagePart</a>[]`} />
+
+
+
+
+</div>

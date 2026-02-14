@@ -1,0 +1,54 @@
+{
+    "name": "@hexos/create",
+    "version": "0.1.1",
+    "description": "CLI tool to scaffold Hexos AI chat applications",
+    "license": "MIT",
+    "keywords": [
+        "hexos",
+        "create",
+        "cli",
+        "scaffold",
+        "ai",
+        "chat",
+        "agent"
+    ],
+    "bin": {
+        "create-hexos-app": "./index.js"
+    },
+    "files": [
+        "index.js",
+        "lib/**/*",
+        "assets/**/*"
+    ],
+    "scripts": {
+        "dev": "ts-node src/create-hexos-app.ts",
+        "copy-assets": "rimraf assets && ts-node ./build.ts",
+        "build": "pnpm run copy-assets && rimraf lib && tsc -p ./tsconfig.build.json",
+        "watch": "pnpm run copy-assets && rimraf lib && tsc -p ./tsconfig.build.json -w",
+        "lint": "eslint --fix ."
+    },
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+    },
+    "devDependencies": {
+        "@types/cross-spawn": "^6.0.6",
+        "@types/fs-extra": "^11.0.4",
+        "@types/handlebars": "^4.1.0",
+        "@types/semver": "^7.5.8",
+        "rimraf": "^5.0.5",
+        "ts-node": "^10.9.2",
+        "typescript": "5.8.2"
+    },
+    "dependencies": {
+        "@clack/prompts": "^0.11.0",
+        "@hexos/common": "0.3.2",
+        "commander": "^14.0.1",
+        "cross-spawn": "^7.0.6",
+        "fs-extra": "^11.2.0",
+        "handlebars": "^4.7.8",
+        "picocolors": "^1.1.1",
+        "semver": "^7.7.2"
+    },
+    "gitHead": "4de5ab35bad3cf18bdcb23cb3cb5f5dfe1c22d61"
+}

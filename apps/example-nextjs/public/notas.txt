@@ -1,0 +1,10 @@
+# Notas de Teste
+
+Este arquivo foi criado para testar o MCP server filesystem.
+
+## Itens
+- Item 1: Testando leitura
+- Item 2: Integração MCP funcionando
+- Item 3: Hexos rocks!
+
+Data: Sun Feb  1 00:44:35 -03 2026

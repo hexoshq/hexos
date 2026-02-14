@@ -1,0 +1,56 @@
+---
+title: "NormalizedRetryConfig"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/utils/config.ts" sourceLine="30" packageName="@hexos/runtime" />
+
+Normalized retry configuration with all optional fields resolved to concrete values.
+
+Produced by [normalizeRuntimeConfig](/docs/runtime/infrastructure/normalize-runtime-config#normalizeruntimeconfig) from the user-provided [RetryConfig](/docs/common/infrastructure/retry-config#retryconfig).
+Guarantees that all fields are present and validated, safe for direct use by
+[retryWithBackoff](/docs/runtime/infrastructure/retry-with-backoff#retrywithbackoff).
+
+```ts
+interface NormalizedRetryConfig {
+    maxAttempts: number;
+    initialDelayMs: number;
+    maxDelayMs: number;
+    multiplier: number;
+    jitter: boolean;
+}
+```
+
+<div className="members-wrapper">
+
+### maxAttempts
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### initialDelayMs
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### maxDelayMs
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### multiplier
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### jitter
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+
+
+</div>

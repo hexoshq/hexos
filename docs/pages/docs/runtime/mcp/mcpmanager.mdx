@@ -1,0 +1,114 @@
+---
+title: "MCPManager"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/mcp/MCPManager.ts" sourceLine="104" packageName="@hexos/runtime" />
+
+Centralized manager for orchestrating multiple MCP server connections.
+
+Handles lifecycle management for a pool of MCP servers, supporting both STDIO and SSE
+transports. Responsibilities include server initialization, tool discovery and caching,
+tool execution routing, and graceful shutdown.
+
+Supports lazy initialization for servers that should only connect on first use, and
+implements retry logic with exponential backoff for connection and tool listing operations.
+
+Tools from multiple servers are aggregated with server identification, allowing agents
+to specify which servers they can access via allowedMcpServers configuration.
+
+Used by [AgentRuntime](/docs/runtime/agent-runtime/#agentruntime) to provide MCP tools to [AgentDefinition](/docs/common/agent-config/agent-definition#agentdefinition) instances.
+Creates [MCPClient](/docs/runtime/mcp/mcpclient#mcpclient) (STDIO) or [MCPSSEClient](/docs/runtime/mcp/mcpsseclient#mcpsseclient) (SSE) based on [MCPServerConfig](/docs/common/mcp/mcpserver-config#mcpserverconfig).
+
+```ts
+class MCPManager {
+    constructor(servers: Record<string, MCPServerConfig>, options: MCPManagerOptions = {})
+    initialize() => Promise<void>;
+    getToolsForServers(serverNames: string[]) => MCPToolWithServer[];
+    getAllTools() => MCPToolWithServer[];
+    callTool(serverName: string, toolName: string, args: unknown) => Promise<unknown>;
+    isServerConnected(name: string) => boolean;
+    getConnectedServers() => string[];
+    refreshTools(serverName: string) => Promise<MCPToolInfo[]>;
+    shutdown() => Promise<void>;
+}
+```
+
+<div className="members-wrapper">
+
+### constructor
+
+<MemberInfo kind="method" type={`(servers: Record<string, <a href='/docs/common/mcp/mcpserver-config#mcpserverconfig'>MCPServerConfig</a>>, options: <a href='/docs/runtime/mcp/mcpmanager-options#mcpmanageroptions'>MCPManagerOptions</a> = {}) => MCPManager`} />
+
+Create a new MCPManager instance.
+### initialize
+
+<MemberInfo kind="method" type={`() => Promise<void>`} />
+
+Initialize all configured MCP servers that are not marked as lazy.
+
+Connects to each non-lazy server in parallel, lists their tools, and caches
+the results. Servers marked with lazy: true are skipped and will be initialized
+on first use via ensureServerInitialized.
+
+Idempotent - returns immediately if already initialized.
+### getToolsForServers
+
+<MemberInfo kind="method" type={`(serverNames: string[]) => <a href='/docs/runtime/mcp/mcptool-with-server#mcptoolwithserver'>MCPToolWithServer</a>[]`} />
+
+Get all tools from the specified MCP servers.
+
+Aggregates tools from multiple servers, adding serverName and originalName fields
+to each tool. Tool names are sanitized for LLM API compatibility.
+
+Used by AgentRuntime when preparing tools for agents that specify allowedMcpServers.
+### getAllTools
+
+<MemberInfo kind="method" type={`() => <a href='/docs/runtime/mcp/mcptool-with-server#mcptoolwithserver'>MCPToolWithServer</a>[]`} />
+
+Get all available tools from all connected servers.
+
+Aggregates tools across all servers in the pool, adding serverName and originalName
+fields to each tool. Tool names are sanitized for LLM API compatibility.
+### callTool
+
+<MemberInfo kind="method" type={`(serverName: string, toolName: string, args: unknown) => Promise<unknown>`} />
+
+Execute a tool on a specific MCP server.
+
+Ensures the server is initialized (handles lazy servers), then routes the tool
+call to the appropriate client. Uses the original tool name (not sanitized) when
+calling the server.
+### isServerConnected
+
+<MemberInfo kind="method" type={`(name: string) => boolean`} />
+
+Check if a specific server is connected.
+### getConnectedServers
+
+<MemberInfo kind="method" type={`() => string[]`} />
+
+Get list of currently connected server names.
+### refreshTools
+
+<MemberInfo kind="method" type={`(serverName: string) => Promise<<a href='/docs/common/mcp/mcptool-info#mcptoolinfo'>MCPToolInfo</a>[]>`} />
+
+Refresh the tools cache for a specific server.
+
+Re-queries the server for its tool list and updates the cache. Useful when
+a server's tools may have changed dynamically.
+### shutdown
+
+<MemberInfo kind="method" type={`() => Promise<void>`} />
+
+Shut down all MCP servers and clean up resources.
+
+Disconnects all clients, clears the client and tools caches, and resets
+initialization state. Should be called during application shutdown to ensure
+graceful cleanup of MCP processes and connections.
+
+
+</div>

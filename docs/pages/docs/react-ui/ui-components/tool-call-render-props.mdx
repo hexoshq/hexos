@@ -1,0 +1,49 @@
+---
+title: "ToolCallRenderProps"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-ui/src/components/ToolCallRenderer.tsx" sourceLine="14" packageName="@hexos/react-ui" />
+
+Props passed to custom tool call renderers.
+
+Custom renderers receive tool arguments, execution result, state, and display options
+to implement domain-specific visualizations.
+
+```ts
+interface ToolCallRenderProps {
+    args: unknown;
+    result?: unknown;
+    state: ToolCallState;
+    displayOptions?: ResolvedToolDisplayOptions;
+}
+```
+
+<div className="members-wrapper">
+
+### args
+
+<MemberInfo kind="property" type={`unknown`} />
+
+
+### result
+
+<MemberInfo kind="property" type={`unknown`} />
+
+
+### state
+
+<MemberInfo kind="property" type={`<a href='/docs/react-core/core-types/tool-call-state#toolcallstate'>ToolCallState</a>`} />
+
+
+### displayOptions
+
+<MemberInfo kind="property" type={`<a href='/docs/react-ui/ui-theme/resolved-tool-display-options#resolvedtooldisplayoptions'>ResolvedToolDisplayOptions</a>`} />
+
+
+
+
+</div>

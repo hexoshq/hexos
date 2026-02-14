@@ -1,0 +1,54 @@
+{
+  "name": "@hexos/react-core",
+  "version": "0.3.2",
+  "description": "React hooks and state management for Hexos",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --clean --external react",
+    "dev": "tsup src/index.ts --format esm --dts --watch --external react",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint src/",
+    "clean": "rm -rf dist"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "jotai": "^2.10.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "eslint": "^9.0.0",
+    "tsup": "^8.3.0",
+    "typescript": "^5.7.0",
+    "vitest": "^2.1.0"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0"
+  },
+  "keywords": [
+    "react",
+    "hooks",
+    "agent",
+    "ai",
+    "state-management"
+  ],
+  "license": "MIT",
+  "gitHead": "4de5ab35bad3cf18bdcb23cb3cb5f5dfe1c22d61"
+}

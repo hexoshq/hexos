@@ -1,0 +1,96 @@
+---
+title: "MCPSSEClient"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/mcp/MCPSSEClient.ts" sourceLine="26" packageName="@hexos/runtime" />
+
+MCP client implementation using SSE (Server-Sent Events) transport for HTTP-based communication.
+
+Uses the official MCP SDK's SSEClientTransport to communicate with MCP servers over HTTP.
+The transport connects to an SSE endpoint via GET for receiving server messages and sends
+client messages via POST to a separate messages endpoint.
+
+Note: SSEClientTransport is deprecated in the MCP SDK in favor of StreamableHTTPClientTransport,
+but is retained here for compatibility with servers using SSEServerTransport.
+
+Wraps all requests with configurable timeout handling to prevent indefinite hangs.
+
+Implements [IMCPClient](/docs/runtime/mcp/imcpclient#imcpclient) interface and is managed by [MCPManager](/docs/runtime/mcp/mcpmanager#mcpmanager).
+Configuration provided via [MCPSSEServerConfig](/docs/common/mcp/mcpsseserver-config#mcpsseserverconfig).
+
+```ts
+class MCPSSEClient extends EventEmitter implements IMCPClient {
+    constructor(serverName: string, config: MCPSSEServerConfig)
+    connect() => Promise<void>;
+    listTools() => Promise<MCPToolInfo[]>;
+    callTool(name: string, args: unknown) => Promise<unknown>;
+    disconnect() => void;
+    isConnected() => boolean;
+}
+```
+* Extends: EventEmitter
+
+
+* Implements: [`IMCPClient`](/docs/runtime/mcp/imcpclient#imcpclient)
+
+
+
+<div className="members-wrapper">
+
+### constructor
+
+<MemberInfo kind="method" type={`(serverName: string, config: <a href='/docs/common/mcp/mcpsseserver-config#mcpsseserverconfig'>MCPSSEServerConfig</a>) => MCPSSEClient`} />
+
+Create a new SSE MCP client instance.
+### connect
+
+<MemberInfo kind="method" type={`() => Promise<void>`} />
+
+Connect to the MCP server via SSE transport.
+
+Creates an SSEClientTransport instance pointing to the configured URL and wraps it
+with an MCP SDK Client. Sets up event handlers for connection lifecycle (close, error).
+The transport handles the MCP protocol handshake automatically.
+
+Idempotent - returns immediately if already connected.
+### listTools
+
+<MemberInfo kind="method" type={`() => Promise<<a href='/docs/common/mcp/mcptool-info#mcptoolinfo'>MCPToolInfo</a>[]>`} />
+
+Retrieve all tools available from the MCP server.
+
+Calls the MCP SDK's listTools method and transforms the response into the common
+MCPToolInfo format. Wraps the request with timeout handling to prevent hangs.
+
+Supports debug logging of raw tool data via config.debug flag.
+### callTool
+
+<MemberInfo kind="method" type={`(name: string, args: unknown) => Promise<unknown>`} />
+
+Execute a tool on the MCP server with the provided arguments.
+
+Calls the MCP SDK's callTool method with the tool name and arguments. Extracts
+text content from the MCP response (which returns content arrays) and attempts
+JSON parsing if the result looks like JSON.
+
+Wraps the request with timeout handling to prevent hangs.
+### disconnect
+
+<MemberInfo kind="method" type={`() => void`} />
+
+Disconnect from the MCP server and clean up all resources.
+
+Closes the SSE transport and MCP client instances, then resets connection state.
+Transport closure will trigger the onclose handler.
+### isConnected
+
+<MemberInfo kind="method" type={`() => boolean`} />
+
+Check whether the client is currently connected to the MCP server.
+
+
+</div>

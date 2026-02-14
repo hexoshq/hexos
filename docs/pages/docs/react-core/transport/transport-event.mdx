@@ -1,0 +1,33 @@
+---
+title: "TransportEvent"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+
+<GenerationInfo sourceFile="packages/react-core/src/types.ts" sourceLine="271" packageName="@hexos/react-core" />
+
+Discriminated union of events received from the server via the transport layer.
+
+Mirrors the [RuntimeEvent](/docs/common/core-types/runtime-event#runtimeevent) type from `@hexos/common`. Processed by [useAgent](/docs/react-core/hooks/use-agent#useagent)to update Jotai atoms as streaming events arrive.
+
+```ts
+type TransportEvent = | { type: 'message-start'; messageId: string; agentId: string }
+  | { type: 'text-delta'; messageId: string; delta: string }
+  | { type: 'text-complete'; messageId: string; content: string }
+  | { type: 'tool-call-start'; toolCallId: string; toolName: string; agentId: string }
+  | { type: 'tool-call-args'; toolCallId: string; args: unknown }
+  | { type: 'tool-call-result'; toolCallId: string; result: unknown }
+  | { type: 'tool-call-error'; toolCallId: string; error: string }
+  | { type: 'reasoning-delta'; messageId: string; delta: string }
+  | { type: 'agent-handoff'; fromAgent: string; toAgent: string; reason: string }
+  | {
+      type: 'approval-required';
+      toolCallId: string;
+      toolName: string;
+      args: unknown;
+      agentId: string;
+    }
+  | { type: 'stream-complete'; conversationId: string }
+  | { type: 'error'; error: string; code?: string }
+```

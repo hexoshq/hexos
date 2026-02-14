@@ -1,0 +1,34 @@
+---
+title: "Button"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+
+<GenerationInfo sourceFile="packages/react-ui/src/primitives/Button.tsx" sourceLine="81" packageName="@hexos/react-ui" />
+
+Styled button component with variant and size presets.
+
+Provides consistent button styling across the Hexos UI system. Supports Radix UI Slot pattern
+for composition with other components (e.g., rendering as a Link).
+
+When `asChild` is true, the button renders its single child and merges props, enabling
+polymorphic behavior without wrapper elements.
+
+*Example*
+
+```tsx
+<Button variant="default" size="lg" onClick={handleClick}>
+  Submit
+</Button>
+```
+
+*Example*
+
+Using Radix Slot pattern
+```tsx
+<Button asChild variant="outline">
+<a href="/link">Navigate</a>
+</Button>
+```
+

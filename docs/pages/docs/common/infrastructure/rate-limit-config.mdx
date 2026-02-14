@@ -1,0 +1,53 @@
+---
+title: "RateLimitConfig"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="511" packageName="@hexos/common" />
+
+Configuration for in-memory request rate limiting.
+
+Controls how many requests a user or conversation can make within a sliding time window.
+The `scope` field determines the rate limit key: per user, per conversation, or the
+more restrictive of both.
+
+Related: [RuntimeConfig](/docs/common/agent-config/runtime-config#runtimeconfig) applies this to the runtime,
+[SlidingWindowRateLimiter](/docs/runtime/infrastructure/sliding-window-rate-limiter#slidingwindowratelimiter) implements the algorithm.
+
+```ts
+interface RateLimitConfig {
+    enabled?: boolean;
+    scope?: 'user' | 'conversation' | 'user-or-conversation';
+    windowMs?: number;
+    maxRequests?: number;
+}
+```
+
+<div className="members-wrapper">
+
+### enabled
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### scope
+
+<MemberInfo kind="property" type={`'user' | 'conversation' | 'user-or-conversation'`} />
+
+
+### windowMs
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### maxRequests
+
+<MemberInfo kind="property" type={`number`} />
+
+
+
+
+</div>

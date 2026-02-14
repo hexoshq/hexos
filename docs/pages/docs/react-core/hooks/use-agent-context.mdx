@@ -1,0 +1,44 @@
+---
+title: "UseAgentContext"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-core/src/hooks/useAgentContext.ts" sourceLine="36" packageName="@hexos/react-core" />
+
+Hook that registers a context entry to be sent with every agent request.
+
+Provides the agent with information about the current application state
+(e.g., current page, user preferences, selected items). The context is stored
+in [frontendContextAtom](/docs/react-core/state-management/frontend-context-atom#frontendcontextatom) and included in every [TransportMessage](/docs/react-core/transport/transport-message#transportmessage).
+
+When the component unmounts, the context entry is automatically removed unless
+`persistent` is set to true (default). Persistent context survives component
+unmounting and is only removed explicitly.
+
+Related: [ContextDefinition](/docs/react-core/hooks/context-definition#contextdefinition) defines the entry structure,
+[updateContextAtom](/docs/react-core/state-management/update-context-atom#updatecontextatom) and [removeContextAtom](/docs/react-core/state-management/remove-context-atom#removecontextatom) manage the store,
+[useAgent](/docs/react-core/hooks/use-agent#useagent) includes the context when sending messages.
+
+*Example*
+
+```tsx
+useAgentContext({
+  key: 'current_page',
+  description: 'The current page the user is viewing',
+  value: { route: '/dashboard', title: 'Dashboard' },
+  priority: 10,
+});
+```
+
+```ts
+function useAgentContext(definition: ContextDefinition): void
+```
+Parameters
+
+### definition
+
+<MemberInfo kind="parameter" type={`<a href='/docs/react-core/hooks/context-definition#contextdefinition'>ContextDefinition</a>`} />
+

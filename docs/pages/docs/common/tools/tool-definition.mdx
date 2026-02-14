@@ -1,0 +1,79 @@
+---
+title: "ToolDefinition"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="148" packageName="@hexos/common" />
+
+Defines the contract for tools that AI agents can invoke during conversation flows.
+
+Tools extend agent capabilities with custom logic. Each tool requires a name, description
+(shown to the LLM), and a Zod input schema for validation. The `execute` function receives
+validated input and a [ToolContext](/docs/common/tools/tool-context#toolcontext) with conversation metadata.
+
+Tools can require user approval before execution via `requiresApproval`. When set, the runtime
+emits an `approval-required` [RuntimeEvent](/docs/common/core-types/runtime-event#runtimeevent) and waits for an [ApprovalDecision](/docs/react-core/tools/approval-decision#approvaldecision).
+The flag supports both static booleans and dynamic functions for per-client configuration.
+
+Related: [AgentDefinition](/docs/common/agent-config/agent-definition#agentdefinition) registers tools, [AgentRuntime](/docs/runtime/agent-runtime/#agentruntime) executes them,
+[useAgentTool](/docs/react-core/hooks/use-agent-tool#useagenttool) registers frontend-side tools.
+
+```ts
+interface ToolDefinition<TInput = unknown, TOutput = unknown> {
+    name: string;
+    description: string;
+    inputSchema: unknown;
+    outputSchema?: unknown;
+    execute: (input: TInput, context: ToolContext) => Promise<TOutput>;
+    requiresApproval?: boolean | ((context: ToolContext) => boolean);
+    timeout?: number;
+}
+```
+
+<div className="members-wrapper">
+
+### name
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### description
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### inputSchema
+
+<MemberInfo kind="property" type={`unknown`} />
+
+
+### outputSchema
+
+<MemberInfo kind="property" type={`unknown`} />
+
+
+### execute
+
+<MemberInfo kind="property" type={`(input: TInput, context: <a href='/docs/common/tools/tool-context#toolcontext'>ToolContext</a>) => Promise<TOutput>`} />
+
+
+### requiresApproval
+
+<MemberInfo kind="property" type={`boolean | ((context: <a href='/docs/common/tools/tool-context#toolcontext'>ToolContext</a>) => boolean)`} />
+
+
+
+*Example*
+
+requiresApproval: (context) => context.frontendContext?.requireToolApproval ?? true
+### timeout
+
+<MemberInfo kind="property" type={`number`} />
+
+
+
+
+</div>

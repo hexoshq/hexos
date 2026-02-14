@@ -1,0 +1,18 @@
+---
+title: "ToolCallState"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+
+<GenerationInfo sourceFile="packages/react-core/src/types.ts" sourceLine="56" packageName="@hexos/react-core" />
+
+Lifecycle state of a tool call on the frontend.
+
+Tracks tool execution through: `pending` (waiting to start), `executing` (in progress),
+`awaiting-approval` (blocked on user decision), `completed` (finished successfully),
+or `failed` (execution error). Used by [ToolCallRenderer](/docs/react-ui/ui-components/tool-call-renderer#toolcallrenderer) for visual state.
+
+```ts
+type ToolCallState = 'pending' | 'executing' | 'awaiting-approval' | 'completed' | 'failed'
+```

@@ -1,0 +1,71 @@
+---
+title: "AgentMessage"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="244" packageName="@hexos/common" />
+
+Represents a single message in a conversation, with role, content, and optional structured data.
+
+Messages are the primary data unit in the chat flow. User messages contain plain text input,
+while assistant messages may include tool calls and their results. Each message is timestamped
+and optionally tagged with the agent that produced it for multi-agent conversations.
+
+Related: [MessageRole](/docs/common/core-types/message-role#messagerole) discriminates authorship, [ToolCall](/docs/common/tools/tool-call#toolcall) tracks tool invocations,
+[Attachment](/docs/react-core/core-types/attachment#attachment) holds file/media data.
+
+```ts
+interface AgentMessage {
+    id: string;
+    role: MessageRole;
+    content: string;
+    createdAt: Date;
+    agentId?: string;
+    toolCalls?: ToolCall[];
+    attachments?: Attachment[];
+}
+```
+
+<div className="members-wrapper">
+
+### id
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### role
+
+<MemberInfo kind="property" type={`<a href='/docs/common/core-types/message-role#messagerole'>MessageRole</a>`} />
+
+
+### content
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### createdAt
+
+<MemberInfo kind="property" type={`Date`} />
+
+
+### agentId
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### toolCalls
+
+<MemberInfo kind="property" type={`<a href='/docs/common/tools/tool-call#toolcall'>ToolCall</a>[]`} />
+
+
+### attachments
+
+<MemberInfo kind="property" type={`<a href='/docs/react-core/core-types/attachment#attachment'>Attachment</a>[]`} />
+
+
+
+
+</div>

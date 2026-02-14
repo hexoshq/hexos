@@ -1,0 +1,35 @@
+---
+title: "StreamWithAnthropicProvider"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/providers/anthropic/stream.ts" sourceLine="60" packageName="@hexos/runtime" />
+
+Streams LLM responses and tool executions using the Anthropic Messages API.
+
+This generator function orchestrates the complete agent-tool interaction loop:
+1. Builds system prompt (static or dynamic) from agent definition
+2. Streams LLM response chunks, yielding text-delta events
+3. Detects tool calls and yields tool-call-start events
+4. Parses tool arguments and yields tool-call-args events
+5. Optionally waits for approval via approval-required/waitForApproval
+6. Executes tools via dependencies.executeToolWithGuards
+7. Yields tool-call-result or tool-call-error events
+8. Continues conversation with tool results until completion or max iterations
+
+Supports extended thinking (reasoning-delta events) and lifecycle hooks
+(onToolCall, onToolResult). All infrastructure errors are retried via
+dependencies.withInfrastructureRetry.
+
+```ts
+function streamWithAnthropicProvider(params: AnthropicStreamParams): AsyncGenerator<RuntimeEvent>
+```
+Parameters
+
+### params
+
+<MemberInfo kind="parameter" type={`<a href='/docs/runtime/llm-providers/anthropic-stream-params#anthropicstreamparams'>AnthropicStreamParams</a>`} />
+

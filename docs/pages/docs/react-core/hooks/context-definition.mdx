@@ -1,0 +1,59 @@
+---
+title: "ContextDefinition"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-core/src/types.ts" sourceLine="152" packageName="@hexos/react-core" />
+
+Defines a context entry that is sent with every agent request.
+
+Context entries provide the agent with information about the current application state
+(e.g., current page, user preferences, selected items). The `persistent` flag controls
+whether the context survives component unmounting (default: true).
+
+Related: [useAgentContext](/docs/react-core/hooks/use-agent-context#useagentcontext) registers context, [frontendContextAtom](/docs/react-core/state-management/frontend-context-atom#frontendcontextatom) stores it,
+[ToolContext](/docs/common/tools/tool-context#toolcontext).frontendContext receives it on the server.
+
+```ts
+interface ContextDefinition {
+    key: string;
+    description: string;
+    value: unknown;
+    persistent?: boolean;
+    priority?: number;
+}
+```
+
+<div className="members-wrapper">
+
+### key
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### description
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### value
+
+<MemberInfo kind="property" type={`unknown`} />
+
+
+### persistent
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### priority
+
+<MemberInfo kind="property" type={`number`} />
+
+
+
+
+</div>

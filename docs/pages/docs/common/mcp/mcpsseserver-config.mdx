@@ -1,0 +1,55 @@
+---
+title: "MCPSSEServerConfig"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="431" packageName="@hexos/common" />
+
+Configuration for an MCP server communicating via HTTP Server-Sent Events.
+
+Connects to a remote MCP server over HTTP. Supports custom headers for authentication
+(e.g., Bearer tokens). Suitable for shared or cloud-hosted MCP servers.
+
+Related: [MCPServerConfigBase](/docs/common/mcp/mcpserver-config-base#mcpserverconfigbase) provides shared settings,
+[MCPStdioServerConfig](/docs/common/mcp/mcpstdio-server-config#mcpstdioserverconfig) is the alternative for local servers.
+
+```ts
+interface MCPSSEServerConfig extends MCPServerConfigBase {
+    transport: 'sse';
+    url: string;
+    headers?: Record<string, string>;
+    timeout?: number;
+}
+```
+* Extends: [`MCPServerConfigBase`](/docs/common/mcp/mcpserver-config-base#mcpserverconfigbase)
+
+
+
+<div className="members-wrapper">
+
+### transport
+
+<MemberInfo kind="property" type={`'sse'`} />
+
+
+### url
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### headers
+
+<MemberInfo kind="property" type={`Record<string, string>`} />
+
+
+### timeout
+
+<MemberInfo kind="property" type={`number`} />
+
+
+
+
+</div>

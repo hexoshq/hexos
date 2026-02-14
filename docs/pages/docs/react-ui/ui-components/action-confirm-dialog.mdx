@@ -1,0 +1,42 @@
+---
+title: "ActionConfirmDialog"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-ui/src/components/ActionConfirmDialog.tsx" sourceLine="54" packageName="@hexos/react-ui" />
+
+Modal dialog for confirming action execution before proceeding.
+
+Uses Radix UI Dialog for accessibility including focus trap, Escape key handling, and proper
+ARIA attributes. Displays a confirmation message, action name, and JSON-formatted arguments.
+
+The dialog prevents outside clicks to ensure explicit user decision. Escape key triggers
+cancellation. During execution, interactive elements are disabled and the confirm button
+shows "Executing..." feedback.
+
+This component is part of the action confirmation workflow for human-in-the-loop validations.
+
+*Example*
+
+```tsx
+<ActionConfirmDialog
+  actionName="delete_item"
+  args={{ id: '123' }}
+  message="Are you sure you want to delete this item?"
+  onConfirm={() => executeAction()}
+  onCancel={() => cancelAction()}
+/>
+```
+
+```ts
+function ActionConfirmDialog(props: ActionConfirmDialogProps): React.ReactElement
+```
+Parameters
+
+### props
+
+<MemberInfo kind="parameter" type={`<a href='/docs/react-ui/ui-components/action-confirm-dialog-props#actionconfirmdialogprops'>ActionConfirmDialogProps</a>`} />
+

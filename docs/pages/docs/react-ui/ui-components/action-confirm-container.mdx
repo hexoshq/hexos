@@ -1,0 +1,35 @@
+---
+title: "ActionConfirmContainer"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-ui/src/components/ActionConfirmDialog.tsx" sourceLine="173" packageName="@hexos/react-ui" />
+
+Container component that displays pending action confirmation dialogs.
+
+Monitors the `pendingActionConfirmationsAtom` from `@hexos/react-core` and renders confirmation
+dialogs for actions requiring user approval. Only shows one confirmation at a time.
+
+This is a placeholder implementation. Full integration requires connecting to the
+`pendingActionConfirmationsAtom` and handling the resolution callbacks.
+
+Custom dialog rendering is supported via the `renderDialog` prop for white-label customization.
+
+*Example*
+
+```tsx
+<ActionConfirmContainer />
+```
+
+```ts
+function ActionConfirmContainer(props: ActionConfirmContainerProps): React.ReactElement | null
+```
+Parameters
+
+### props
+
+<MemberInfo kind="parameter" type={`<a href='/docs/react-ui/ui-components/action-confirm-container-props#actionconfirmcontainerprops'>ActionConfirmContainerProps</a>`} />
+

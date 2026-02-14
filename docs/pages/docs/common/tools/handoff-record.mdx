@@ -1,0 +1,59 @@
+---
+title: "HandoffRecord"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="698" packageName="@hexos/common" />
+
+Historical record of an agent-to-agent handoff during a conversation.
+
+Stored in the handoff history to provide context about conversation routing decisions.
+Each record captures which agents were involved, the reason for the handoff, and when
+it occurred.
+
+Related: [HandoffResult](/docs/common/tools/handoff-result#handoffresult) triggers the handoff, [HandoffIndicator](/docs/react-ui/ui-components/handoff-indicator#handoffindicator) displays it,
+[AgentRuntime](/docs/runtime/agent-runtime/#agentruntime) records it during streaming.
+
+```ts
+interface HandoffRecord {
+    from: string;
+    to: string;
+    reason: string;
+    context?: string;
+    timestamp: Date;
+}
+```
+
+<div className="members-wrapper">
+
+### from
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### to
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### reason
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### context
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### timestamp
+
+<MemberInfo kind="property" type={`Date`} />
+
+
+
+
+</div>

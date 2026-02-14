@@ -1,0 +1,41 @@
+---
+title: "ReasoningDisplay"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-ui/src/components/ReasoningDisplay.tsx" sourceLine="43" packageName="@hexos/react-ui" />
+
+Collapsible display for agent reasoning and thinking content.
+
+Uses Radix UI Collapsible for accessible expand/collapse behavior with keyboard support
+and ARIA attributes. Shows agent internal reasoning as a toggleable section.
+
+Automatically expands during streaming to provide real-time visibility into agent thought process,
+then collapses by default once streaming completes. The header displays an estimated thinking
+duration based on content length (1 second per 100 characters).
+
+Visual feedback includes a rotating arrow indicator and an animated spinner during streaming,
+plus a blinking cursor at the end of streaming content.
+
+*Example*
+
+```tsx
+<ReasoningDisplay
+  content="Analyzing the user's request..."
+  isStreaming={true}
+  defaultCollapsed={false}
+/>
+```
+
+```ts
+function ReasoningDisplay(props: ReasoningDisplayProps): React.ReactElement
+```
+Parameters
+
+### props
+
+<MemberInfo kind="parameter" type={`<a href='/docs/react-ui/ui-components/reasoning-display-props#reasoningdisplayprops'>ReasoningDisplayProps</a>`} />
+

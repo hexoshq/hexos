@@ -1,0 +1,57 @@
+---
+title: "AgentTransport"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-core/src/types.ts" sourceLine="318" packageName="@hexos/react-core" />
+
+Abstract transport interface for client-server communication.
+
+[SSETransport](/docs/react-core/transport/ssetransport#ssetransport) is the default implementation using HTTP Server-Sent Events.
+
+Related: [AgentConfig](/docs/react-core/transport/agent-config#agentconfig) configures the connection, [TransportMessage](/docs/react-core/transport/transport-message#transportmessage) is
+the outbound payload, [TransportEvent](/docs/react-core/transport/transport-event#transportevent) is the inbound event type.
+
+```ts
+interface AgentTransport {
+    connect(config: AgentConfig): Promise<void>;
+    send(message: TransportMessage): void;
+    sendApproval(decision: ApprovalDecision): Promise<void>;
+    onMessage(callback: (event: TransportEvent) => void): () => void;
+    disconnect(): void;
+}
+```
+
+<div className="members-wrapper">
+
+### connect
+
+<MemberInfo kind="method" type={`(config: <a href='/docs/react-core/transport/agent-config#agentconfig'>AgentConfig</a>) => Promise<void>`} />
+
+
+### send
+
+<MemberInfo kind="method" type={`(message: <a href='/docs/react-core/transport/transport-message#transportmessage'>TransportMessage</a>) => void`} />
+
+
+### sendApproval
+
+<MemberInfo kind="method" type={`(decision: <a href='/docs/react-core/tools/approval-decision#approvaldecision'>ApprovalDecision</a>) => Promise<void>`} />
+
+
+### onMessage
+
+<MemberInfo kind="method" type={`(callback: (event: <a href='/docs/react-core/transport/transport-event#transportevent'>TransportEvent</a>) => void) => () => void`} />
+
+
+### disconnect
+
+<MemberInfo kind="method" type={`() => void`} />
+
+
+
+
+</div>

@@ -1,0 +1,23 @@
+---
+title: "IsMCPStdioConfig"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="476" packageName="@hexos/common" />
+
+Type guard that narrows [MCPServerConfig](/docs/common/mcp/mcpserver-config#mcpserverconfig) to [MCPStdioServerConfig](/docs/common/mcp/mcpstdio-server-config#mcpstdioserverconfig).
+
+Defaults to STDIO when no transport is specified, maintaining backward compatibility.
+
+```ts
+function isMCPStdioConfig(config: MCPServerConfig): config is MCPStdioServerConfig
+```
+Parameters
+
+### config
+
+<MemberInfo kind="parameter" type={`<a href='/docs/common/mcp/mcpserver-config#mcpserverconfig'>MCPServerConfig</a>`} />
+

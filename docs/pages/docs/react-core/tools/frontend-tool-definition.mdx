@@ -1,0 +1,68 @@
+---
+title: "FrontendToolDefinition"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-core/src/types.ts" sourceLine="128" packageName="@hexos/react-core" />
+
+Defines a tool that executes in the browser rather than on the server.
+
+Frontend tools have access to browser APIs (clipboard, geolocation, DOM, etc.)
+and execute locally when the agent invokes them. The optional `render` function
+provides custom UI for displaying the tool's input and output.
+
+When the LLM calls a frontend tool, [useAgent](/docs/react-core/hooks/use-agent#useagent) detects the matching name in
+[frontendToolsAtom](/docs/react-core/state-management/frontend-tools-atom#frontendtoolsatom) and executes it locally instead of waiting for a server result.
+
+Related: [useAgentTool](/docs/react-core/hooks/use-agent-tool#useagenttool) registers these tools, [ToolDefinition](/docs/common/tools/tool-definition#tooldefinition) is the
+server-side equivalent.
+
+```ts
+interface FrontendToolDefinition<TInput = unknown, TOutput = unknown> {
+    name: string;
+    description: string;
+    inputSchema: z.ZodType<TInput>;
+    requiresApproval?: boolean;
+    execute?: (input: TInput) => Promise<TOutput>;
+    render?: (props: { input: TInput; output?: TOutput; state: ToolCallState }) => React.ReactNode;
+}
+```
+
+<div className="members-wrapper">
+
+### name
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### description
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### inputSchema
+
+<MemberInfo kind="property" type={`z.ZodType<TInput>`} />
+
+
+### requiresApproval
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### execute
+
+<MemberInfo kind="property" type={`(input: TInput) => Promise<TOutput>`} />
+
+
+### render
+
+<MemberInfo kind="property" type={`(props: { input: TInput; output?: TOutput; state: <a href='/docs/react-core/core-types/tool-call-state#toolcallstate'>ToolCallState</a> }) => React.ReactNode`} />
+
+
+
+
+</div>

@@ -1,0 +1,49 @@
+---
+title: "ToolApprovalDialog"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-ui/src/components/ToolApprovalDialog.tsx" sourceLine="54" packageName="@hexos/react-ui" />
+
+Modal dialog for approving or rejecting tool execution requests.
+
+Uses Radix UI Dialog for accessibility including focus trap, Escape key handling, and proper
+ARIA attributes. Displays tool name, agent ID, and JSON-formatted arguments for user review.
+
+Two-step rejection flow: first click shows a text input for optional reason, second click
+confirms rejection with the provided reason. Approve action executes immediately.
+
+The dialog prevents outside clicks to ensure explicit user decision. Escape key triggers
+rejection without reason. During submission, all interactive elements are disabled and
+button labels change to "Processing...".
+
+Related types: [ToolApprovalRequest](/docs/react-core/tools/tool-approval-request#toolapprovalrequest), [ApprovalDecision](/docs/react-core/tools/approval-decision#approvaldecision) from `@hexos/react-core`
+
+*Example*
+
+```tsx
+<ToolApprovalDialog
+  request={{
+    toolCallId: '123',
+    toolName: 'delete_file',
+    agentId: 'main',
+    args: { path: '/data/file.txt' }
+  }}
+  onApprove={() => approveExecution()}
+  onReject={(reason) => rejectExecution(reason)}
+  isSubmitting={isSubmitting}
+/>
+```
+
+```ts
+function ToolApprovalDialog(props: ToolApprovalDialogProps): React.ReactElement
+```
+Parameters
+
+### props
+
+<MemberInfo kind="parameter" type={`<a href='/docs/react-ui/ui-components/tool-approval-dialog-props#toolapprovaldialogprops'>ToolApprovalDialogProps</a>`} />
+

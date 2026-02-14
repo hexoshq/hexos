@@ -1,0 +1,209 @@
+# @hexos/runtime
+
+Server-side agent runtime for the Hexos framework. Orchestrates multi-agent conversations with LLM providers, tool execution, human-in-the-loop approvals, and MCP server integration.
+
+## Installation
+
+```bash
+npm install @hexos/runtime
+```
+
+**Optional peer dependencies:** `@langchain/anthropic >=0.3.0`, `@langchain/openai >=0.3.0`
+
+## Quick Start
+
+```typescript
+import { AgentRuntime, createAgentHandler } from '@hexos/runtime';
+import { LLMProvider, AnthropicModel } from '@hexos/common';
+import { z } from 'zod';
+
+const runtime = new AgentRuntime({
+  agents: [
+    {
+      id: 'assistant',
+      name: 'Assistant',
+      description: 'A helpful assistant',
+      model: {
+        provider: LLMProvider.Anthropic,
+        model: AnthropicModel.Claude4Sonnet,
+      },
+      systemPrompt: 'You are a helpful assistant.',
+      tools: [
+        {
+          name: 'get_weather',
+          description: 'Get the current weather for a location',
+          inputSchema: z.object({ city: z.string() }),
+          execute: async ({ city }) => ({ temp: 72, city }),
+        },
+      ],
+    },
+  ],
+  defaultAgent: 'assistant',
+});
+```
+
+## LLM Providers
+
+| Provider | Env Variable | Models |
+|----------|-------------|--------|
+| Anthropic | `ANTHROPIC_API_KEY` | Claude 4 Sonnet, Claude 3.7 Sonnet, Claude 3 Opus/Sonnet/Haiku |
+| OpenAI | `OPENAI_API_KEY` | GPT-4o, GPT-4o-mini, GPT-4-turbo, GPT-4, GPT-3.5-turbo |
+| Ollama | `OLLAMA_HOST` | Llama 3/3.1/3.2, Mistral, Mixtral, CodeLlama, Phi, Gemma, Qwen |
+
+## Framework Handlers
+
+### Next.js App Router
+
+```typescript
+// app/api/agent/chat/route.ts
+import { createAgentHandler } from '@hexos/runtime';
+
+export const POST = createAgentHandler(runtime);
+```
+
+### Next.js Approval Endpoint
+
+```typescript
+// app/api/agent/approve/route.ts
+import { createApprovalHandler } from '@hexos/runtime';
+
+export const POST = createApprovalHandler(runtime);
+```
+
+### Express
+
+```typescript
+import { createExpressHandler } from '@hexos/runtime';
+
+app.post('/api/agent/chat', createExpressHandler(runtime));
+```
+
+## AgentRuntime API
+
+```typescript
+// Initialize (connects non-lazy MCP servers)
+await runtime.initialize();
+
+// Streaming conversation
+for await (const event of runtime.stream({
+  message: 'Hello!',
+  conversationId: 'conv-1',
+  userId: 'user-1',
+  context: { currentPage: '/dashboard' },
+})) {
+  // Handle RuntimeEvent: text-delta, tool-call-start, agent-handoff, etc.
+}
+
+// Non-streaming conversation
+const result = await runtime.invoke({ message: 'Hello!', conversationId: 'conv-1' });
+
+// Tool approvals
+runtime.submitApproval({ toolCallId: 'tc-1', approved: true });
+const pending = runtime.getPendingApprovals('conv-1');
+
+// Shutdown
+await runtime.shutdown();
+```
+
+## Multi-Agent Handoffs
+
+Agents can route conversations to each other using the swarm pattern:
+
+```typescript
+const runtime = new AgentRuntime({
+  agents: [
+    {
+      id: 'triage',
+      name: 'Triage Agent',
+      description: 'Routes user requests',
+      model: { provider: LLMProvider.Anthropic, model: AnthropicModel.Claude4Sonnet },
+      systemPrompt: 'Route users to the right agent.',
+      tools: [],
+      canHandoffTo: ['billing', 'support'],
+    },
+    {
+      id: 'billing',
+      name: 'Billing Agent',
+      description: 'Handles billing questions',
+      model: { provider: LLMProvider.Anthropic, model: AnthropicModel.Claude4Sonnet },
+      systemPrompt: 'You handle billing inquiries.',
+      tools: [],
+    },
+    {
+      id: 'support',
+      name: 'Support Agent',
+      description: 'Handles support tickets',
+      model: { provider: LLMProvider.OpenAI, model: 'gpt-4o' },
+      systemPrompt: 'You handle support tickets.',
+      tools: [],
+    },
+  ],
+  defaultAgent: 'triage',
+  maxHandoffs: 10,
+});
+```
+
+The runtime auto-generates `handoff_to_billing` and `handoff_to_support` tools for the triage agent.
+
+## Tool Approvals
+
+Mark tools as requiring user approval before execution:
+
+```typescript
+{
+  name: 'delete_record',
+  description: 'Delete a database record',
+  inputSchema: z.object({ id: z.string() }),
+  execute: async ({ id }) => { /* ... */ },
+  requiresApproval: true,
+  // Or use a dynamic function:
+  // requiresApproval: (context) => context.frontendContext?.requireApproval ?? true,
+}
+```
+
+## MCP Integration
+
+Connect to Model Context Protocol servers:
+
+```typescript
+const runtime = new AgentRuntime({
+  agents: [
+    {
+      id: 'assistant',
+      // ...
+      allowedMcpServers: ['filesystem', 'remote-api'],
+    },
+  ],
+  mcpServers: {
+    filesystem: {
+      command: 'npx',
+      args: ['-y', '@modelcontextprotocol/server-filesystem', '/tmp'],
+    },
+    'remote-api': {
+      transport: 'sse',
+      url: 'http://localhost:3001/mcp/sse',
+      headers: { Authorization: 'Bearer token' },
+    },
+  },
+});
+```
+
+## Configuration
+
+`RuntimeConfig` supports the following options:
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `maxHandoffs` | 10 | Max agent handoffs per conversation |
+| `approvalTimeoutMs` | 300000 | Timeout for pending approvals (5 min) |
+| `maxPendingApprovalsPerConversation` | 20 | Max pending approvals per conversation |
+| `defaultToolTimeoutMs` | 60000 | Default tool execution timeout |
+| `maxActiveStreams` | 100 | Max concurrent streams across runtime |
+| `maxConcurrentToolExecutions` | 8 | Max parallel tool executions |
+| `rateLimit` | — | Sliding window rate limiting config |
+| `retry` | — | Exponential backoff retry config |
+| `hooks` | — | Lifecycle callbacks (onAgentStart, onToolCall, etc.) |
+
+## License
+
+MIT

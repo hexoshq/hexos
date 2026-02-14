@@ -1,0 +1,31 @@
+---
+title: "StreamWithOllamaProvider"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/providers/ollama/stream.ts" sourceLine="47" packageName="@hexos/runtime" />
+
+Streams chat completions from Ollama with support for tool calling and agent iteration.
+
+Orchestrates the full LLM interaction cycle with locally-hosted Ollama models: sends messages
+to Ollama's chat API, streams text deltas, handles tool calls with approval workflows, executes
+tools, and returns results to the LLM. Implements an agentic loop that continues until the model
+produces a final response or reaches the maximum iteration limit.
+
+The function yields RuntimeEvent objects for each stage: text-delta for streaming content,
+tool-call-start/args/result/error for tool execution phases, approval-required for human-in-the-loop
+decisions, and text-complete when the conversation is finished. Tool call IDs are generated using
+crypto.randomUUID since Ollama does not provide them in the response.
+
+```ts
+function streamWithOllamaProvider(params: OllamaStreamParams): AsyncGenerator<RuntimeEvent>
+```
+Parameters
+
+### params
+
+<MemberInfo kind="parameter" type={`<a href='/docs/runtime/llm-providers/ollama-stream-params#ollamastreamparams'>OllamaStreamParams</a>`} />
+

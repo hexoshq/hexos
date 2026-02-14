@@ -1,0 +1,44 @@
+---
+title: "ChatWindow"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-ui/src/components/ChatWindow.tsx" sourceLine="83" packageName="@hexos/react-ui" />
+
+Full-featured chat window component for agent conversations.
+
+Orchestrates the complete chat interface including message history, input composer, streaming indicators,
+agent status display, and handoff transitions. Connects to the agent runtime via the [useAgent](/docs/react-core/hooks/use-agent#useagent) hook
+from `@hexos/react-core`.
+
+The component manages error display, empty states, and suggestion chips for initial user engagement.
+Supports both standalone usage with a direct [AgentConfig](/docs/react-core/transport/agent-config#agentconfig) or integration with an AgentProvider.
+
+Multi-agent features include agent badges, status bars, and handoff indicators. The streaming state
+automatically disables input and shows visual feedback.
+
+Related components: [MessageList](/docs/react-ui/ui-components/message-list#messagelist), [InputComposer](/docs/react-ui/ui-components/input-composer#inputcomposer), [StreamingIndicator](/docs/react-ui/ui-components/streaming-indicator#streamingindicator), [AgentStatusBar](/docs/react-ui/ui-components/agent-status-bar#agentstatusbar)
+
+*Example*
+
+```tsx
+<ChatWindow
+  config={{ endpoint: '/api/agent/chat' }}
+  showReasoning
+  showAgentBadges
+  suggestions={['Hello', 'Help me with...']}
+/>
+```
+
+```ts
+function ChatWindow(props: ChatWindowProps): React.ReactElement
+```
+Parameters
+
+### props
+
+<MemberInfo kind="parameter" type={`<a href='/docs/react-ui/ui-components/chat-window-props#chatwindowprops'>ChatWindowProps</a>`} />
+

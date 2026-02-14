@@ -1,0 +1,33 @@
+---
+title: "NotNullOrUndefined"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/shared-utils.ts" sourceLine="22" packageName="@hexos/common" />
+
+Type guard predicate that filters out null and undefined values from arrays.
+
+Designed for use in `.filter()` operations where the resulting array should have
+a narrowed type excluding nullable elements. The type predicate ensures TypeScript
+correctly infers the filtered type.
+
+*Example*
+
+```typescript
+const items: (string | null | undefined)[] = ['a', null, 'b', undefined];
+const filtered: string[] = items.filter(notNullOrUndefined);
+// => ['a', 'b'] with type string[]
+```
+
+```ts
+function notNullOrUndefined<T>(val: T | undefined | null): val is T
+```
+Parameters
+
+### val
+
+<MemberInfo kind="parameter" type={`T | undefined | null`} />
+

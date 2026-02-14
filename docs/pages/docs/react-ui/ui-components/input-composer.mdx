@@ -1,0 +1,42 @@
+---
+title: "InputComposer"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-ui/src/components/InputComposer.tsx" sourceLine="93" packageName="@hexos/react-ui" />
+
+Message input composer with attachment support and auto-resize.
+
+Provides a WhatsApp-style rounded container with integrated send button and optional file attachments.
+The textarea automatically resizes based on content using the [Textarea](/docs/react-ui/ui-primitives/textarea#textarea) primitive.
+
+Supports both controlled and uncontrolled modes via the `value` and `onChange` props.
+When `enableAttachments` is true, displays a file picker that converts selected files to base64
+data URLs for transmission.
+
+Keyboard behavior: Enter submits, Shift+Enter inserts a newline. The send button is disabled
+when input is empty and no attachments are present.
+
+*Example*
+
+```tsx
+<InputComposer
+  onSubmit={(content, attachments) => sendMessage(content, attachments)}
+  placeholder="Type a message..."
+  enableAttachments
+  maxLength={2000}
+/>
+```
+
+```ts
+function InputComposer(props: InputComposerProps): React.ReactElement
+```
+Parameters
+
+### props
+
+<MemberInfo kind="parameter" type={`<a href='/docs/react-ui/ui-components/input-composer-props#inputcomposerprops'>InputComposerProps</a>`} />
+

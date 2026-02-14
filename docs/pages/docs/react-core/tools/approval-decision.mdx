@@ -1,0 +1,44 @@
+---
+title: "ApprovalDecision"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-core/src/types.ts" sourceLine="301" packageName="@hexos/react-core" />
+
+User's response to a tool approval request — approve or reject with optional reason.
+
+Sent via [SSETransport](/docs/react-core/transport/ssetransport#ssetransport).sendApproval() to the approval endpoint.
+
+Related: [ToolApprovalRequest](/docs/react-core/tools/tool-approval-request#toolapprovalrequest) is the request, [useToolApproval](/docs/react-core/hooks/use-tool-approval#usetoolapproval) sends decisions.
+
+```ts
+interface ApprovalDecision {
+    toolCallId: string;
+    approved: boolean;
+    reason?: string;
+}
+```
+
+<div className="members-wrapper">
+
+### toolCallId
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### approved
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### reason
+
+<MemberInfo kind="property" type={`string`} />
+
+
+
+
+</div>

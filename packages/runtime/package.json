@@ -1,0 +1,68 @@
+{
+  "name": "@hexos/runtime",
+  "version": "0.3.2",
+  "description": "LangGraph-based agent runtime for Hexos",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --clean",
+    "dev": "tsup src/index.ts --format esm --dts --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint src/",
+    "clean": "rm -rf dist"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.72.1",
+    "@hexos/common": "0.3.2",
+    "@langchain/core": "^0.3.0",
+    "@langchain/langgraph": "^0.2.0",
+    "@modelcontextprotocol/sdk": "^1.21.0",
+    "ollama": "^0.6.3",
+    "openai": "^6.17.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "eslint": "^9.0.0",
+    "tsup": "^8.3.0",
+    "typescript": "^5.7.0",
+    "vitest": "^2.1.0"
+  },
+  "peerDependencies": {
+    "@langchain/anthropic": ">=0.3.0",
+    "@langchain/openai": ">=0.3.0"
+  },
+  "peerDependenciesMeta": {
+    "@langchain/anthropic": {
+      "optional": true
+    },
+    "@langchain/openai": {
+      "optional": true
+    }
+  },
+  "keywords": [
+    "agent",
+    "langgraph",
+    "llm",
+    "ai",
+    "runtime"
+  ],
+  "license": "MIT",
+  "gitHead": "4de5ab35bad3cf18bdcb23cb3cb5f5dfe1c22d61"
+}

@@ -1,0 +1,42 @@
+---
+title: "AgentProvider"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-core/src/provider/AgentProvider.tsx" sourceLine="60" packageName="@hexos/react-core" />
+
+Provider component that initializes the Jotai atom store and sets up agent configuration.
+
+Creates an isolated Jotai `Provider` scope so that multiple AgentProvider instances
+on the same page maintain independent state. Internally uses `AgentConfigSetter` to
+hydrate [agentConfigAtom](/docs/react-core/state-management/agent-config-atom#agentconfigatom) and [conversationIdAtom](/docs/react-core/state-management/conversation-id-atom#conversationidatom) from the provided config.
+
+Wrap your chat UI or application root with this provider to enable all Hexos hooks.
+
+Related: [useAgent](/docs/react-core/hooks/use-agent#useagent) reads the config from atoms, [AgentConfig](/docs/react-core/transport/agent-config#agentconfig) defines
+connection options, [ChatWindow](/docs/react-ui/ui-components/chat-window#chatwindow) is typically a direct child.
+
+*Example*
+
+```tsx
+<AgentProvider config={{
+  endpoint: '/api/agent/chat',
+  agents: ['main', 'code', 'research'],
+  transport: 'sse',
+}}>
+  <ChatInterface />
+</AgentProvider>
+```
+
+```ts
+function AgentProvider(props: AgentProviderProps): React.ReactElement
+```
+Parameters
+
+### props
+
+<MemberInfo kind="parameter" type={`<a href='/docs/react-core/hooks/agent-provider-props#agentproviderprops'>AgentProviderProps</a>`} />
+

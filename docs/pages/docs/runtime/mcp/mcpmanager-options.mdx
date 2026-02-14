@@ -1,0 +1,39 @@
+---
+title: "MCPManagerOptions"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/mcp/MCPManager.ts" sourceLine="55" packageName="@hexos/runtime" />
+
+Configuration options for MCPManager initialization.
+
+```ts
+interface MCPManagerOptions {
+    retry?: {
+    /** Maximum number of retry attempts */
+    maxAttempts: number;
+    /** Initial delay in milliseconds before first retry */
+    initialDelayMs: number;
+    /** Maximum delay in milliseconds between retries */
+    maxDelayMs: number;
+    /** Multiplier for exponential backoff */
+    multiplier: number;
+    /** Whether to add random jitter to delay */
+    jitter: boolean;
+  };
+}
+```
+
+<div className="members-wrapper">
+
+### retry
+
+<MemberInfo kind="property" type={`{     /** Maximum number of retry attempts */     maxAttempts: number;     /** Initial delay in milliseconds before first retry */     initialDelayMs: number;     /** Maximum delay in milliseconds between retries */     maxDelayMs: number;     /** Multiplier for exponential backoff */     multiplier: number;     /** Whether to add random jitter to delay */     jitter: boolean;   }`} />
+
+
+
+
+</div>

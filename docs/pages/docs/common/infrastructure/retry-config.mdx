@@ -1,0 +1,58 @@
+---
+title: "RetryConfig"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="530" packageName="@hexos/common" />
+
+Configuration for exponential backoff retry on transient infrastructure failures.
+
+Applied to LLM API calls and MCP server connections. Uses exponential backoff with
+optional jitter to prevent thundering herd effects. The delay between retries grows
+as `initialDelayMs * multiplier^attempt`, capped at `maxDelayMs`.
+
+Related: [RuntimeConfig](/docs/common/agent-config/runtime-config#runtimeconfig) applies this to the runtime.
+
+```ts
+interface RetryConfig {
+    maxAttempts?: number;
+    initialDelayMs?: number;
+    maxDelayMs?: number;
+    multiplier?: number;
+    jitter?: boolean;
+}
+```
+
+<div className="members-wrapper">
+
+### maxAttempts
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### initialDelayMs
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### maxDelayMs
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### multiplier
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### jitter
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+
+
+</div>

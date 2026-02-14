@@ -1,0 +1,28 @@
+---
+title: "OllamaModel"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="72" packageName="@hexos/common" />
+
+Available Ollama model identifiers for use with `LLMProvider.Ollama`.
+
+These values map to locally-hosted models via the Ollama runtime.
+Custom models can also be specified as a plain string in [ModelConfig](/docs/common/agent-config/model-config#modelconfig).
+
+```ts
+enum OllamaModel {
+    Llama3 = 'llama3'
+    Llama31 = 'llama3.1'
+    Llama32 = 'llama3.2'
+    Mistral = 'mistral'
+    Mixtral = 'mixtral'
+    CodeLlama = 'codellama'
+    Phi = 'phi'
+    Gemma = 'gemma'
+    Qwen = 'qwen'
+}
+```

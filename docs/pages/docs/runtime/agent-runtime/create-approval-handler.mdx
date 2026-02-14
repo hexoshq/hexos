@@ -1,0 +1,28 @@
+---
+title: "CreateApprovalHandler"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/handlers/nextjs.ts" sourceLine="110" packageName="@hexos/runtime" />
+
+Creates a Next.js App Router handler for processing tool approval decisions.
+
+Receives [ApprovalDecision](/docs/react-core/tools/approval-decision#approvaldecision) payloads and forwards them to [AgentRuntime](/docs/runtime/agent-runtime/#agentruntime).submitApproval().
+Returns 404 if no matching pending approval exists. Use alongside [createAgentHandler](/docs/runtime/agent-runtime/create-agent-handler#createagenthandler)
+for human-in-the-loop workflows.
+
+Related: [ToolApproval](/docs/common/tools/tool-approval#toolapproval) represents the pending request, [useToolApproval](/docs/react-core/hooks/use-tool-approval#usetoolapproval) sends
+decisions from the frontend, [AgentRuntime](/docs/runtime/agent-runtime/#agentruntime).waitForApproval() blocks until resolved.
+
+```ts
+function createApprovalHandler(runtime: AgentRuntime): void
+```
+Parameters
+
+### runtime
+
+<MemberInfo kind="parameter" type={`<a href='/docs/runtime/agent-runtime/#agentruntime'>AgentRuntime</a>`} />
+

@@ -1,0 +1,668 @@
+/* ===========================================
+   Hexos Chat UI - Encapsulated Styles
+   Prefix: hexos-
+   Version: 0.1.0
+   =========================================== */
+
+/* CSS Variables for easy customization */
+.hexos-chat-window {
+  --hexos-bg-primary: #ffffff;
+  --hexos-bg-secondary: #f9fafb;
+  --hexos-bg-input: #f3f4f6;
+  --hexos-bg-user-bubble: #3b82f6;
+  --hexos-bg-agent-bubble: #f3f4f6;
+  --hexos-border-color: #e5e7eb;
+  --hexos-border-subtle: #f3f4f6;
+  --hexos-text-primary: #111827;
+  --hexos-text-secondary: #6b7280;
+  --hexos-text-muted: #9ca3af;
+  --hexos-accent: #3b82f6;
+  --hexos-accent-hover: #2563eb;
+  --hexos-radius-sm: 0.375rem;
+  --hexos-radius-md: 0.75rem;
+  --hexos-radius-lg: 1rem;
+  --hexos-radius-xl: 1.5rem;
+  --hexos-radius-full: 9999px;
+  --hexos-font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* =================== Chat Window =================== */
+.hexos-chat-window {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-width: 0;
+  background-color: var(--hexos-bg-primary);
+  border-radius: var(--hexos-radius-lg);
+  border: 1px solid var(--hexos-border-color);
+  overflow: hidden;
+  font-family: var(--hexos-font-sans);
+  box-sizing: border-box;
+}
+
+.hexos-chat-window *,
+.hexos-chat-window *::before,
+.hexos-chat-window *::after {
+  box-sizing: border-box;
+}
+
+.hexos-chat-window.hexos-variant-default {
+  border-radius: var(--hexos-radius-lg);
+  border: 1px solid var(--hexos-border-color);
+}
+
+.hexos-chat-window.hexos-variant-sidebar {
+  border-radius: 0;
+  border: none;
+  border-left: 1px solid var(--hexos-border-color);
+}
+
+.hexos-chat-window.hexos-variant-floating {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  width: 24rem;
+  height: 32rem;
+  border-radius: var(--hexos-radius-lg);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  z-index: 50;
+}
+
+.hexos-chat-window.hexos-variant-fullscreen {
+  position: fixed;
+  inset: 0;
+  border-radius: 0;
+  border: none;
+}
+
+/* Header */
+.hexos-chat-header {
+  padding: 1rem;
+  border-bottom: 1px solid var(--hexos-border-color);
+  background-color: var(--hexos-bg-primary);
+}
+
+/* Error Banner */
+.hexos-chat-error {
+  padding: 0.75rem 1rem;
+  background-color: #fef2f2;
+  border-bottom: 1px solid #fecaca;
+  color: #dc2626;
+  font-size: 0.875rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hexos-chat-error__dismiss {
+  background: none;
+  border: none;
+  color: #dc2626;
+  cursor: pointer;
+  padding: 0.25rem;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+/* Empty State */
+.hexos-chat-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+/* =================== Message List =================== */
+.hexos-message-list {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  scroll-behavior: smooth;
+  min-width: 0;
+}
+
+.hexos-message-list-empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--hexos-text-muted);
+  font-size: 0.875rem;
+}
+
+/* =================== Message =================== */
+.hexos-message {
+  display: flex;
+  flex-direction: column;
+  max-width: 85%;
+  min-width: 0;
+}
+
+.hexos-message--user {
+  align-self: flex-end;
+  align-items: flex-end;
+}
+
+.hexos-message--assistant {
+  align-self: flex-start;
+  align-items: flex-start;
+}
+
+.hexos-message--user .hexos-message__content {
+  align-items: flex-end;
+}
+
+.hexos-message--assistant .hexos-message__content {
+  align-items: flex-start;
+}
+
+.hexos-message__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.hexos-message__bubble {
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.hexos-message--user .hexos-message__bubble {
+  background-color: var(--hexos-bg-user-bubble);
+  color: white;
+  border-radius: var(--hexos-radius-xl) var(--hexos-radius-xl) var(--hexos-radius-sm) var(--hexos-radius-xl);
+}
+
+.hexos-message--assistant .hexos-message__bubble {
+  background-color: var(--hexos-bg-agent-bubble);
+  color: var(--hexos-text-primary);
+  border-radius: var(--hexos-radius-xl) var(--hexos-radius-xl) var(--hexos-radius-xl) var(--hexos-radius-sm);
+}
+
+.hexos-message__agent-name {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--hexos-text-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.hexos-message__timestamp {
+  font-size: 0.6875rem;
+  color: var(--hexos-text-muted);
+  margin-top: 0.25rem;
+}
+
+.hexos-message__reasoning {
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.hexos-message-tool-calls {
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.hexos-message__meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  min-width: 0;
+}
+
+.hexos-message-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-left: auto;
+  min-width: 0;
+}
+
+/* Message with Avatar */
+.hexos-message--with-avatar {
+  flex-direction: row;
+  gap: 0.5rem;
+  max-width: 90%;
+  min-width: 0;
+}
+
+.hexos-message--with-avatar.hexos-message--user {
+  flex-direction: row-reverse;
+}
+
+.hexos-message__avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--hexos-radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  flex-shrink: 0;
+  color: white;
+}
+
+.hexos-message--user .hexos-message__avatar {
+  background-color: var(--hexos-accent);
+}
+
+.hexos-message--assistant .hexos-message__avatar {
+  background-color: var(--hexos-text-secondary);
+}
+
+.hexos-message--with-avatar .hexos-message__content {
+  flex: 1;
+  min-width: 0;
+}
+
+/* =================== Input Composer =================== */
+.hexos-input-composer {
+  padding: 0.875rem 1rem 1rem;
+  border-top: 1px solid var(--hexos-border-subtle);
+  background-color: var(--hexos-bg-primary);
+  min-width: 0;
+}
+
+.hexos-input-composer__attachments {
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+  gap: 0.5rem;
+  margin-bottom: 0.625rem;
+  flex-wrap: wrap;
+}
+
+.hexos-input-composer__attachment {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  max-width: 100%;
+  padding: 0.375rem 0.625rem;
+  background-color: var(--hexos-bg-secondary);
+  border-radius: var(--hexos-radius-md);
+  font-size: 0.75rem;
+  color: var(--hexos-text-secondary);
+  overflow-wrap: anywhere;
+}
+
+.hexos-input-composer__attachment-remove {
+  background: none;
+  border: none;
+  color: var(--hexos-text-muted);
+  cursor: pointer;
+  padding: 0;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.hexos-input-composer__attachment-remove:hover {
+  color: var(--hexos-text-secondary);
+}
+
+.hexos-input-composer__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  min-width: 0;
+  min-height: 9rem;
+  padding: 0.875rem;
+  background-color: var(--hexos-bg-primary);
+  border-radius: var(--hexos-radius-xl);
+  border: 1px solid var(--hexos-border-color);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.hexos-input-composer__container:focus-within {
+  border-color: var(--hexos-accent);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25), 0 1px 2px rgba(15, 23, 42, 0.06);
+}
+
+.hexos-input-composer__container textarea:focus,
+.hexos-input-composer__container input:focus,
+.hexos-input-composer__container button:focus {
+  outline: none;
+}
+
+.hexos-input-composer__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.hexos-input-composer__attachment-btn {
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  background-color: var(--hexos-bg-input);
+  border: 1px solid var(--hexos-border-subtle);
+  color: var(--hexos-text-secondary);
+  cursor: pointer;
+  border-radius: var(--hexos-radius-full);
+  transition: background-color 0.15s ease, color 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-right: auto;
+}
+
+.hexos-input-composer__attachment-btn:hover {
+  background-color: var(--hexos-bg-secondary);
+  color: var(--hexos-text-primary);
+}
+
+.hexos-input-composer__attachment-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.hexos-input-composer__file-input {
+  display: none;
+}
+
+.hexos-input-composer__textarea {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  color: var(--hexos-text-primary);
+  font-family: inherit;
+  max-height: 8rem;
+  min-height: 5rem;
+  padding: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.hexos-input-composer__textarea::placeholder {
+  color: var(--hexos-text-muted);
+  font-size: 1.0625rem;
+}
+
+.hexos-input-composer__send-btn {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--hexos-radius-full);
+  background-color: var(--hexos-accent);
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s ease;
+  flex-shrink: 0;
+}
+
+.hexos-input-composer__send-btn svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.hexos-input-composer__send-btn:hover:not(:disabled) {
+  background-color: var(--hexos-accent-hover);
+}
+
+.hexos-input-composer__send-btn:disabled {
+  background-color: var(--hexos-text-muted);
+  cursor: not-allowed;
+}
+
+.hexos-input-composer__char-count {
+  text-align: right;
+  font-size: 0.6875rem;
+  color: var(--hexos-text-muted);
+  margin-top: 0.375rem;
+  padding-right: 0.25rem;
+}
+
+/* =================== Quick Replies =================== */
+.hexos-quick-replies {
+  padding: 0 1rem 0.875rem;
+  min-width: 0;
+}
+
+.hexos-quick-replies__title {
+  font-size: 0.75rem;
+  color: var(--hexos-text-muted);
+  margin: 0 0 0.5rem 0;
+  font-weight: 500;
+}
+
+.hexos-quick-replies__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.hexos-quick-replies__item {
+  max-width: 100%;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
+  background-color: var(--hexos-bg-primary);
+  border: 1px solid var(--hexos-border-color);
+  border-radius: var(--hexos-radius-full);
+  color: var(--hexos-text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.hexos-quick-replies__item:hover {
+  border-color: var(--hexos-accent);
+  background-color: var(--hexos-bg-secondary);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+  .hexos-message {
+    max-width: 92%;
+  }
+
+  .hexos-message-list {
+    padding: 0.75rem;
+  }
+
+  .hexos-input-composer {
+    padding: 0.75rem;
+  }
+
+  .hexos-input-composer__container {
+    min-height: 7.5rem;
+    padding: 0.75rem;
+  }
+
+  .hexos-input-composer__textarea {
+    min-height: 4rem;
+    font-size: 1rem;
+  }
+
+  .hexos-input-composer__textarea::placeholder {
+    font-size: 1rem;
+  }
+
+  .hexos-input-composer__send-btn {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .hexos-quick-replies {
+    padding: 0 0.75rem 0.75rem;
+  }
+
+  .hexos-quick-replies__item {
+    font-size: 0.9375rem;
+    padding: 0.45rem 0.875rem;
+  }
+}
+
+/* =================== Streaming Indicator =================== */
+.hexos-streaming-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 1rem;
+}
+
+.hexos-streaming-indicator__text {
+  font-size: 0.75rem;
+  color: var(--hexos-text-muted);
+  margin-left: 0.5rem;
+}
+
+.hexos-streaming-indicator__dots {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.hexos-streaming-indicator__dot {
+  width: 0.375rem;
+  height: 0.375rem;
+  background-color: var(--hexos-text-muted);
+  border-radius: var(--hexos-radius-full);
+  animation: hexos-bounce 1.4s infinite ease-in-out both;
+}
+
+.hexos-streaming-indicator__dot:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.hexos-streaming-indicator__dot:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+@keyframes hexos-bounce {
+  0%, 80%, 100% {
+    transform: scale(0.6);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* =================== Tool Call Renderer =================== */
+.hexos-tool-call {
+  background-color: var(--hexos-bg-secondary);
+  border: 1px solid var(--hexos-border-color);
+  border-radius: var(--hexos-radius-md);
+  padding: 0.75rem;
+  font-size: 0.8125rem;
+  margin: 0.25rem 0;
+}
+
+.hexos-tool-call__header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.hexos-tool-call__name {
+  font-weight: 500;
+  color: var(--hexos-text-primary);
+}
+
+.hexos-tool-call__status {
+  font-size: 0.6875rem;
+  padding: 0.125rem 0.375rem;
+  border-radius: var(--hexos-radius-sm);
+}
+
+.hexos-tool-call__status--pending {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.hexos-tool-call__status--executing {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.hexos-tool-call__status--completed {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.hexos-tool-call__status--failed {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.hexos-tool-call__content {
+  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
+  font-size: 0.75rem;
+  background-color: var(--hexos-bg-primary);
+  padding: 0.5rem;
+  border-radius: var(--hexos-radius-sm);
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* =================== Reasoning Display =================== */
+.hexos-reasoning {
+  border-left: 2px solid var(--hexos-border-color);
+  padding-left: 0.75rem;
+  margin: 0.25rem 0;
+  font-size: 0.8125rem;
+  color: var(--hexos-text-secondary);
+}
+
+.hexos-reasoning__toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: none;
+  border: none;
+  color: var(--hexos-text-muted);
+  cursor: pointer;
+  padding: 0;
+  font-size: 0.75rem;
+  font-family: inherit;
+}
+
+.hexos-reasoning__toggle:hover {
+  color: var(--hexos-text-secondary);
+}
+
+.hexos-reasoning__content {
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+/* Scrollbar is now handled by Radix ScrollArea in MessageList component */

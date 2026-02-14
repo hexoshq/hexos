@@ -1,0 +1,91 @@
+---
+title: "MCPClient"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/mcp/MCPClient.ts" sourceLine="22" packageName="@hexos/runtime" />
+
+MCP client implementation using STDIO transport for process-based communication.
+
+Spawns an MCP server as a child process and communicates via JSON-RPC messages
+over standard input/output streams. Handles the MCP protocol handshake, request/response
+correlation, and protocol-compliant message formatting.
+
+Messages are newline-delimited JSON-RPC 2.0 format. Supports both requests (with ID,
+expecting responses) and notifications (no ID, no response expected).
+
+Implements [IMCPClient](/docs/runtime/mcp/imcpclient#imcpclient) interface and is managed by [MCPManager](/docs/runtime/mcp/mcpmanager#mcpmanager).
+Configuration provided via [MCPStdioServerConfig](/docs/common/mcp/mcpstdio-server-config#mcpstdioserverconfig).
+
+```ts
+class MCPClient extends EventEmitter implements IMCPClient {
+    constructor(serverName: string, config: MCPStdioServerConfig)
+    connect() => Promise<void>;
+    listTools() => Promise<MCPToolInfo[]>;
+    callTool(name: string, args: unknown) => Promise<unknown>;
+    disconnect() => void;
+    isConnected() => boolean;
+}
+```
+* Extends: EventEmitter
+
+
+* Implements: [`IMCPClient`](/docs/runtime/mcp/imcpclient#imcpclient)
+
+
+
+<div className="members-wrapper">
+
+### constructor
+
+<MemberInfo kind="method" type={`(serverName: string, config: <a href='/docs/common/mcp/mcpstdio-server-config#mcpstdioserverconfig'>MCPStdioServerConfig</a>) => MCPClient`} />
+
+Create a new STDIO MCP client instance.
+### connect
+
+<MemberInfo kind="method" type={`() => Promise<void>`} />
+
+Connect to the MCP server by spawning the configured child process.
+
+Spawns the process with the configured command, args, and environment. Sets up
+event listeners for process lifecycle (error, exit) and stdio streams. Performs
+the MCP handshake by sending initialize request followed by initialized notification.
+
+Idempotent - returns immediately if already connected.
+### listTools
+
+<MemberInfo kind="method" type={`() => Promise<<a href='/docs/common/mcp/mcptool-info#mcptoolinfo'>MCPToolInfo</a>[]>`} />
+
+Retrieve all tools available from the MCP server.
+
+Sends a tools/list JSON-RPC request and parses the response to extract tool
+metadata. Returns empty array if no tools are available.
+### callTool
+
+<MemberInfo kind="method" type={`(name: string, args: unknown) => Promise<unknown>`} />
+
+Execute a tool on the MCP server with the provided arguments.
+
+Sends a tools/call request with tool name and arguments. Extracts text content
+from the MCP response (which returns content arrays) and attempts JSON parsing
+if the result looks like JSON.
+### disconnect
+
+<MemberInfo kind="method" type={`() => void`} />
+
+Disconnect from the MCP server and clean up all resources.
+
+Sends SIGTERM to the child process, clears pending request map and input buffer,
+and resets connection state. All pending requests will be rejected implicitly
+when the process exits.
+### isConnected
+
+<MemberInfo kind="method" type={`() => boolean`} />
+
+Check whether the client is currently connected to the MCP server.
+
+
+</div>

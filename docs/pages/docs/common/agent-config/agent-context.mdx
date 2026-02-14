@@ -1,0 +1,48 @@
+---
+title: "AgentContext"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="181" packageName="@hexos/common" />
+
+Context available to agents during conversation execution, including conversation
+metadata and client-provided data.
+
+Passed to dynamic system prompts (when `systemPrompt` is a function) and to
+[RuntimeHooks](/docs/common/agent-config/runtime-hooks#runtimehooks) lifecycle callbacks. The `frontendContext` field contains
+arbitrary data sent by the client with each request.
+
+Related: [AgentDefinition](/docs/common/agent-config/agent-definition#agentdefinition) uses this for dynamic system prompts,
+[ToolContext](/docs/common/tools/tool-context#toolcontext) carries a subset of this context to tools.
+
+```ts
+interface AgentContext {
+    conversationId: string;
+    userId?: string;
+    frontendContext: Record<string, unknown>;
+}
+```
+
+<div className="members-wrapper">
+
+### conversationId
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### userId
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### frontendContext
+
+<MemberInfo kind="property" type={`Record<string, unknown>`} />
+
+
+
+
+</div>

@@ -1,0 +1,59 @@
+---
+title: "HandoffIndicator"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-ui/src/components/HandoffIndicator.tsx" sourceLine="62" packageName="@hexos/react-ui" />
+
+Visual indicator for agent handoff transitions in multi-agent conversations.
+
+Displays a transition when one agent transfers control to another, showing the source agent,
+target agent, and optional handoff reason. Supports two display variants:
+
+- Inline: Compact pill-shaped indicator with agent dots and arrow, suitable for inline placement
+- Card: Expanded card layout with agent avatars, animated arrow, reason quote, and timestamp
+
+Both variants use [getAgentColors](/docs/react-ui/ui-components/get-agent-colors#getagentcolors) for consistent color-coded agent identification.
+The animated arrow and pulse effects provide visual feedback that draws attention to the transition.
+
+Related types: [HandoffEvent](/docs/react-core/state-management/handoff-event#handoffevent) from `@hexos/react-core`
+
+*Example*
+
+Inline variant
+```tsx
+<HandoffIndicator
+fromAgent="main"
+toAgent="code"
+variant="inline"
+animated
+/>
+```
+
+*Example*
+
+Card variant with reason
+```tsx
+<HandoffIndicator
+fromAgent="main"
+fromAgentName="Main Assistant"
+toAgent="code"
+toAgentName="Code Helper"
+reason="User needs help with a coding task"
+timestamp={new Date()}
+variant="card"
+/>
+```
+
+```ts
+function HandoffIndicator(props: HandoffIndicatorProps): React.ReactElement
+```
+Parameters
+
+### props
+
+<MemberInfo kind="parameter" type={`<a href='/docs/react-ui/ui-components/handoff-indicator-props#handoffindicatorprops'>HandoffIndicatorProps</a>`} />
+

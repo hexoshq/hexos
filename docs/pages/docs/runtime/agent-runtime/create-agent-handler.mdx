@@ -1,0 +1,31 @@
+---
+title: "CreateAgentHandler"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/handlers/nextjs.ts" sourceLine="23" packageName="@hexos/runtime" />
+
+Creates a Next.js App Router handler for streaming agent conversations.
+
+Returns an object with a `POST` method compatible with Next.js route handlers. On each request,
+it parses the [RuntimeInput](/docs/common/runtime/runtime-input#runtimeinput) from the request body, initializes MCP servers on first use
+(lazy), and streams [RuntimeEvent](/docs/common/core-types/runtime-event#runtimeevent)s back as Server-Sent Events (SSE).
+
+The stream follows the SSE format: each event is a `data: \{json\}\n\n` line, terminated by
+`data: [DONE]\n\n`. Errors during streaming are emitted as error events before closing.
+
+Related: [AgentRuntime](/docs/runtime/agent-runtime/#agentruntime).stream() produces the events, [SSETransport](/docs/react-core/transport/ssetransport#ssetransport) consumes them
+on the frontend, [createApprovalHandler](/docs/runtime/agent-runtime/create-approval-handler#createapprovalhandler) handles tool approval decisions.
+
+```ts
+function createAgentHandler(runtime: AgentRuntime): void
+```
+Parameters
+
+### runtime
+
+<MemberInfo kind="parameter" type={`<a href='/docs/runtime/agent-runtime/#agentruntime'>AgentRuntime</a>`} />
+

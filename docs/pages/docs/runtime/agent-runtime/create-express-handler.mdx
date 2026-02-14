@@ -1,0 +1,28 @@
+---
+title: "CreateExpressHandler"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/handlers/nextjs.ts" sourceLine="178" packageName="@hexos/runtime" />
+
+Creates an Express/Fastify-compatible middleware handler for streaming agent conversations.
+
+Sets SSE response headers and streams [RuntimeEvent](/docs/common/core-types/runtime-event#runtimeevent)s as `data: \{json\}\n\n` lines.
+Initializes MCP servers on first request. Compatible with any framework that provides
+`req.body`, `res.setHeader()`, `res.write()`, and `res.end()`.
+
+Related: [createAgentHandler](/docs/runtime/agent-runtime/create-agent-handler#createagenthandler) is the Next.js equivalent,
+[AgentRuntime](/docs/runtime/agent-runtime/#agentruntime).stream() produces the events.
+
+```ts
+function createExpressHandler(runtime: AgentRuntime): void
+```
+Parameters
+
+### runtime
+
+<MemberInfo kind="parameter" type={`<a href='/docs/runtime/agent-runtime/#agentruntime'>AgentRuntime</a>`} />
+

@@ -1,0 +1,46 @@
+---
+title: "MCPServerConfigBase"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="384" packageName="@hexos/common" />
+
+Base configuration shared by all MCP server transport types.
+
+Provides common settings for lazy initialization, debug logging, and request timeouts.
+Lazy servers are not connected at runtime startup — they initialize on first use,
+reducing startup time when some MCP servers are rarely needed.
+
+Related: [MCPStdioServerConfig](/docs/common/mcp/mcpstdio-server-config#mcpstdioserverconfig) and [MCPSSEServerConfig](/docs/common/mcp/mcpsseserver-config#mcpsseserverconfig) extend this base.
+
+```ts
+interface MCPServerConfigBase {
+    lazy?: boolean;
+    debug?: boolean;
+    requestTimeoutMs?: number;
+}
+```
+
+<div className="members-wrapper">
+
+### lazy
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### debug
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### requestTimeoutMs
+
+<MemberInfo kind="property" type={`number`} />
+
+
+
+
+</div>

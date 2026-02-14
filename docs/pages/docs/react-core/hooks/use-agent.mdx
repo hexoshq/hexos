@@ -1,0 +1,37 @@
+---
+title: "UseAgent"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-core/src/hooks/useAgent.ts" sourceLine="96" packageName="@hexos/react-core" />
+
+Primary hook for agent interaction — manages transport, streaming, and state.
+
+Initializes an [SSETransport](/docs/react-core/transport/ssetransport#ssetransport) on mount, subscribes to [TransportEvent](/docs/react-core/transport/transport-event#transportevent)s,
+and translates them into Jotai atom updates. Handles the complete message lifecycle:
+
+1. User sends a message via `sendMessage()` — added optimistically to [messagesAtom](/docs/react-core/state-management/messages-atom#messagesatom)
+2. Transport streams the response — `text-delta` events accumulate in [streamingMessageAtom](/docs/react-core/state-management/streaming-message-atom#streamingmessageatom)
+3. Tool calls are tracked locally — `tool-call-start/args/result/error` update internal trackers
+4. Frontend tools are detected and executed locally via [frontendToolsAtom](/docs/react-core/state-management/frontend-tools-atom#frontendtoolsatom)
+5. Approval requests create entries in [pendingToolCallsAtom](/docs/react-core/state-management/pending-tool-calls-atom#pendingtoolcallsatom)
+6. Agent handoffs update [activeAgentAtom](/docs/react-core/state-management/active-agent-atom#activeagentatom) and [handoffHistoryAtom](/docs/react-core/state-management/handoff-history-atom#handoffhistoryatom)
+7. On `text-complete`, the finalized message with all parts is added to [messagesAtom](/docs/react-core/state-management/messages-atom#messagesatom)
+
+Also provides `stop()`, `reset()`, `regenerate()`, and `editMessage()` controls.
+
+Related: [AgentConfig](/docs/react-core/transport/agent-config#agentconfig) configures the connection, [AgentProvider](/docs/react-core/hooks/agent-provider#agentprovider) provides
+the Jotai scope, [ChatWindow](/docs/react-ui/ui-components/chat-window#chatwindow) typically consumes this hook's return value.
+
+```ts
+function useAgent(config: AgentConfig): UseAgentReturn
+```
+Parameters
+
+### config
+
+<MemberInfo kind="parameter" type={`<a href='/docs/react-core/transport/agent-config#agentconfig'>AgentConfig</a>`} />
+

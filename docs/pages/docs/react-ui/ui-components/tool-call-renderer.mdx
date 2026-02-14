@@ -1,0 +1,51 @@
+---
+title: "ToolCallRenderer"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-ui/src/components/ToolCallRenderer.tsx" sourceLine="72" packageName="@hexos/react-ui" />
+
+Renders tool call execution with arguments, state, and results.
+
+Provides two rendering modes based on display configuration:
+- Full mode: Shows tool name, state badge, JSON arguments, and results in expandable sections
+- Minimal mode: Shows only tool name with subtle activity indicator for active executions
+- Hidden mode: Returns null when both name and indicator are disabled
+
+Supports custom renderers via the `renderers` prop, which maps tool names to React components.
+Custom renderers receive [ToolCallRenderProps](/docs/react-ui/ui-components/tool-call-render-props#toolcallrenderprops) including display options for white-label customization.
+
+The component respects display configuration from [useDisplayConfig](/docs/react-ui/ui-theme/use-display-config#usedisplayconfig), allowing fine-grained
+control over which elements are visible (name, state, arguments, result, activity indicator).
+
+State visualization uses color-coded badges: pending (yellow), executing (blue), awaiting-approval (orange),
+completed (green), failed (red).
+
+Related types: [ToolCallState](/docs/react-core/core-types/tool-call-state#toolcallstate), display config
+
+*Example*
+
+```tsx
+<ToolCallRenderer
+  toolName="web_search"
+  args={{ query: "weather" }}
+  result={{ temperature: 72 }}
+  state="completed"
+  renderers={{
+    web_search: CustomSearchRenderer
+  }}
+/>
+```
+
+```ts
+function ToolCallRenderer(props: ToolCallRendererProps): React.ReactElement | null
+```
+Parameters
+
+### props
+
+<MemberInfo kind="parameter" type={`<a href='/docs/react-ui/ui-components/tool-call-renderer-props#toolcallrendererprops'>ToolCallRendererProps</a>`} />
+

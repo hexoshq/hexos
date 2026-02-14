@@ -1,0 +1,15 @@
+---
+title: "HandoffInputSchema"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/tools/handoff.ts" sourceLine="19" packageName="@hexos/runtime" />
+
+Zod schema for handoff tool input validation.
+
+Requires a `reason` string explaining why the conversation is being transferred,
+and an optional `context` string with additional information for the target agent.
+Used by tools generated via [generateHandoffTools](/docs/runtime/tools/generate-handoff-tools#generatehandofftools).
+

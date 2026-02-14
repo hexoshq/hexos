@@ -1,0 +1,40 @@
+---
+title: "ToolApprovalContainerProps"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-ui/src/components/ToolApprovalContainer.tsx" sourceLine="12" packageName="@hexos/react-ui" />
+
+Props for the [ToolApprovalContainer](/docs/react-ui/ui-components/tool-approval-container#toolapprovalcontainer) component.
+
+```ts
+interface ToolApprovalContainerProps {
+    className?: string;
+    renderDialog?: (props: {
+    request: Parameters<typeof ToolApprovalDialog>[0]['request'];
+    onApprove: () => void;
+    onReject: (reason?: string) => void;
+    isSubmitting: boolean;
+    error: Error | null;
+  }) => React.ReactNode;
+}
+```
+
+<div className="members-wrapper">
+
+### className
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### renderDialog
+
+<MemberInfo kind="property" type={`(props: {     request: Parameters<typeof <a href='/docs/react-ui/ui-components/tool-approval-dialog#toolapprovaldialog'>ToolApprovalDialog</a>>[0]['request'];     onApprove: () => void;     onReject: (reason?: string) => void;     isSubmitting: boolean;     error: Error | null;   }) => React.ReactNode`} />
+
+
+
+
+</div>

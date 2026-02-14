@@ -1,0 +1,109 @@
+---
+title: "UseAgentReturn"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-core/src/hooks/useAgent.ts" sourceLine="51" packageName="@hexos/react-core" />
+
+Return type of the [useAgent](/docs/react-core/hooks/use-agent#useagent) hook, providing full agent interaction controls and state.
+
+Exposes the message history (including the live streaming message), send/edit/regenerate
+functions, streaming state, active agent info, handoff history, and pending tool approvals.
+
+```ts
+interface UseAgentReturn {
+    messages: AgentMessage[];
+    sendMessage: (content: string, attachments?: Attachment[]) => Promise<void>;
+    isStreaming: boolean;
+    activeAgent: string | null;
+    error: Error | null;
+    clearError: () => void;
+    reset: () => void;
+    stop: () => void;
+    regenerate: () => Promise<void>;
+    editMessage: (messageId: string, newContent: string) => Promise<void>;
+    conversationId: string | null;
+    handoffHistory: HandoffEvent[];
+    lastHandoff: HandoffEvent | null;
+    pendingApprovals: ToolApprovalRequest[];
+}
+```
+
+<div className="members-wrapper">
+
+### messages
+
+<MemberInfo kind="property" type={`<a href='/docs/react-core/core-types/agent-message#agentmessage'>AgentMessage</a>[]`} />
+
+
+### sendMessage
+
+<MemberInfo kind="property" type={`(content: string, attachments?: <a href='/docs/react-core/core-types/attachment#attachment'>Attachment</a>[]) => Promise<void>`} />
+
+
+### isStreaming
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### activeAgent
+
+<MemberInfo kind="property" type={`string | null`} />
+
+
+### error
+
+<MemberInfo kind="property" type={`Error | null`} />
+
+
+### clearError
+
+<MemberInfo kind="property" type={`() => void`} />
+
+
+### reset
+
+<MemberInfo kind="property" type={`() => void`} />
+
+
+### stop
+
+<MemberInfo kind="property" type={`() => void`} />
+
+
+### regenerate
+
+<MemberInfo kind="property" type={`() => Promise<void>`} />
+
+
+### editMessage
+
+<MemberInfo kind="property" type={`(messageId: string, newContent: string) => Promise<void>`} />
+
+
+### conversationId
+
+<MemberInfo kind="property" type={`string | null`} />
+
+
+### handoffHistory
+
+<MemberInfo kind="property" type={`<a href='/docs/react-core/state-management/handoff-event#handoffevent'>HandoffEvent</a>[]`} />
+
+
+### lastHandoff
+
+<MemberInfo kind="property" type={`<a href='/docs/react-core/state-management/handoff-event#handoffevent'>HandoffEvent</a> | null`} />
+
+
+### pendingApprovals
+
+<MemberInfo kind="property" type={`<a href='/docs/react-core/tools/tool-approval-request#toolapprovalrequest'>ToolApprovalRequest</a>[]`} />
+
+
+
+
+</div>

@@ -1,0 +1,36 @@
+---
+title: "Summate"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/shared-utils.ts" sourceLine="132" packageName="@hexos/common" />
+
+Sums a numeric property across an array of objects in a type-safe manner.
+
+Only accepts properties that are of type `number`, enforced at the type level via
+the `OnlyNumerics` mapped type. Handles null and undefined arrays gracefully by
+treating them as empty.
+
+*Example*
+
+```typescript
+const orders = [{ total: 10 }, { total: 25 }, { total: 5 }];
+summate(orders, 'total'); // => 40
+```
+
+```ts
+function summate<T extends OnlyNumerics<T>>(items: T[] | undefined | null, prop: keyof OnlyNumerics<T>): number
+```
+Parameters
+
+### items
+
+<MemberInfo kind="parameter" type={`T[] | undefined | null`} />
+
+### prop
+
+<MemberInfo kind="parameter" type={`keyof OnlyNumerics<T>`} />
+

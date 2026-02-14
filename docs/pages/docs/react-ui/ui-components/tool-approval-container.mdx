@@ -1,0 +1,64 @@
+---
+title: "ToolApprovalContainer"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-ui/src/components/ToolApprovalContainer.tsx" sourceLine="70" packageName="@hexos/react-ui" />
+
+Container component that automatically displays pending tool approval dialogs.
+
+Integrates with the [useToolApproval](/docs/react-core/hooks/use-tool-approval#usetoolapproval) hook from `@hexos/react-core` to monitor pending
+approval requests and render approval dialogs. Only shows one approval at a time, queuing
+additional requests until the current one is resolved.
+
+The component handles the complete approval workflow: rendering the dialog, submitting the
+user's decision (approve/reject), and managing loading and error states.
+
+Custom dialog rendering is supported via the `renderDialog` prop for white-label customization
+while preserving the approval state management.
+
+Related components: [useToolApproval](/docs/react-core/hooks/use-tool-approval#usetoolapproval), [ToolApprovalDialog](/docs/react-ui/ui-components/tool-approval-dialog#toolapprovaldialog)
+
+*Example*
+
+Basic usage
+```tsx
+function App() {
+return (
+<AgentUIProvider>
+<ChatWindow config={config} />
+<ToolApprovalContainer />
+</AgentUIProvider>
+);
+}
+```
+
+*Example*
+
+Custom dialog rendering
+```tsx
+<ToolApprovalContainer
+renderDialog={({ request, onApprove, onReject, isSubmitting }) => (
+<MyCustomDialog
+toolName={request.toolName}
+args={request.args}
+onApprove={onApprove}
+onReject={onReject}
+loading={isSubmitting}
+/>
+)}
+/>
+```
+
+```ts
+function ToolApprovalContainer(props: ToolApprovalContainerProps): React.ReactElement | null
+```
+Parameters
+
+### props
+
+<MemberInfo kind="parameter" type={`<a href='/docs/react-ui/ui-components/tool-approval-container-props#toolapprovalcontainerprops'>ToolApprovalContainerProps</a>`} />
+

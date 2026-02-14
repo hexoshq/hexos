@@ -1,0 +1,54 @@
+---
+title: "Attachment"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-core/src/types.ts" sourceLine="336" packageName="@hexos/react-core" />
+
+File or image attachment associated with a message.
+
+Supports file and image types with either a URL reference or base64-encoded data.
+
+```ts
+interface Attachment {
+    type: 'file' | 'image';
+    name: string;
+    url?: string;
+    data?: string;
+    mimeType?: string;
+}
+```
+
+<div className="members-wrapper">
+
+### type
+
+<MemberInfo kind="property" type={`'file' | 'image'`} />
+
+
+### name
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### url
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### data
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### mimeType
+
+<MemberInfo kind="property" type={`string`} />
+
+
+
+
+</div>

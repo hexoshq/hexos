@@ -1,0 +1,44 @@
+---
+title: "GenerateAllCombinations"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/shared-utils.ts" sourceLine="161" packageName="@hexos/common" />
+
+Computes the Cartesian product of multiple option groups, returning all possible combinations.
+
+Takes an array of arrays (option groups) and produces every combination by selecting one
+element from each group. Empty groups are filtered out before processing. Uses recursive
+accumulation to build combinations.
+
+*Example*
+
+```typescript
+generateAllCombinations([['red', 'blue'], ['small', 'large']]);
+// => [['red', 'small'], ['red', 'large'], ['blue', 'small'], ['blue', 'large']]
+```
+
+```ts
+function generateAllCombinations<T>(optionGroups: T[][], combination: T[] = [], k: number = 0, output: T[][] = []): T[][]
+```
+Parameters
+
+### optionGroups
+
+<MemberInfo kind="parameter" type={`T[][]`} />
+
+### combination
+
+<MemberInfo kind="parameter" type={`T[]`} />
+
+### k
+
+<MemberInfo kind="parameter" type={`number`} />
+
+### output
+
+<MemberInfo kind="parameter" type={`T[][]`} />
+

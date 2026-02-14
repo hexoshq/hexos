@@ -1,0 +1,25 @@
+---
+title: "LLMProvider"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="22" packageName="@hexos/common" />
+
+Enumerates the supported LLM provider backends.
+
+Used in [ModelConfig](/docs/common/agent-config/model-config#modelconfig) to select which provider handles LLM calls.
+Each provider has a corresponding client factory and streaming implementation
+in the `@hexos/runtime` package.
+
+```ts
+enum LLMProvider {
+    OpenAI = 'openai'
+    Anthropic = 'anthropic'
+    Ollama = 'ollama'
+    Google = 'google'
+    Azure = 'azure'
+}
+```

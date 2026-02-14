@@ -1,0 +1,18 @@
+---
+title: "CreateOllamaClient"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/providers/ollama/client.ts" sourceLine="18" packageName="@hexos/runtime" />
+
+Creates an Ollama client instance for local LLM inference.
+
+Initializes the Ollama SDK client with a configurable host endpoint. Defaults to
+localhost:11434 but can be overridden via the OLLAMA_HOST environment variable to
+connect to remote Ollama instances.
+
+```ts
+function createOllamaClient(): Ollama
+```

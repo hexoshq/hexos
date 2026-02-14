@@ -1,0 +1,41 @@
+---
+title: "TimeoutError"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/utils/timeout.ts" sourceLine="11" packageName="@hexos/runtime" />
+
+Error thrown when an async operation exceeds its allowed time limit.
+
+Contains a `code` field for programmatic error handling (e.g., `'TOOL_TIMEOUT'`,
+`'APPROVAL_TIMEOUT'`, `'MCP_TIMEOUT'`). Used by [withTimeout](/docs/runtime/infrastructure/with-timeout#withtimeout) and checked by
+[AgentRuntime](/docs/runtime/agent-runtime/#agentruntime) to emit appropriate error events.
+
+```ts
+class TimeoutError extends Error {
+    readonly code: string;
+    constructor(message: string, code:  = 'TIMEOUT')
+}
+```
+* Extends: Error
+
+
+
+<div className="members-wrapper">
+
+### code
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### constructor
+
+<MemberInfo kind="method" type={`(message: string, code:  = 'TIMEOUT') => TimeoutError`} />
+
+
+
+
+</div>

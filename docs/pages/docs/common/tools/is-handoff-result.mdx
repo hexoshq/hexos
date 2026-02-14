@@ -1,0 +1,24 @@
+---
+title: "IsHandoffResult"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="754" packageName="@hexos/common" />
+
+Type guard that checks whether a tool execution result is a [HandoffResult](/docs/common/tools/handoff-result#handoffresult) signal.
+
+Used by [AgentRuntime](/docs/runtime/agent-runtime/#agentruntime) after each tool execution to detect agent handoff requests.
+Checks for the `__handoff: true` marker property.
+
+```ts
+function isHandoffResult(result: unknown): result is HandoffResult
+```
+Parameters
+
+### result
+
+<MemberInfo kind="parameter" type={`unknown`} />
+

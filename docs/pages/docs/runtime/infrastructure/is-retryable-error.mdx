@@ -1,0 +1,29 @@
+---
+title: "IsRetryableError"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/utils/retry.ts" sourceLine="87" packageName="@hexos/runtime" />
+
+Determines whether an error is transient and safe to retry.
+
+Classifies errors as retryable based on three criteria:
+1. HTTP status codes: 408 (timeout), 429 (rate limit), 5xx (server errors)
+2. Network error codes: ECONNRESET, ETIMEDOUT, ECONNREFUSED, etc.
+3. Error message keywords: "timeout", "rate limit", "temporarily unavailable", "network"
+
+Used as the default predicate for [retryWithBackoff](/docs/runtime/infrastructure/retry-with-backoff#retrywithbackoff) when no custom
+`shouldRetry` function is provided.
+
+```ts
+function isRetryableError(error: unknown): boolean
+```
+Parameters
+
+### error
+
+<MemberInfo kind="parameter" type={`unknown`} />
+

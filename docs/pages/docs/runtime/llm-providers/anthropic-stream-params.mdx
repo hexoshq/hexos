@@ -1,0 +1,74 @@
+---
+title: "AnthropicStreamParams"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/providers/anthropic/stream.ts" sourceLine="20" packageName="@hexos/runtime" />
+
+Parameters for the Anthropic streaming function.
+
+Contains all necessary inputs for streaming with the Anthropic Messages API,
+including client instance, user input, agent configuration, converted tools,
+and runtime dependencies for tool execution and approval flows.
+
+```ts
+interface AnthropicStreamParams {
+    client: Anthropic;
+    input: RuntimeInput;
+    agent: AgentDefinition;
+    messageId: string;
+    currentAgentId: string;
+    tools?: Anthropic.Tool[];
+    dependencies: ProviderDependencies;
+    maxIterationsExceededCode: string;
+}
+```
+
+<div className="members-wrapper">
+
+### client
+
+<MemberInfo kind="property" type={`Anthropic`} />
+
+
+### input
+
+<MemberInfo kind="property" type={`<a href='/docs/common/runtime/runtime-input#runtimeinput'>RuntimeInput</a>`} />
+
+
+### agent
+
+<MemberInfo kind="property" type={`<a href='/docs/common/agent-config/agent-definition#agentdefinition'>AgentDefinition</a>`} />
+
+
+### messageId
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### currentAgentId
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### tools
+
+<MemberInfo kind="property" type={`Anthropic.Tool[]`} />
+
+
+### dependencies
+
+<MemberInfo kind="property" type={`<a href='/docs/runtime/llm-providers/provider-dependencies#providerdependencies'>ProviderDependencies</a>`} />
+
+
+### maxIterationsExceededCode
+
+<MemberInfo kind="property" type={`string`} />
+
+
+
+
+</div>

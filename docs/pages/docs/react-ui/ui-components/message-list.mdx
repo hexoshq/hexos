@@ -1,0 +1,45 @@
+---
+title: "MessageList"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-ui/src/components/MessageList.tsx" sourceLine="63" packageName="@hexos/react-ui" />
+
+Scrollable message list component with auto-scroll and handoff display.
+
+Renders a chronological list of agent messages using Radix ScrollArea for cross-browser custom scrollbars.
+Automatically scrolls to the bottom when new messages arrive or during streaming.
+
+Supports interspersed [HandoffIndicator](/docs/react-ui/ui-components/handoff-indicator#handoffindicator) components between messages to visualize agent transitions.
+Handoffs are positioned based on their timestamp relative to message timestamps.
+
+The component tracks which handoffs have been rendered to prevent duplicates, showing each handoff
+before the first message from the target agent that occurs after the handoff timestamp.
+
+Related components: [MessageBubble](/docs/react-ui/ui-components/message-bubble#messagebubble), [HandoffIndicator](/docs/react-ui/ui-components/handoff-indicator#handoffindicator)
+
+*Example*
+
+```tsx
+<MessageList
+  messages={messages}
+  isStreaming={isStreaming}
+  handoffs={handoffHistory}
+  showHandoffs
+  handoffVariant="card"
+  autoScroll
+/>
+```
+
+```ts
+function MessageList(props: MessageListProps): React.ReactElement
+```
+Parameters
+
+### props
+
+<MemberInfo kind="parameter" type={`<a href='/docs/react-ui/ui-components/message-list-props#messagelistprops'>MessageListProps</a>`} />
+

@@ -1,0 +1,23 @@
+---
+title: "AnthropicModel"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="55" packageName="@hexos/common" />
+
+Available Anthropic model identifiers for use with `LLMProvider.Anthropic`.
+
+These values map directly to the Anthropic API `model` parameter.
+
+```ts
+enum AnthropicModel {
+    Claude4Sonnet = 'claude-sonnet-4-20250514'
+    Claude37Sonnet = 'claude-3-7-sonnet-20250219'
+    Claude3Opus = 'claude-3-opus-20240229'
+    Claude3Sonnet = 'claude-3-sonnet-20240229'
+    Claude3Haiku = 'claude-3-haiku-20240307'
+}
+```

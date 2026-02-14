@@ -1,0 +1,18 @@
+---
+title: "MessageRole"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="229" packageName="@hexos/common" />
+
+Discriminator for message authorship in a conversation.
+
+Used by [AgentMessage](/docs/react-core/core-types/agent-message#agentmessage) to identify who produced a message:
+`user` for human input, `assistant` for LLM responses, `system` for
+system prompts, and `tool` for tool execution results.
+
+```ts
+type MessageRole = 'user' | 'assistant' | 'system' | 'tool'
+```

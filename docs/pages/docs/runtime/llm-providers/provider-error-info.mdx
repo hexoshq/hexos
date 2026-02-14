@@ -1,0 +1,37 @@
+---
+title: "ProviderErrorInfo"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/providers/shared/types.ts" sourceLine="27" packageName="@hexos/runtime" />
+
+Provider error information containing message and optional code.
+
+Standardized error structure used across all LLM providers to return
+consistent error information to the runtime.
+
+```ts
+interface ProviderErrorInfo {
+    message: string;
+    code?: string;
+}
+```
+
+<div className="members-wrapper">
+
+### message
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### code
+
+<MemberInfo kind="property" type={`string`} />
+
+
+
+
+</div>

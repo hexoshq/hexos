@@ -1,0 +1,83 @@
+---
+title: "ProviderDependencies"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/providers/shared/types.ts" sourceLine="69" packageName="@hexos/runtime" />
+
+Runtime dependencies injected into LLM provider streaming functions.
+
+Contains all necessary runtime operations that providers delegate to the
+parent AgentRuntime, including infrastructure retry logic, approval flows,
+tool execution guards, and context building. This interface decouples
+provider implementations from runtime internals.
+
+All methods are synchronous or async as needed. Approval flow methods
+(requiresApproval, waitForApproval) enable human-in-the-loop patterns.
+
+```ts
+interface ProviderDependencies {
+    hooks?: ProviderHooks;
+    withInfrastructureRetry<T>(operation: () => Promise<T>): Promise<T>;
+    buildToolContext(input: RuntimeInput, agentId: string): ToolContext;
+    requiresApproval(toolDef: ToolDefinition, toolContext: ToolContext): boolean;
+    waitForApproval(
+    conversationId: string,
+    toolCallId: string,
+    toolName: string,
+    toolDef: ToolDefinition,
+    args: unknown,
+    agentId: string
+  ): Promise<ProviderApprovalDecision>;
+    executeToolWithGuards(
+    toolDef: ToolDefinition,
+    toolInput: unknown,
+    toolContext: ToolContext
+  ): Promise<unknown>;
+    getErrorInfo(error: unknown, fallbackCode?: string): ProviderErrorInfo;
+}
+```
+
+<div className="members-wrapper">
+
+### hooks
+
+<MemberInfo kind="property" type={`<a href='/docs/runtime/llm-providers/provider-hooks#providerhooks'>ProviderHooks</a>`} />
+
+
+### withInfrastructureRetry
+
+<MemberInfo kind="method" type={`(operation: () => Promise<T>) => Promise<T>`} />
+
+
+### buildToolContext
+
+<MemberInfo kind="method" type={`(input: <a href='/docs/common/runtime/runtime-input#runtimeinput'>RuntimeInput</a>, agentId: string) => <a href='/docs/common/tools/tool-context#toolcontext'>ToolContext</a>`} />
+
+
+### requiresApproval
+
+<MemberInfo kind="method" type={`(toolDef: <a href='/docs/common/tools/tool-definition#tooldefinition'>ToolDefinition</a>, toolContext: <a href='/docs/common/tools/tool-context#toolcontext'>ToolContext</a>) => boolean`} />
+
+
+### waitForApproval
+
+<MemberInfo kind="method" type={`(conversationId: string, toolCallId: string, toolName: string, toolDef: <a href='/docs/common/tools/tool-definition#tooldefinition'>ToolDefinition</a>, args: unknown, agentId: string) => Promise<<a href='/docs/runtime/llm-providers/provider-approval-decision#providerapprovaldecision'>ProviderApprovalDecision</a>>`} />
+
+
+### executeToolWithGuards
+
+<MemberInfo kind="method" type={`(toolDef: <a href='/docs/common/tools/tool-definition#tooldefinition'>ToolDefinition</a>, toolInput: unknown, toolContext: <a href='/docs/common/tools/tool-context#toolcontext'>ToolContext</a>) => Promise<unknown>`} />
+
+
+### getErrorInfo
+
+<MemberInfo kind="method" type={`(error: unknown, fallbackCode?: string) => <a href='/docs/runtime/llm-providers/provider-error-info#providererrorinfo'>ProviderErrorInfo</a>`} />
+
+
+
+
+</div>

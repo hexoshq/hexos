@@ -1,0 +1,43 @@
+---
+title: "MCPToolWithServer"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/mcp/MCPManager.ts" sourceLine="42" packageName="@hexos/runtime" />
+
+Extended tool information that includes server identification and name mapping.
+
+Extends the base MCPToolInfo with serverName (which server provides this tool) and
+originalName (the tool's name as defined by the MCP server before sanitization).
+The name field contains the sanitized version used when registering with LLM providers.
+
+Used by [MCPManager](/docs/runtime/mcp/mcpmanager#mcpmanager) when aggregating tools across multiple servers.
+
+```ts
+interface MCPToolWithServer extends MCPToolInfo {
+    serverName: string;
+    originalName: string;
+}
+```
+* Extends: [`MCPToolInfo`](/docs/common/mcp/mcptool-info#mcptoolinfo)
+
+
+
+<div className="members-wrapper">
+
+### serverName
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### originalName
+
+<MemberInfo kind="property" type={`string`} />
+
+
+
+
+</div>

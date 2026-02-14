@@ -1,0 +1,64 @@
+---
+title: "RuntimeHooks"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="350" packageName="@hexos/common" />
+
+Lifecycle callbacks invoked at key points during agent execution.
+
+Hooks enable observability and side effects without modifying core runtime behavior.
+All hooks are optional and can be synchronous or async. They are called by
+[AgentRuntime](/docs/runtime/agent-runtime/#agentruntime) during conversation streaming.
+
+Related: [RuntimeConfig](/docs/common/agent-config/runtime-config#runtimeconfig) registers hooks, [AgentContext](/docs/common/agent-config/agent-context#agentcontext) is passed to agent hooks.
+
+```ts
+interface RuntimeHooks {
+    onAgentStart?: (agentId: string, context: AgentContext) => void | Promise<void>;
+    onAgentEnd?: (agentId: string, context: AgentContext) => void | Promise<void>;
+    onToolCall?: (toolName: string, args: unknown) => void | Promise<void>;
+    onToolResult?: (toolName: string, result: unknown) => void | Promise<void>;
+    onHandoff?: (from: string, to: string, reason: string) => void | Promise<void>;
+    onError?: (error: Error, context: AgentContext) => void | Promise<void>;
+}
+```
+
+<div className="members-wrapper">
+
+### onAgentStart
+
+<MemberInfo kind="property" type={`(agentId: string, context: <a href='/docs/common/agent-config/agent-context#agentcontext'>AgentContext</a>) => void | Promise<void>`} />
+
+
+### onAgentEnd
+
+<MemberInfo kind="property" type={`(agentId: string, context: <a href='/docs/common/agent-config/agent-context#agentcontext'>AgentContext</a>) => void | Promise<void>`} />
+
+
+### onToolCall
+
+<MemberInfo kind="property" type={`(toolName: string, args: unknown) => void | Promise<void>`} />
+
+
+### onToolResult
+
+<MemberInfo kind="property" type={`(toolName: string, result: unknown) => void | Promise<void>`} />
+
+
+### onHandoff
+
+<MemberInfo kind="property" type={`(from: string, to: string, reason: string) => void | Promise<void>`} />
+
+
+### onError
+
+<MemberInfo kind="property" type={`(error: Error, context: <a href='/docs/common/agent-config/agent-context#agentcontext'>AgentContext</a>) => void | Promise<void>`} />
+
+
+
+
+</div>

@@ -1,0 +1,127 @@
+---
+title: "ChatWindowProps"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-ui/src/components/ChatWindow.tsx" sourceLine="15" packageName="@hexos/react-ui" />
+
+Props for the [ChatWindow](/docs/react-ui/ui-components/chat-window#chatwindow) component.
+
+```ts
+interface ChatWindowProps {
+    config?: AgentConfig;
+    className?: string;
+    header?: React.ReactNode;
+    emptyState?: React.ReactNode;
+    renderMessage?: (message: AgentMessage, index: number, isStreaming: boolean) => React.ReactNode;
+    showReasoning?: boolean;
+    renderInput?: (props: {
+    onSubmit: (content: string) => void;
+    disabled: boolean;
+  }) => React.ReactNode;
+    showAgentBadges?: boolean;
+    enableMessageActions?: boolean;
+    variant?: 'default' | 'floating' | 'fullscreen' | 'sidebar';
+    placeholder?: string;
+    showHandoffs?: boolean;
+    handoffVariant?: 'inline' | 'card';
+    showAgentStatus?: boolean;
+    agents?: AgentInfo[];
+    suggestions?: string[];
+    suggestionsTitle?: string;
+}
+```
+
+<div className="members-wrapper">
+
+### config
+
+<MemberInfo kind="property" type={`<a href='/docs/react-core/transport/agent-config#agentconfig'>AgentConfig</a>`} />
+
+
+### className
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### header
+
+<MemberInfo kind="property" type={`React.ReactNode`} />
+
+
+### emptyState
+
+<MemberInfo kind="property" type={`React.ReactNode`} />
+
+
+### renderMessage
+
+<MemberInfo kind="property" type={`(message: <a href='/docs/react-core/core-types/agent-message#agentmessage'>AgentMessage</a>, index: number, isStreaming: boolean) => React.ReactNode`} />
+
+
+### showReasoning
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### renderInput
+
+<MemberInfo kind="property" type={`(props: {     onSubmit: (content: string) => void;     disabled: boolean;   }) => React.ReactNode`} />
+
+
+### showAgentBadges
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### enableMessageActions
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### variant
+
+<MemberInfo kind="property" type={`'default' | 'floating' | 'fullscreen' | 'sidebar'`} />
+
+
+### placeholder
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### showHandoffs
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### handoffVariant
+
+<MemberInfo kind="property" type={`'inline' | 'card'`} />
+
+
+### showAgentStatus
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### agents
+
+<MemberInfo kind="property" type={`<a href='/docs/react-ui/ui-components/agent-info#agentinfo'>AgentInfo</a>[]`} />
+
+
+### suggestions
+
+<MemberInfo kind="property" type={`string[]`} />
+
+
+### suggestionsTitle
+
+<MemberInfo kind="property" type={`string`} />
+
+
+
+
+</div>

@@ -1,0 +1,33 @@
+---
+title: "StreamingIndicator"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-ui/src/components/StreamingIndicator.tsx" sourceLine="31" packageName="@hexos/react-ui" />
+
+Animated typing indicator shown during agent response streaming.
+
+Displays a three-dot animation with optional agent name label to provide visual feedback
+that the agent is actively generating a response.
+
+The animation is CSS-based and automatically loops. The label text adjusts based on whether
+an agent name is provided: "\{agentName\} is typing..." or simply "Typing...".
+
+*Example*
+
+```tsx
+{isStreaming && <StreamingIndicator agentName={activeAgent} />}
+```
+
+```ts
+function StreamingIndicator(props: StreamingIndicatorProps): React.ReactElement
+```
+Parameters
+
+### props
+
+<MemberInfo kind="parameter" type={`<a href='/docs/react-ui/ui-components/streaming-indicator-props#streamingindicatorprops'>StreamingIndicatorProps</a>`} />
+

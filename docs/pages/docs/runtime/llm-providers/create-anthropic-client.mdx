@@ -1,0 +1,18 @@
+---
+title: "CreateAnthropicClient"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/providers/anthropic/client.ts" sourceLine="17" packageName="@hexos/runtime" />
+
+Creates an authenticated Anthropic SDK client instance.
+
+Initializes the Anthropic client using the ANTHROPIC_API_KEY environment
+variable. This factory function is used by the runtime to create provider
+instances for Anthropic-based agents.
+
+```ts
+function createAnthropicClient(): Anthropic
+```

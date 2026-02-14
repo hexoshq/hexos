@@ -1,0 +1,52 @@
+---
+title: "RateLimitResult"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/utils/rateLimiter.ts" sourceLine="13" packageName="@hexos/runtime" />
+
+Result of a rate limit check, indicating whether the request is allowed.
+
+When `allowed` is false, `retryAfterMs` indicates how long the caller should wait
+before retrying. The `remaining` field shows how many requests are still available
+in the current window.
+
+Related: [SlidingWindowRateLimiter](/docs/runtime/infrastructure/sliding-window-rate-limiter#slidingwindowratelimiter) produces this result.
+
+```ts
+interface RateLimitResult {
+    allowed: boolean;
+    retryAfterMs: number;
+    remaining: number;
+    limit: number;
+}
+```
+
+<div className="members-wrapper">
+
+### allowed
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### retryAfterMs
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### remaining
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### limit
+
+<MemberInfo kind="property" type={`number`} />
+
+
+
+
+</div>

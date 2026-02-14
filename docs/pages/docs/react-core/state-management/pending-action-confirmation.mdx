@@ -1,0 +1,58 @@
+---
+title: "PendingActionConfirmation"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-core/src/types.ts" sourceLine="236" packageName="@hexos/react-core" />
+
+Represents a pending action confirmation waiting for user decision.
+
+Created when an action with `confirmationMessage` is triggered. The `resolve`
+function is called with the user's decision (true to confirm, false to cancel).
+
+Related: [ActionConfirmDialog](/docs/react-ui/ui-components/action-confirm-dialog#actionconfirmdialog) renders the confirmation UI,
+[pendingActionConfirmationsAtom](/docs/react-core/state-management/pending-action-confirmations-atom#pendingactionconfirmationsatom) stores these entries.
+
+```ts
+interface PendingActionConfirmation {
+    id: string;
+    actionName: string;
+    args: unknown;
+    message: string;
+    resolve: (confirmed: boolean) => void;
+}
+```
+
+<div className="members-wrapper">
+
+### id
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### actionName
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### args
+
+<MemberInfo kind="property" type={`unknown`} />
+
+
+### message
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### resolve
+
+<MemberInfo kind="property" type={`(confirmed: boolean) => void`} />
+
+
+
+
+</div>

@@ -1,0 +1,41 @@
+---
+title: "SemaphoreTimeoutError"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/utils/semaphore.ts" sourceLine="11" packageName="@hexos/runtime" />
+
+Error thrown when a [Semaphore](/docs/runtime/infrastructure/semaphore#semaphore) acquire operation times out while waiting in the queue.
+
+Contains a `code` field (default: `'SEMAPHORE_QUEUE_TIMEOUT'`) for programmatic error handling.
+In the context of [AgentRuntime](/docs/runtime/agent-runtime/#agentruntime), this maps to the `TOOL_QUEUE_TIMEOUT` error code when
+a tool cannot acquire a concurrency slot within `toolExecutionQueueTimeoutMs`.
+
+```ts
+class SemaphoreTimeoutError extends Error {
+    readonly code: string;
+    constructor(message: string, code:  = 'SEMAPHORE_QUEUE_TIMEOUT')
+}
+```
+* Extends: Error
+
+
+
+<div className="members-wrapper">
+
+### code
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### constructor
+
+<MemberInfo kind="method" type={`(message: string, code:  = 'SEMAPHORE_QUEUE_TIMEOUT') => SemaphoreTimeoutError`} />
+
+
+
+
+</div>

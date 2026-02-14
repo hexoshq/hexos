@@ -1,0 +1,34 @@
+---
+title: "RetryWithBackoff"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/utils/retry.ts" sourceLine="135" packageName="@hexos/runtime" />
+
+Executes an async operation with exponential backoff retry on transient failures.
+
+Retries the operation up to `maxAttempts` times. The delay between retries grows as
+`initialDelayMs * multiplier^attempt`, capped at `maxDelayMs`. When `jitter` is enabled,
+each delay is randomized by 50-100% to prevent thundering herd effects.
+
+By default uses [isRetryableError](/docs/runtime/infrastructure/is-retryable-error#isretryableerror) to determine if an error is retryable.
+Override via the `shouldRetry` option for custom classification.
+
+Used by [AgentRuntime](/docs/runtime/agent-runtime/#agentruntime) for LLM API calls and MCP server connections.
+
+```ts
+function retryWithBackoff<T>(operation: (attempt: number) => Promise<T>, options: RetryOptions): Promise<T>
+```
+Parameters
+
+### operation
+
+<MemberInfo kind="parameter" type={`(attempt: number) => Promise<T>`} />
+
+### options
+
+<MemberInfo kind="parameter" type={`<a href='/docs/runtime/infrastructure/retry-options#retryoptions'>RetryOptions</a>`} />
+

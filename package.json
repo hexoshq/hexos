@@ -1,0 +1,47 @@
+{
+  "name": "hexos",
+  "private": true,
+  "license": "MIT",
+  "workspaces": [
+    "docs",
+    "packages/*",
+    "apps/*"
+  ],
+    "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "bootstrap": "pnpm install",
+    "build:libs": "lerna run build --sort --stream",
+    "publish:libs": "lerna publish from-package --yes",
+    "generate-changelog": "ts-node scripts/changelogs/generate-changelog.ts",
+    "publish-release": "lerna version --no-push --force-publish --exact -m \"chore(release): publish %s\"",
+    "publish-prerelease": "pnpm run generate-changelog -- --next && lerna version prerelease --preid next --no-push --force-publish --exact -m \"chore(release): prerelease %s\"",
+    "publish-local": "lerna version --force-publish --no-git-tag-version --no-push --exact",
+    "docs:generate-typescript-docs": "TS_NODE_PROJECT=tsconfig.scripts.json ts-node scripts/docs/generate-typescript-docs.ts",
+    "docs:build": "npm run docs:generate-typescript-docs && cd docs && npm run build"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^22.0.0",
+    "conventional-changelog-core": "^9.0.0",
+    "fs-extra": "^11.3.3",
+    "lerna": "^8.1.0",
+    "prettier": "^3.4.0",
+    "ts-node": "^10.9.2",
+    "turbo": "^2.3.0",
+    "typescript": "^5.7.0",
+    "klaw-sync": "^6.0.0",
+    "@types/klaw-sync": "^6.0.5",
+    "@vendure-io/docs-provider": "^0.2.0"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

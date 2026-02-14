@@ -1,0 +1,35 @@
+{
+  "name": "@hexos/common",
+  "version": "0.3.2",
+  "description": "Shared types and utilities for Hexos",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --clean",
+    "dev": "tsup src/index.ts --format esm --dts --watch"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "zod": "^3.0.0"
+  },
+  "license": "MIT",
+  "gitHead": "4de5ab35bad3cf18bdcb23cb3cb5f5dfe1c22d61"
+}

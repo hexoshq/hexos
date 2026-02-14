@@ -1,0 +1,45 @@
+---
+title: "ButtonProps"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-ui/src/primitives/Button.tsx" sourceLine="12" packageName="@hexos/react-ui" />
+
+Props for the [Button](/docs/react-ui/ui-primitives/button#button) component.
+
+Extends standard HTML button attributes with variant, size, and Radix UI Slot support.
+
+```ts
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    asChild?: boolean;
+    variant?: 'default' | 'destructive' | 'outline' | 'ghost';
+    size?: 'default' | 'sm' | 'lg' | 'icon';
+}
+```
+* Extends: `React.ButtonHTMLAttributes<HTMLButtonElement>`
+
+
+
+<div className="members-wrapper">
+
+### asChild
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### variant
+
+<MemberInfo kind="property" type={`'default' | 'destructive' | 'outline' | 'ghost'`} />
+
+
+### size
+
+<MemberInfo kind="property" type={`'default' | 'sm' | 'lg' | 'icon'`} />
+
+
+
+
+</div>

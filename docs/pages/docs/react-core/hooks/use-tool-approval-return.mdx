@@ -1,0 +1,70 @@
+---
+title: "UseToolApprovalReturn"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-core/src/hooks/useToolApproval.ts" sourceLine="12" packageName="@hexos/react-core" />
+
+Return type of the [useToolApproval](/docs/react-core/hooks/use-tool-approval#usetoolapproval) hook, providing approval controls and state.
+
+```ts
+interface UseToolApprovalReturn {
+    pending: ToolApprovalRequest[];
+    approve: (toolCallId: string) => Promise<void>;
+    reject: (toolCallId: string, reason?: string) => Promise<void>;
+    approveAll: () => Promise<void>;
+    rejectAll: (reason?: string) => Promise<void>;
+    isSubmitting: boolean;
+    error: Error | null;
+    clearError: () => void;
+}
+```
+
+<div className="members-wrapper">
+
+### pending
+
+<MemberInfo kind="property" type={`<a href='/docs/react-core/tools/tool-approval-request#toolapprovalrequest'>ToolApprovalRequest</a>[]`} />
+
+
+### approve
+
+<MemberInfo kind="property" type={`(toolCallId: string) => Promise<void>`} />
+
+
+### reject
+
+<MemberInfo kind="property" type={`(toolCallId: string, reason?: string) => Promise<void>`} />
+
+
+### approveAll
+
+<MemberInfo kind="property" type={`() => Promise<void>`} />
+
+
+### rejectAll
+
+<MemberInfo kind="property" type={`(reason?: string) => Promise<void>`} />
+
+
+### isSubmitting
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### error
+
+<MemberInfo kind="property" type={`Error | null`} />
+
+
+### clearError
+
+<MemberInfo kind="property" type={`() => void`} />
+
+
+
+
+</div>

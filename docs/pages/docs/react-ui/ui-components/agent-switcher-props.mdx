@@ -1,0 +1,64 @@
+---
+title: "AgentSwitcherProps"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-ui/src/components/AgentSwitcher.tsx" sourceLine="23" packageName="@hexos/react-ui" />
+
+Props for the [AgentSwitcher](/docs/react-ui/ui-components/agent-switcher#agentswitcher) component.
+
+```ts
+interface AgentSwitcherProps {
+    agents: AgentInfo[];
+    activeAgentId: string | null;
+    isStreaming?: boolean;
+    onAgentSelect?: (agentId: string) => void;
+    allowManualSwitch?: boolean;
+    variant?: 'compact' | 'expanded' | 'dropdown';
+    className?: string;
+}
+```
+
+<div className="members-wrapper">
+
+### agents
+
+<MemberInfo kind="property" type={`<a href='/docs/react-ui/ui-components/agent-info#agentinfo'>AgentInfo</a>[]`} />
+
+
+### activeAgentId
+
+<MemberInfo kind="property" type={`string | null`} />
+
+
+### isStreaming
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### onAgentSelect
+
+<MemberInfo kind="property" type={`(agentId: string) => void`} />
+
+
+### allowManualSwitch
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### variant
+
+<MemberInfo kind="property" type={`'compact' | 'expanded' | 'dropdown'`} />
+
+
+### className
+
+<MemberInfo kind="property" type={`string`} />
+
+
+
+
+</div>

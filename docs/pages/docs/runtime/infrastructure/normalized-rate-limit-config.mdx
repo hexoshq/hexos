@@ -1,0 +1,50 @@
+---
+title: "NormalizedRateLimitConfig"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/utils/config.ts" sourceLine="13" packageName="@hexos/runtime" />
+
+Normalized rate limit configuration with all optional fields resolved to concrete values.
+
+Produced by [normalizeRuntimeConfig](/docs/runtime/infrastructure/normalize-runtime-config#normalizeruntimeconfig) from the user-provided [RateLimitConfig](/docs/common/infrastructure/rate-limit-config#ratelimitconfig).
+Guarantees that all fields are present and validated, safe for direct use by
+[SlidingWindowRateLimiter](/docs/runtime/infrastructure/sliding-window-rate-limiter#slidingwindowratelimiter).
+
+```ts
+interface NormalizedRateLimitConfig {
+    enabled: boolean;
+    scope: 'user' | 'conversation' | 'user-or-conversation';
+    windowMs: number;
+    maxRequests: number;
+}
+```
+
+<div className="members-wrapper">
+
+### enabled
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### scope
+
+<MemberInfo kind="property" type={`'user' | 'conversation' | 'user-or-conversation'`} />
+
+
+### windowMs
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### maxRequests
+
+<MemberInfo kind="property" type={`number`} />
+
+
+
+
+</div>

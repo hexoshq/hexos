@@ -1,0 +1,88 @@
+---
+title: "NormalizedRuntimeConfig"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/utils/config.ts" sourceLine="48" packageName="@hexos/runtime" />
+
+Fully resolved runtime configuration where all optional numeric fields have concrete defaults.
+
+Extends [RuntimeConfig](/docs/common/agent-config/runtime-config#runtimeconfig) with non-optional versions of all limit fields. Created by
+[normalizeRuntimeConfig](/docs/runtime/infrastructure/normalize-runtime-config#normalizeruntimeconfig) at startup, this type is used internally by [AgentRuntime](/docs/runtime/agent-runtime/#agentruntime)to avoid repeated null checks during operation.
+
+```ts
+interface NormalizedRuntimeConfig extends RuntimeConfig {
+    maxHandoffs: number;
+    approvalTimeoutMs: number;
+    maxPendingApprovalsPerConversation: number;
+    defaultToolTimeoutMs: number;
+    maxActiveStreams: number;
+    maxActiveStreamsPerConversation: number;
+    maxConcurrentToolExecutions: number;
+    toolExecutionQueueTimeoutMs: number;
+    rateLimit: NormalizedRateLimitConfig;
+    retry: NormalizedRetryConfig;
+}
+```
+* Extends: [`RuntimeConfig`](/docs/common/agent-config/runtime-config#runtimeconfig)
+
+
+
+<div className="members-wrapper">
+
+### maxHandoffs
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### approvalTimeoutMs
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### maxPendingApprovalsPerConversation
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### defaultToolTimeoutMs
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### maxActiveStreams
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### maxActiveStreamsPerConversation
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### maxConcurrentToolExecutions
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### toolExecutionQueueTimeoutMs
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### rateLimit
+
+<MemberInfo kind="property" type={`<a href='/docs/runtime/infrastructure/normalized-rate-limit-config#normalizedratelimitconfig'>NormalizedRateLimitConfig</a>`} />
+
+
+### retry
+
+<MemberInfo kind="property" type={`<a href='/docs/runtime/infrastructure/normalized-retry-config#normalizedretryconfig'>NormalizedRetryConfig</a>`} />
+
+
+
+
+</div>

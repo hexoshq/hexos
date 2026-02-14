@@ -1,0 +1,54 @@
+---
+title: "AgentTransport"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="832" packageName="@hexos/common" />
+
+Abstract transport interface for client-server communication in Hexos.
+
+Defines the contract for connecting to a backend, sending messages, receiving events,
+and disconnecting. [SSETransport](/docs/react-core/transport/ssetransport#ssetransport) is the default implementation using HTTP
+Server-Sent Events. Future implementations could support WebSockets or other protocols.
+
+Related: [SSETransport](/docs/react-core/transport/ssetransport#ssetransport) implements this interface, [AgentConfig](/docs/react-core/transport/agent-config#agentconfig) configures
+the connection, [TransportMessage](/docs/react-core/transport/transport-message#transportmessage) is the outbound payload,
+[TransportEvent](/docs/react-core/transport/transport-event#transportevent) is the inbound event type.
+
+```ts
+interface AgentTransport {
+    connect(config: AgentConfig): Promise<void>;
+    send(message: TransportMessage): void;
+    onMessage(callback: (event: TransportEvent) => void): () => void;
+    disconnect(): void;
+}
+```
+
+<div className="members-wrapper">
+
+### connect
+
+<MemberInfo kind="method" type={`(config: <a href='/docs/react-core/transport/agent-config#agentconfig'>AgentConfig</a>) => Promise<void>`} />
+
+
+### send
+
+<MemberInfo kind="method" type={`(message: <a href='/docs/react-core/transport/transport-message#transportmessage'>TransportMessage</a>) => void`} />
+
+
+### onMessage
+
+<MemberInfo kind="method" type={`(callback: (event: <a href='/docs/react-core/transport/transport-event#transportevent'>TransportEvent</a>) => void) => () => void`} />
+
+
+### disconnect
+
+<MemberInfo kind="method" type={`() => void`} />
+
+
+
+
+</div>

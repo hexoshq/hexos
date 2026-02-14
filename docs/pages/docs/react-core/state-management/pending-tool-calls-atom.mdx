@@ -1,0 +1,15 @@
+---
+title: "PendingToolCallsAtom"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+
+<GenerationInfo sourceFile="packages/react-core/src/atoms/index.ts" sourceLine="68" packageName="@hexos/react-core" />
+
+Stores tool calls pending user approval.
+
+Populated when `approval-required` [TransportEvent](/docs/react-core/transport/transport-event#transportevent)s arrive. Consumed by
+[useToolApproval](/docs/react-core/hooks/use-tool-approval#usetoolapproval) and rendered by [ToolApprovalDialog](/docs/react-ui/ui-components/tool-approval-dialog#toolapprovaldialog).
+Entries are removed via [removePendingApprovalAtom](/docs/react-core/state-management/remove-pending-approval-atom#removependingapprovalatom) after the user decides.
+

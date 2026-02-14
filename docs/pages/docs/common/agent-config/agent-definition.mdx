@@ -1,0 +1,87 @@
+---
+title: "AgentDefinition"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="204" packageName="@hexos/common" />
+
+Complete specification for an AI agent, defining its identity, LLM backend, tools, and routing.
+
+Each agent has a unique ID, a display name, an LLM configuration ([ModelConfig](/docs/common/agent-config/model-config#modelconfig)), and a
+system prompt that can be static or dynamic (receiving [AgentContext](/docs/common/agent-config/agent-context#agentcontext)). Agents declare
+their available tools and can optionally access MCP servers and hand off to other agents.
+
+The `canHandoffTo` field enables the multi-agent swarm pattern: the runtime auto-generates
+`handoff_to_<agentId>` tools for each target agent, allowing the LLM to route conversations.
+The `maxIterations` field provides a safety limit on tool-call loops per turn.
+
+Related: [RuntimeConfig](/docs/common/agent-config/runtime-config#runtimeconfig) collects agents, [AgentRuntime](/docs/runtime/agent-runtime/#agentruntime) orchestrates them,
+[ModelConfig](/docs/common/agent-config/model-config#modelconfig) configures the LLM, [ToolDefinition](/docs/common/tools/tool-definition#tooldefinition) defines available tools.
+
+```ts
+interface AgentDefinition {
+    id: string;
+    name: string;
+    description: string;
+    model: ModelConfig;
+    systemPrompt: string | ((context: AgentContext) => string);
+    tools: ToolDefinition[];
+    allowedMcpServers?: string[];
+    canHandoffTo?: string[];
+    maxIterations?: number;
+}
+```
+
+<div className="members-wrapper">
+
+### id
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### name
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### description
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### model
+
+<MemberInfo kind="property" type={`<a href='/docs/common/agent-config/model-config#modelconfig'>ModelConfig</a>`} />
+
+
+### systemPrompt
+
+<MemberInfo kind="property" type={`string | ((context: <a href='/docs/common/agent-config/agent-context#agentcontext'>AgentContext</a>) => string)`} />
+
+
+### tools
+
+<MemberInfo kind="property" type={`<a href='/docs/common/tools/tool-definition#tooldefinition'>ToolDefinition</a>[]`} />
+
+
+### allowedMcpServers
+
+<MemberInfo kind="property" type={`string[]`} />
+
+
+### canHandoffTo
+
+<MemberInfo kind="property" type={`string[]`} />
+
+
+### maxIterations
+
+<MemberInfo kind="property" type={`number`} />
+
+
+
+
+</div>

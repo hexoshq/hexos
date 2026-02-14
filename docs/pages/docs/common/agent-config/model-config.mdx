@@ -1,0 +1,65 @@
+---
+title: "ModelConfig"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="99" packageName="@hexos/common" />
+
+Configuration for an LLM provider connection, specifying which model to use and how to connect.
+
+Each [AgentDefinition](/docs/common/agent-config/agent-definition#agentdefinition) requires a ModelConfig to determine its LLM backend.
+The `apiKey` field supports both static strings and async functions for dynamic
+key retrieval (e.g., from a secrets manager). The `baseUrl` field enables custom
+endpoints for proxies or self-hosted providers.
+
+Related: [LLMProvider](/docs/common/core-types/llmprovider#llmprovider) determines the provider, [AgentDefinition](/docs/common/agent-config/agent-definition#agentdefinition) uses this config.
+
+```ts
+interface ModelConfig {
+    provider: LLMProvider;
+    model: string;
+    temperature?: number;
+    maxTokens?: number;
+    apiKey?: string | (() => Promise<string>);
+    baseUrl?: string;
+}
+```
+
+<div className="members-wrapper">
+
+### provider
+
+<MemberInfo kind="property" type={`<a href='/docs/common/core-types/llmprovider#llmprovider'>LLMProvider</a>`} />
+
+
+### model
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### temperature
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### maxTokens
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### apiKey
+
+<MemberInfo kind="property" type={`string | (() => Promise<string>)`} />
+
+
+### baseUrl
+
+<MemberInfo kind="property" type={`string`} />
+
+
+
+
+</div>

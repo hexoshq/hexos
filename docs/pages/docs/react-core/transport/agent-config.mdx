@@ -1,0 +1,87 @@
+---
+title: "AgentConfig"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-core/src/types.ts" sourceLine="77" packageName="@hexos/react-core" />
+
+Frontend configuration for connecting to an Hexos backend and customizing behavior.
+
+Extends the base config with frontend-specific options: an `approvalEndpoint` for
+human-in-the-loop flows (defaults to `endpoint + '/approve'`), a `systemMessage`
+for client-side prompt, and an `onToolApprovalRequired` callback for programmatic
+approval handling.
+
+The `headers` field supports both static objects and async functions for dynamic
+authentication (e.g., refreshing JWT tokens before each request).
+
+Related: [useAgent](/docs/react-core/hooks/use-agent#useagent) accepts this config, [SSETransport](/docs/react-core/transport/ssetransport#ssetransport) uses it for connections,
+[AgentProvider](/docs/react-core/hooks/agent-provider#agentprovider) initializes atoms from this config.
+
+```ts
+interface AgentConfig {
+    endpoint: string;
+    approvalEndpoint?: string;
+    agents?: string[];
+    transport?: 'sse' | 'websocket' | 'fetch';
+    headers?: Record<string, string> | (() => Promise<Record<string, string>>);
+    conversationId?: string;
+    systemMessage?: string;
+    enableReasoning?: boolean;
+    onToolApprovalRequired?: (request: ToolApprovalRequest) => Promise<boolean>;
+}
+```
+
+<div className="members-wrapper">
+
+### endpoint
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### approvalEndpoint
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### agents
+
+<MemberInfo kind="property" type={`string[]`} />
+
+
+### transport
+
+<MemberInfo kind="property" type={`'sse' | 'websocket' | 'fetch'`} />
+
+
+### headers
+
+<MemberInfo kind="property" type={`Record<string, string> | (() => Promise<Record<string, string>>)`} />
+
+
+### conversationId
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### systemMessage
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### enableReasoning
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### onToolApprovalRequired
+
+<MemberInfo kind="property" type={`(request: <a href='/docs/react-core/tools/tool-approval-request#toolapprovalrequest'>ToolApprovalRequest</a>) => Promise<boolean>`} />
+
+
+
+
+</div>

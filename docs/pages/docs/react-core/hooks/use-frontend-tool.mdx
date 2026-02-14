@@ -1,0 +1,24 @@
+---
+title: "UseFrontendTool"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-core/src/hooks/useAgentTool.ts" sourceLine="73" packageName="@hexos/react-core" />
+
+Hook that retrieves a registered frontend tool by name.
+
+Returns the [FrontendToolDefinition](/docs/react-core/tools/frontend-tool-definition#frontendtooldefinition) if a tool with the given name is registered
+in [frontendToolsAtom](/docs/react-core/state-management/frontend-tools-atom#frontendtoolsatom), or `undefined` if not found.
+
+```ts
+function useFrontendTool<TInput, TOutput>(name: string): FrontendToolDefinition<TInput, TOutput> | undefined
+```
+Parameters
+
+### name
+
+<MemberInfo kind="parameter" type={`string`} />
+

@@ -1,0 +1,53 @@
+---
+title: "HandoffResult"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="719" packageName="@hexos/common" />
+
+Marker object returned by handoff tools to signal an agent-to-agent transition.
+
+When a tool returns an object with `__handoff: true`, the runtime detects it via
+[isHandoffResult](/docs/common/tools/is-handoff-result#ishandoffresult) and switches the active agent to `targetAgent`. The `reason`
+field is included in the `agent-handoff` [RuntimeEvent](/docs/common/core-types/runtime-event#runtimeevent) for UI display.
+
+Related: [isHandoffResult](/docs/common/tools/is-handoff-result#ishandoffresult) detects this marker, [HandoffRecord](/docs/common/tools/handoff-record#handoffrecord) stores the history,
+[generateHandoffTools](/docs/runtime/tools/generate-handoff-tools#generatehandofftools) creates tools that return this type.
+
+```ts
+interface HandoffResult {
+    __handoff: true;
+    targetAgent: string;
+    reason: string;
+    context?: string;
+}
+```
+
+<div className="members-wrapper">
+
+### __handoff
+
+<MemberInfo kind="property" type={`true`} />
+
+
+### targetAgent
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### reason
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### context
+
+<MemberInfo kind="property" type={`string`} />
+
+
+
+
+</div>

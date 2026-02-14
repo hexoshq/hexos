@@ -1,0 +1,32 @@
+---
+title: "ConvertToolsToAnthropicFormat"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/providers/anthropic/tools.ts" sourceLine="25" packageName="@hexos/runtime" />
+
+Converts Hexos tool definitions to Anthropic's tool format.
+
+Transforms each tool's name, description, and Zod input schema into the
+format required by the Anthropic Messages API. The schema conversion function
+is injected to handle Zod-to-JSON Schema transformation.
+
+This conversion is performed once per agent stream initialization, before
+calling the Anthropic API.
+
+```ts
+function convertToolsToAnthropicFormat(tools: ToolDefinition[], toJsonSchema: (schema: unknown) => Record<string, unknown>): Anthropic.Tool[]
+```
+Parameters
+
+### tools
+
+<MemberInfo kind="parameter" type={`<a href='/docs/common/tools/tool-definition#tooldefinition'>ToolDefinition</a>[]`} />
+
+### toJsonSchema
+
+<MemberInfo kind="parameter" type={`(schema: unknown) => Record<string, unknown>`} />
+

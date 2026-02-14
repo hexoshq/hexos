@@ -1,0 +1,40 @@
+---
+title: "AgentStatusBar"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-ui/src/components/AgentSwitcher.tsx" sourceLine="257" packageName="@hexos/react-ui" />
+
+Status bar component showing the current agent and streaming state.
+
+Renders a horizontal bar with a status indicator, agent name, and optional description or
+status message. The background color adapts to the active agent's color scheme.
+
+The status indicator (colored dot) pulses with animation during streaming (green) and shows
+the agent's brand color when idle. A "typing..." label appears next to the agent name during
+streaming activity.
+
+Useful for headers or footers in chat interfaces to provide persistent visibility of the
+active agent and its current state.
+
+*Example*
+
+```tsx
+<AgentStatusBar
+  activeAgent={{ id: 'code', name: 'Code Assistant', description: 'Helps with programming' }}
+  isStreaming={isStreaming}
+/>
+```
+
+```ts
+function AgentStatusBar(props: AgentStatusBarProps): React.ReactElement
+```
+Parameters
+
+### props
+
+<MemberInfo kind="parameter" type={`<a href='/docs/react-ui/ui-components/agent-status-bar-props#agentstatusbarprops'>AgentStatusBarProps</a>`} />
+

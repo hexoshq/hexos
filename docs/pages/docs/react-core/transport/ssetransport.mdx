@@ -1,0 +1,73 @@
+---
+title: "SSETransport"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-core/src/transport/SSETransport.ts" sourceLine="27" packageName="@hexos/react-core" />
+
+Server-Sent Events transport implementation for agent communication.
+
+Default transport that works through all CDNs and proxies. Implements the
+[AgentTransport](/docs/react-core/transport/agent-transport#agenttransport) interface using HTTP POST requests with streaming
+response bodies parsed as SSE (`data: \{json\}\n\n` lines).
+
+Supports dynamic headers via async functions (e.g., refreshing JWT tokens),
+request cancellation via AbortController, and configurable approval endpoints
+for human-in-the-loop workflows.
+
+Related: [AgentConfig](/docs/react-core/transport/agent-config#agentconfig) configures the connection, [useAgent](/docs/react-core/hooks/use-agent#useagent) creates
+and manages the transport instance, [TransportEvent](/docs/react-core/transport/transport-event#transportevent) defines the event types
+consumed from the SSE stream.
+
+```ts
+class SSETransport implements AgentTransport {
+    connect(config: AgentConfig) => Promise<void>;
+    send(message: TransportMessage) => void;
+    sendApproval(decision: ApprovalDecision) => Promise<void>;
+    onMessage(callback: (event: TransportEvent) => void) => () => void;
+    disconnect() => void;
+}
+```
+* Implements: [`AgentTransport`](/docs/react-core/transport/agent-transport#agenttransport)
+
+
+
+<div className="members-wrapper">
+
+### connect
+
+<MemberInfo kind="method" type={`(config: <a href='/docs/react-core/transport/agent-config#agentconfig'>AgentConfig</a>) => Promise<void>`} />
+
+Stores the agent configuration for use in subsequent requests.
+### send
+
+<MemberInfo kind="method" type={`(message: <a href='/docs/react-core/transport/transport-message#transportmessage'>TransportMessage</a>) => void`} />
+
+Sends a message to the agent endpoint and begins streaming the response.
+
+Cancels any existing in-flight request before starting a new one.
+The response is parsed as SSE and events are emitted to registered listeners.
+### sendApproval
+
+<MemberInfo kind="method" type={`(decision: <a href='/docs/react-core/tools/approval-decision#approvaldecision'>ApprovalDecision</a>) => Promise<void>`} />
+
+Sends an approval decision to the server's approval endpoint.
+
+Posts an [ApprovalDecision](/docs/react-core/tools/approval-decision#approvaldecision) to the configured approval endpoint
+(defaults to `endpoint + '/approve'`). Supports dynamic headers.
+### onMessage
+
+<MemberInfo kind="method" type={`(callback: (event: <a href='/docs/react-core/transport/transport-event#transportevent'>TransportEvent</a>) => void) => () => void`} />
+
+Registers a callback to receive transport events.
+### disconnect
+
+<MemberInfo kind="method" type={`() => void`} />
+
+Disconnects the transport, cancelling any in-flight requests and clearing all listeners.
+
+
+</div>

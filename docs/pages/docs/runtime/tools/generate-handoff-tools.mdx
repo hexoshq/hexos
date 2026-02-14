@@ -1,0 +1,36 @@
+---
+title: "GenerateHandoffTools"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/tools/handoff.ts" sourceLine="45" packageName="@hexos/runtime" />
+
+Auto-generates handoff tools for an agent based on its `canHandoffTo` configuration.
+
+For each target agent ID listed in `canHandoffTo`, creates a [ToolDefinition](/docs/common/tools/tool-definition#tooldefinition) named
+`handoff_to_<targetId>` that returns a [HandoffResult](/docs/common/tools/handoff-result#handoffresult) when executed. The LLM uses
+these tools to route conversations to specialized agents in the multi-agent swarm pattern.
+
+Only generates tools for target agents that exist in the `allAgents` registry. The tool
+description includes the target agent's name and description to help the LLM make
+informed routing decisions.
+
+Related: [AgentRuntime](/docs/runtime/agent-runtime/#agentruntime) calls this in `getAgentTools()`, [isHandoffResult](/docs/common/tools/is-handoff-result#ishandoffresult)
+detects the returned marker, [HandoffResult](/docs/common/tools/handoff-result#handoffresult) is the tool output type.
+
+```ts
+function generateHandoffTools(agent: AgentDefinition, allAgents: Map<string, AgentDefinition>): ToolDefinition[]
+```
+Parameters
+
+### agent
+
+<MemberInfo kind="parameter" type={`<a href='/docs/common/agent-config/agent-definition#agentdefinition'>AgentDefinition</a>`} />
+
+### allAgents
+
+<MemberInfo kind="parameter" type={`Map<string, <a href='/docs/common/agent-config/agent-definition#agentdefinition'>AgentDefinition</a>>`} />
+

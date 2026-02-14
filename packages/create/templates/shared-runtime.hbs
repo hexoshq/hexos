@@ -1,0 +1,170 @@
+import {
+  AgentRuntime,
+  LLMProvider,
+{{#if isAnthropic}}  AnthropicModel,{{/if}}{{#if isOpenAI}}  OpenAIModel,{{/if}}{{#if isOllama}}  OllamaModel,{{/if}}
+  type RuntimeConfig,
+  type ToolContext,
+} from '@hexos/runtime';
+
+{{#if includeExampleTools}}import { z } from 'zod';{{/if}}
+{{#if includeMcpDashboard}}import { getEffectiveMcpServers } from './mcp-server-store';{{/if}}
+
+// Singleton runtime instance
+let runtimeInstance: AgentRuntime | null = null;
+let runtimeCreationPromise: Promise<AgentRuntime> | null = null;
+
+export const MCP_SERVERS_CONFIG: NonNullable<RuntimeConfig['mcpServers']> = {
+  // Add your MCP servers here, for example:
+  // filesystem: {
+  //   command: 'npx',
+  //   args: ['-y', '@modelcontextprotocol/server-filesystem', path.resolve(process.cwd(), 'public')],
+  // },
+};
+
+{{#if includeMcpDashboard}}export const RUNTIME_RELOAD_BLOCKED_PENDING_APPROVALS = 'RUNTIME_RELOAD_BLOCKED_PENDING_APPROVALS';
+
+export class RuntimeReloadBlockedError extends Error {
+  code = RUNTIME_RELOAD_BLOCKED_PENDING_APPROVALS;
+
+  constructor(message = 'Cannot reload runtime while there are pending approvals.') {
+    super(message);
+    this.name = 'RuntimeReloadBlockedError';
+  }
+}{{/if}}
+
+function createRuntime(mcpServers: NonNullable<RuntimeConfig['mcpServers']>): AgentRuntime {
+  return new AgentRuntime({
+    mcpServers,
+
+    agents: [
+{{#each agents}}
+      {
+        id: '{{this.id}}',
+        name: '{{this.name}}',
+        description: '{{this.description}}',
+        model: {
+          provider: LLMProvider.{{../providerEnum}},
+          model: {{../modelConst}},
+        },
+        systemPrompt: `You are {{this.name}}, an AI assistant.{{#if ../isMultiAgent}}{{#if this.canHandoffTo}} When you need help from other agents, use the handoff tools available to you.{{/if}}{{/if}}
+
+Your responsibilities:
+- Answer questions clearly and helpfully
+- Use available tools when appropriate
+- Be concise and friendly`,
+{{#if ../includeMcpDashboard}}        allowedMcpServers: Object.keys(mcpServers),{{/if}}
+{{#if this.hasTools}}        tools: [
+{{#if ../includeExampleTools}}          {
+            name: 'get_current_time',
+            description: 'Get the current date and time',
+            inputSchema: z.object({
+              timezone: z.string().optional().describe('Timezone (e.g., "America/New_York")'),
+            }),
+            execute: async (input) => {
+              const { timezone } = input as { timezone?: string };
+              const now = new Date();
+              return {
+                timestamp: now.toISOString(),
+                formatted: now.toLocaleString('en-US', {
+                  timeZone: timezone ?? 'UTC',
+                }),
+              };
+            },
+          },
+          {
+            name: 'calculate',
+            description: 'Perform a mathematical calculation',
+            inputSchema: z.object({
+              expression: z.string().describe('Mathematical expression to evaluate'),
+            }),
+            execute: async (input) => {
+              const { expression } = input as { expression: string };
+              try {
+                const sanitized = expression.replace(/[^0-9+\-*/().%\s]/g, '');
+                const result = Function(`"use strict"; return (${sanitized})`)();
+                return { result, expression };
+              } catch (_error) {
+                return { error: 'Invalid expression' };
+              }
+            },
+          },
+{{/if}}        ],{{/if}}
+{{#if this.canHandoffTo}}        canHandoffTo: [{{{this.canHandoffToStr}}}],{{/if}}
+        maxIterations: 5,
+      },
+{{/each}}
+    ],
+    defaultAgent: '{{defaultAgentId}}',
+    hooks: {
+      onAgentStart: (agentId) => {
+        console.log(`[Hexos] Agent started: ${agentId}`);
+      },
+      onAgentEnd: (agentId) => {
+        console.log(`[Hexos] Agent ended: ${agentId}`);
+      },
+      onHandoff: (from, to, reason) => {
+        console.log(`[Hexos] Handoff: ${from} → ${to} (${reason})`);
+      },
+      onToolCall: (toolName, args) => {
+        console.log(`[Hexos] Tool called: ${toolName}`, args);
+      },
+      onError: (error) => {
+        console.error(`[Hexos] Error:`, error);
+      },
+    },
+    debug: process.env.NODE_ENV === 'development',
+  });
+}
+
+{{#if includeMcpDashboard}}export async function getEffectiveMcpServersConfig(): Promise<NonNullable<RuntimeConfig['mcpServers']>> {
+  return getEffectiveMcpServers(MCP_SERVERS_CONFIG);
+}
+
+function runtimeHasPendingApprovals(runtime: AgentRuntime): boolean {
+  return runtime.getPendingApprovals().length > 0;
+}{{/if}}
+
+/**
+ * Get the shared AgentRuntime instance.
+ */
+export async function getSharedRuntime(): Promise<AgentRuntime> {
+  if (runtimeInstance) {
+    return runtimeInstance;
+  }
+
+  if (runtimeCreationPromise) {
+    return runtimeCreationPromise;
+  }
+
+  runtimeCreationPromise = (async () => {
+{{#if includeMcpDashboard}}    const effectiveMcpServers = await getEffectiveMcpServersConfig();
+    const runtime = createRuntime(effectiveMcpServers);{{else}}    const runtime = createRuntime(MCP_SERVERS_CONFIG);{{/if}}
+    runtimeInstance = runtime;
+    return runtime;
+  })();
+
+  try {
+    return await runtimeCreationPromise;
+  } finally {
+    runtimeCreationPromise = null;
+  }
+}
+
+{{#if includeMcpDashboard}}export async function reloadSharedRuntime(): Promise<AgentRuntime> {
+  if (!runtimeInstance && runtimeCreationPromise) {
+    await runtimeCreationPromise;
+  }
+
+  if (runtimeInstance && runtimeHasPendingApprovals(runtimeInstance)) {
+    throw new RuntimeReloadBlockedError();
+  }
+
+  if (runtimeInstance) {
+    await runtimeInstance.shutdown();
+  }
+
+  const effectiveMcpServers = await getEffectiveMcpServersConfig();
+  runtimeInstance = createRuntime(effectiveMcpServers);
+  runtimeCreationPromise = null;
+  return runtimeInstance;
+}{{/if}}

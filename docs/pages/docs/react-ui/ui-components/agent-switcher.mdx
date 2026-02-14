@@ -1,0 +1,48 @@
+---
+title: "AgentSwitcher"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-ui/src/components/AgentSwitcher.tsx" sourceLine="72" packageName="@hexos/react-ui" />
+
+Component for displaying and optionally switching between available agents.
+
+Provides three display variants:
+- Compact: Single [AgentBadge](/docs/react-ui/ui-components/agent-badge#agentbadge) with "+N more" counter
+- Expanded: Grid of agent buttons with circular avatars and names
+- Dropdown: Single large badge (dropdown functionality to be implemented)
+
+When `allowManualSwitch` is true and `onAgentSelect` is provided, users can click agent buttons
+to manually trigger agent switching. Manual switching is disabled during streaming.
+
+The expanded variant highlights the active agent with brand colors and shows a pulsing indicator
+during streaming. Inactive agents are dimmed when streaming is active.
+
+Related components: [AgentBadge](/docs/react-ui/ui-components/agent-badge#agentbadge)
+
+*Example*
+
+```tsx
+<AgentSwitcher
+  agents={[
+    { id: 'main', name: 'Main Assistant' },
+    { id: 'code', name: 'Code Helper' }
+  ]}
+  activeAgentId="main"
+  variant="expanded"
+  isStreaming={isStreaming}
+/>
+```
+
+```ts
+function AgentSwitcher(props: AgentSwitcherProps): React.ReactElement
+```
+Parameters
+
+### props
+
+<MemberInfo kind="parameter" type={`<a href='/docs/react-ui/ui-components/agent-switcher-props#agentswitcherprops'>AgentSwitcherProps</a>`} />
+

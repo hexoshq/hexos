@@ -1,0 +1,59 @@
+---
+title: "ToolApproval"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="657" packageName="@hexos/common" />
+
+Represents a pending tool approval request waiting for user decision.
+
+Created when a tool with `requiresApproval` is invoked. The runtime holds execution
+until an [ApprovalDecision](/docs/react-core/tools/approval-decision#approvaldecision) is submitted. Includes the tool name, arguments,
+and the agent that requested execution.
+
+Related: [ApprovalDecision](/docs/react-core/tools/approval-decision#approvaldecision) resolves the request, [ToolDefinition](/docs/common/tools/tool-definition#tooldefinition).requiresApproval
+triggers this flow, [useToolApproval](/docs/react-core/hooks/use-tool-approval#usetoolapproval) manages the frontend UI.
+
+```ts
+interface ToolApproval {
+    toolCallId: string;
+    toolName: string;
+    args: unknown;
+    agentId: string;
+    timestamp: Date;
+}
+```
+
+<div className="members-wrapper">
+
+### toolCallId
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### toolName
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### args
+
+<MemberInfo kind="property" type={`unknown`} />
+
+
+### agentId
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### timestamp
+
+<MemberInfo kind="property" type={`Date`} />
+
+
+
+
+</div>

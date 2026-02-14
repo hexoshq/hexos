@@ -1,0 +1,62 @@
+---
+title: "MCPStdioServerConfig"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="406" packageName="@hexos/common" />
+
+Configuration for an MCP server communicating via stdio (local child process).
+
+The runtime spawns the server as a child process using the specified command and arguments.
+Communication uses JSON-RPC 2.0 over stdin/stdout pipes. Suitable for locally-installed
+MCP tools like filesystem access or database queries.
+
+Related: [MCPServerConfigBase](/docs/common/mcp/mcpserver-config-base#mcpserverconfigbase) provides shared settings,
+[MCPSSEServerConfig](/docs/common/mcp/mcpsseserver-config#mcpsseserverconfig) is the alternative for remote servers.
+
+```ts
+interface MCPStdioServerConfig extends MCPServerConfigBase {
+    transport?: 'stdio';
+    command: string;
+    args?: string[];
+    env?: Record<string, string>;
+    cwd?: string;
+}
+```
+* Extends: [`MCPServerConfigBase`](/docs/common/mcp/mcpserver-config-base#mcpserverconfigbase)
+
+
+
+<div className="members-wrapper">
+
+### transport
+
+<MemberInfo kind="property" type={`'stdio'`} />
+
+
+### command
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### args
+
+<MemberInfo kind="property" type={`string[]`} />
+
+
+### env
+
+<MemberInfo kind="property" type={`Record<string, string>`} />
+
+
+### cwd
+
+<MemberInfo kind="property" type={`string`} />
+
+
+
+
+</div>

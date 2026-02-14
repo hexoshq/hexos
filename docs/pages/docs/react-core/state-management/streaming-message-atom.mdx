@@ -1,0 +1,15 @@
+---
+title: "StreamingMessageAtom"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+
+<GenerationInfo sourceFile="packages/react-core/src/atoms/index.ts" sourceLine="102" packageName="@hexos/react-core" />
+
+Stores the message currently being streamed for real-time rendering.
+
+Contains accumulated `content` and `reasoning` text deltas. Set on `message-start`,
+updated on `text-delta` and `reasoning-delta`, cleared on `text-complete` or `error`.
+[useAgent](/docs/react-core/hooks/use-agent#useagent) merges this into the display messages array for live preview.
+

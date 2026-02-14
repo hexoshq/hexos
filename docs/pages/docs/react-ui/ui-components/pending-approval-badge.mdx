@@ -1,0 +1,33 @@
+---
+title: "PendingApprovalBadge"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-ui/src/components/ToolApprovalContainer.tsx" sourceLine="137" packageName="@hexos/react-ui" />
+
+Badge component showing the count of pending tool approvals.
+
+Displays a pill-shaped badge with a pulsing amber indicator and count of pending approval requests.
+Useful for headers or sidebars to provide persistent visibility of approval queue status.
+
+Automatically hides when no approvals are pending. The optional `onClick` handler enables
+navigation to an approvals view or dialog.
+
+*Example*
+
+```tsx
+<PendingApprovalBadge onClick={() => setShowApprovals(true)} />
+```
+
+```ts
+function PendingApprovalBadge(props: PendingApprovalBadgeProps): React.ReactElement | null
+```
+Parameters
+
+### props
+
+<MemberInfo kind="parameter" type={`<a href='/docs/react-ui/ui-components/pending-approval-badge-props#pendingapprovalbadgeprops'>PendingApprovalBadgeProps</a>`} />
+

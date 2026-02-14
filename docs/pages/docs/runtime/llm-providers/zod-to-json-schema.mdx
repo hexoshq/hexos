@@ -1,0 +1,33 @@
+---
+title: "ZodToJsonSchema"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/providers/shared/zodToJsonSchema.ts" sourceLine="22" packageName="@hexos/runtime" />
+
+Converts Zod schemas to JSON Schema format for LLM tool definitions.
+
+Handles three cases: already-converted JSON Schema objects (pass-through),
+ZodObject instances (introspects shape and converts to JSON Schema), and
+unknown schemas (returns empty object schema). Supports string, number, and
+boolean primitive types, optional fields, and field descriptions.
+
+This conversion is required because LLM providers expect tool input schemas
+in JSON Schema format, while Hexos uses Zod for runtime validation.
+
+```ts
+function zodToJsonSchema(schema: unknown, debug:  = false): Record<string, unknown>
+```
+Parameters
+
+### schema
+
+<MemberInfo kind="parameter" type={`unknown`} />
+
+### debug
+
+<MemberInfo kind="parameter" type={``} />
+

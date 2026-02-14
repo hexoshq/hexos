@@ -1,0 +1,39 @@
+---
+title: "HandoffToolInput"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="737" packageName="@hexos/common" />
+
+Input schema for auto-generated handoff tools (`handoff_to_<agentId>`).
+
+The LLM provides a reason for the handoff and optional context to pass to the target agent.
+This schema is validated via Zod before execution.
+
+Related: [HandoffResult](/docs/common/tools/handoff-result#handoffresult) is the output, [generateHandoffTools](/docs/runtime/tools/generate-handoff-tools#generatehandofftools) creates these tools.
+
+```ts
+interface HandoffToolInput {
+    reason: string;
+    context?: string;
+}
+```
+
+<div className="members-wrapper">
+
+### reason
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### context
+
+<MemberInfo kind="property" type={`string`} />
+
+
+
+
+</div>

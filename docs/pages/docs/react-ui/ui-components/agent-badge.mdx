@@ -1,0 +1,44 @@
+---
+title: "AgentBadge"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-ui/src/components/AgentBadge.tsx" sourceLine="91" packageName="@hexos/react-ui" />
+
+Badge component displaying agent identity with color-coded styling.
+
+Renders a pill-shaped badge with agent avatar/initial and name, using colors from [AGENT_COLORS](/docs/react-ui/ui-components/agent_colors#agent_colors)
+for visual distinction. Supports three size presets (sm, md, lg) and active/inactive states.
+
+When `isActive` is true, applies the agent's brand colors; otherwise uses neutral gray styling.
+The optional pulse animation (via `showPulse`) provides real-time feedback during agent activity.
+
+Avatar display prioritizes `avatarUrl` if provided, otherwise renders the first character of the
+agent name as a circular initial badge.
+
+Used by [AgentSwitcher](/docs/react-ui/ui-components/agent-switcher#agentswitcher) for multi-agent conversations to indicate which agent is responding.
+
+*Example*
+
+```tsx
+<AgentBadge
+  agentId="code"
+  agentName="Code Assistant"
+  isActive
+  showPulse={isStreaming}
+  size="md"
+/>
+```
+
+```ts
+function AgentBadge(props: AgentBadgeProps): React.ReactElement
+```
+Parameters
+
+### props
+
+<MemberInfo kind="parameter" type={`<a href='/docs/react-ui/ui-components/agent-badge-props#agentbadgeprops'>AgentBadgeProps</a>`} />
+

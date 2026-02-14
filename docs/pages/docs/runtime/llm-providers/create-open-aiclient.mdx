@@ -1,0 +1,17 @@
+---
+title: "CreateOpenAIClient"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/providers/openai/client.ts" sourceLine="17" packageName="@hexos/runtime" />
+
+Creates an OpenAI client instance for LLM API communication.
+
+Initializes the OpenAI SDK client using the OPENAI_API_KEY environment variable.
+The client is used by the OpenAI provider to make chat completion requests.
+
+```ts
+function createOpenAIClient(): OpenAI
+```

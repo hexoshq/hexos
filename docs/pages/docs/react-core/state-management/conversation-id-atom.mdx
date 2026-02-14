@@ -1,0 +1,14 @@
+---
+title: "ConversationIdAtom"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+
+<GenerationInfo sourceFile="packages/react-core/src/atoms/index.ts" sourceLine="90" packageName="@hexos/react-core" />
+
+Stores the current conversation ID.
+
+Auto-generated via `crypto.randomUUID()` if not provided in [AgentConfig](/docs/react-core/transport/agent-config#agentconfig).
+Sent with every [TransportMessage](/docs/react-core/transport/transport-message#transportmessage) to correlate server-side conversation state.
+

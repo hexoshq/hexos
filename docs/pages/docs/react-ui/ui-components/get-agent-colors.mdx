@@ -1,0 +1,24 @@
+---
+title: "GetAgentColors"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-ui/src/components/AgentBadge.tsx" sourceLine="37" packageName="@hexos/react-ui" />
+
+Retrieves the color scheme for a given agent identifier.
+
+Performs case-insensitive lookup in [AGENT_COLORS](/docs/react-ui/ui-components/agent_colors#agent_colors). Returns the default
+color scheme if the agent ID is not found in the predefined set.
+
+```ts
+function getAgentColors(agentId: string): (typeof AGENT_COLORS)['default']
+```
+Parameters
+
+### agentId
+
+<MemberInfo kind="parameter" type={`string`} />
+

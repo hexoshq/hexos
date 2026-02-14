@@ -1,0 +1,30 @@
+---
+title: "StreamWithOpenAIProvider"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/providers/openai/stream.ts" sourceLine="45" packageName="@hexos/runtime" />
+
+Streams chat completions from OpenAI with support for tool calling and agent iteration.
+
+Orchestrates the full LLM interaction cycle: sends messages to OpenAI's chat completion API,
+streams text deltas, handles tool calls with approval workflows, executes tools, and returns
+results to the LLM. Implements an agentic loop that continues until the model produces a final
+response or reaches the maximum iteration limit.
+
+The function yields RuntimeEvent objects for each stage: text-delta for streaming content,
+tool-call-start/args/result/error for tool execution phases, approval-required for human-in-the-loop
+decisions, and text-complete when the conversation is finished.
+
+```ts
+function streamWithOpenAIProvider(params: OpenAIStreamParams): AsyncGenerator<RuntimeEvent>
+```
+Parameters
+
+### params
+
+<MemberInfo kind="parameter" type={`<a href='/docs/runtime/llm-providers/open-aistream-params#openaistreamparams'>OpenAIStreamParams</a>`} />
+

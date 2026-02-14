@@ -1,0 +1,36 @@
+---
+title: "QuickReplies"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-ui/src/components/QuickReplies.tsx" sourceLine="41" packageName="@hexos/react-ui" />
+
+Quick reply suggestion chips for common user actions.
+
+Renders a grid of clickable suggestion buttons that trigger the `onSelect` callback when clicked.
+Useful for empty states to guide initial user engagement or for providing contextual action shortcuts.
+
+Returns null if the suggestions array is empty, allowing conditional rendering without explicit checks.
+
+*Example*
+
+```tsx
+<QuickReplies
+  suggestions={['Hello', 'Help me with...', 'Show examples']}
+  title="Try asking:"
+  onSelect={(text) => sendMessage(text)}
+/>
+```
+
+```ts
+function QuickReplies(props: QuickRepliesProps): React.ReactElement | null
+```
+Parameters
+
+### props
+
+<MemberInfo kind="parameter" type={`<a href='/docs/react-ui/ui-components/quick-replies-props#quickrepliesprops'>QuickRepliesProps</a>`} />
+

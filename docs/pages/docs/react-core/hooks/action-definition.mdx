@@ -1,0 +1,72 @@
+---
+title: "ActionDefinition"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-core/src/types.ts" sourceLine="176" packageName="@hexos/react-core" />
+
+Defines a frontend action that the agent can trigger, with optimistic update support.
+
+Actions are like [FrontendToolDefinition](/docs/react-core/tools/frontend-tool-definition#frontendtooldefinition) but designed for state mutations.
+They support optimistic updates (apply changes immediately before the async handler
+resolves) and automatic rollback on errors. An optional `confirmationMessage` triggers
+a confirmation dialog before execution.
+
+Related: [useAgentAction](/docs/react-core/hooks/use-agent-action#useagentaction) registers and executes actions,
+[ActionConfirmDialog](/docs/react-ui/ui-components/action-confirm-dialog#actionconfirmdialog) renders confirmation UI.
+
+```ts
+interface ActionDefinition<TInput = unknown> {
+    name: string;
+    description: string;
+    inputSchema: z.ZodType<TInput>;
+    handler: (input: TInput) => Promise<void>;
+    confirmationMessage?: string | ((input: TInput) => string);
+    optimisticUpdate?: (input: TInput) => void;
+    rollback?: (input: TInput, error: Error) => void;
+}
+```
+
+<div className="members-wrapper">
+
+### name
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### description
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### inputSchema
+
+<MemberInfo kind="property" type={`z.ZodType<TInput>`} />
+
+
+### handler
+
+<MemberInfo kind="property" type={`(input: TInput) => Promise<void>`} />
+
+
+### confirmationMessage
+
+<MemberInfo kind="property" type={`string | ((input: TInput) => string)`} />
+
+
+### optimisticUpdate
+
+<MemberInfo kind="property" type={`(input: TInput) => void`} />
+
+
+### rollback
+
+<MemberInfo kind="property" type={`(input: TInput, error: Error) => void`} />
+
+
+
+
+</div>

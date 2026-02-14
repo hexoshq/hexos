@@ -1,0 +1,45 @@
+---
+title: "SlidingWindowRateLimiter"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/utils/rateLimiter.ts" sourceLine="34" packageName="@hexos/runtime" />
+
+In-memory sliding window rate limiter that tracks request counts per key over a time window.
+
+Each key (typically a user ID or conversation ID) maintains its own request timestamp array.
+On each `consume()` call, timestamps outside the window are pruned and the request is either
+allowed (if under the limit) or rejected (with a `retryAfterMs` hint).
+
+Used by [AgentRuntime](/docs/runtime/agent-runtime/#agentruntime) to enforce per-user and per-conversation request limits as
+configured by [RateLimitConfig](/docs/common/infrastructure/rate-limit-config#ratelimitconfig). The scope (user, conversation, or both) determines
+the key used for tracking.
+
+```ts
+class SlidingWindowRateLimiter {
+    constructor(windowMs: number, maxRequests: number)
+    consume(key: string, now:  = Date.now()) => RateLimitResult;
+}
+```
+
+<div className="members-wrapper">
+
+### constructor
+
+<MemberInfo kind="method" type={`(windowMs: number, maxRequests: number) => SlidingWindowRateLimiter`} />
+
+
+### consume
+
+<MemberInfo kind="method" type={`(key: string, now:  = Date.now()) => <a href='/docs/runtime/infrastructure/rate-limit-result#ratelimitresult'>RateLimitResult</a>`} />
+
+Attempts to consume a rate limit token for the given key.
+
+Prunes expired timestamps, checks the remaining quota, and either records the request
+(if allowed) or returns retry information (if the limit is exceeded).
+
+
+</div>

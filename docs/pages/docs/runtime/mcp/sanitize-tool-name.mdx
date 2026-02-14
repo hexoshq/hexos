@@ -1,0 +1,25 @@
+---
+title: "SanitizeToolName"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/mcp/MCPManager.ts" sourceLine="26" packageName="@hexos/runtime" />
+
+Sanitize a tool name to be compatible with all LLM provider APIs.
+
+OpenAI and Anthropic require tool names to match the pattern ^[a-zA-Z0-9_-]+$.
+This function replaces dots and other invalid characters with underscores to
+ensure cross-provider compatibility.
+
+```ts
+function sanitizeToolName(name: string): string
+```
+Parameters
+
+### name
+
+<MemberInfo kind="parameter" type={`string`} />
+

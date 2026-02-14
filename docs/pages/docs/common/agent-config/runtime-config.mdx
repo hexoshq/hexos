@@ -1,0 +1,129 @@
+---
+title: "RuntimeConfig"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="555" packageName="@hexos/common" />
+
+Master configuration for the Hexos runtime, defining agents, tools, MCP servers, and operational limits.
+
+This is the primary input to [AgentRuntime](/docs/runtime/agent-runtime/#agentruntime). It registers all agents and their tools,
+configures MCP server connections, sets lifecycle hooks, and defines resource limits for
+concurrency, rate limiting, timeouts, and approval management.
+
+The runtime normalizes this config at startup, applying defaults for all optional numeric
+fields and validating relationships between values.
+
+Related: [AgentDefinition](/docs/common/agent-config/agent-definition#agentdefinition) defines individual agents, [ToolDefinition](/docs/common/tools/tool-definition#tooldefinition) defines tools,
+[MCPServerConfig](/docs/common/mcp/mcpserver-config#mcpserverconfig) configures MCP servers, [RuntimeHooks](/docs/common/agent-config/runtime-hooks#runtimehooks) provides lifecycle callbacks,
+[RateLimitConfig](/docs/common/infrastructure/rate-limit-config#ratelimitconfig) and [RetryConfig](/docs/common/infrastructure/retry-config#retryconfig) control resilience.
+
+```ts
+interface RuntimeConfig {
+    agents: AgentDefinition[];
+    defaultAgent?: string;
+    globalTools?: ToolDefinition[];
+    mcpServers?: Record<string, MCPServerConfig>;
+    hooks?: RuntimeHooks;
+    debug?: boolean;
+    maxHandoffs?: number;
+    approvalTimeoutMs?: number;
+    maxPendingApprovalsPerConversation?: number;
+    defaultToolTimeoutMs?: number;
+    maxActiveStreams?: number;
+    maxActiveStreamsPerConversation?: number;
+    maxConcurrentToolExecutions?: number;
+    toolExecutionQueueTimeoutMs?: number;
+    rateLimit?: RateLimitConfig;
+    retry?: RetryConfig;
+}
+```
+
+<div className="members-wrapper">
+
+### agents
+
+<MemberInfo kind="property" type={`<a href='/docs/common/agent-config/agent-definition#agentdefinition'>AgentDefinition</a>[]`} />
+
+
+### defaultAgent
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### globalTools
+
+<MemberInfo kind="property" type={`<a href='/docs/common/tools/tool-definition#tooldefinition'>ToolDefinition</a>[]`} />
+
+
+### mcpServers
+
+<MemberInfo kind="property" type={`Record<string, <a href='/docs/common/mcp/mcpserver-config#mcpserverconfig'>MCPServerConfig</a>>`} />
+
+
+### hooks
+
+<MemberInfo kind="property" type={`<a href='/docs/common/agent-config/runtime-hooks#runtimehooks'>RuntimeHooks</a>`} />
+
+
+### debug
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### maxHandoffs
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### approvalTimeoutMs
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### maxPendingApprovalsPerConversation
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### defaultToolTimeoutMs
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### maxActiveStreams
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### maxActiveStreamsPerConversation
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### maxConcurrentToolExecutions
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### toolExecutionQueueTimeoutMs
+
+<MemberInfo kind="property" type={`number`} />
+
+
+### rateLimit
+
+<MemberInfo kind="property" type={`<a href='/docs/common/infrastructure/rate-limit-config#ratelimitconfig'>RateLimitConfig</a>`} />
+
+
+### retry
+
+<MemberInfo kind="property" type={`<a href='/docs/common/infrastructure/retry-config#retryconfig'>RetryConfig</a>`} />
+
+
+
+
+</div>

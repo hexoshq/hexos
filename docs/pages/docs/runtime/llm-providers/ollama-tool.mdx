@@ -1,0 +1,38 @@
+---
+title: "OllamaTool"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/providers/ollama/tools.ts" sourceLine="9" packageName="@hexos/runtime" />
+
+Ollama-specific tool definition format for function calling.
+
+```ts
+interface OllamaTool {
+    type: 'function';
+    function: {
+    name: string;
+    description: string;
+    parameters: Record<string, unknown>;
+  };
+}
+```
+
+<div className="members-wrapper">
+
+### type
+
+<MemberInfo kind="property" type={`'function'`} />
+
+
+### function
+
+<MemberInfo kind="property" type={`{     name: string;     description: string;     parameters: Record<string, unknown>;   }`} />
+
+
+
+
+</div>

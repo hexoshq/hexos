@@ -1,0 +1,28 @@
+---
+title: "NormalizeRuntimeConfig"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/utils/config.ts" sourceLine="121" packageName="@hexos/runtime" />
+
+Merges user-provided [RuntimeConfig](/docs/common/agent-config/runtime-config#runtimeconfig) with sensible defaults and validates all values.
+
+Applies default values for every optional numeric field (maxHandoffs, timeouts, concurrency limits,
+rate limiting, retry policy). Then validates that all numeric values are finite, non-negative, and
+internally consistent (e.g., `retry.maxDelayMs >= retry.initialDelayMs`). Also validates per-agent
+configs (maxIterations, tool timeouts) and MCP server timeouts.
+
+Called once by [AgentRuntime](/docs/runtime/agent-runtime/#agentruntime) during construction.
+
+```ts
+function normalizeRuntimeConfig(config: RuntimeConfig): NormalizedRuntimeConfig
+```
+Parameters
+
+### config
+
+<MemberInfo kind="parameter" type={`<a href='/docs/common/agent-config/runtime-config#runtimeconfig'>RuntimeConfig</a>`} />
+

@@ -1,0 +1,146 @@
+---
+title: "AgentRuntime"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+import { LinkCard } from '@/docs/components/docs/LinkCard'
+
+<GenerationInfo sourceFile="packages/runtime/src/AgentRuntime.ts" sourceLine="108" packageName="@hexos/runtime" />
+
+Central orchestrator for multi-agent conversations with LLM providers, tool execution,
+and human-in-the-loop approvals.
+
+AgentRuntime manages the complete lifecycle of agent interactions: routing messages to
+the appropriate LLM provider ([LLMProvider](/docs/common/core-types/llmprovider#llmprovider)), executing tools with concurrency
+limits ([Semaphore](/docs/runtime/infrastructure/semaphore#semaphore)) and timeouts ([withTimeout](/docs/runtime/infrastructure/with-timeout#withtimeout)), coordinating agent handoffs
+via the swarm pattern ([generateHandoffTools](/docs/runtime/tools/generate-handoff-tools#generatehandofftools)), and managing pending approval
+workflows ([ToolApproval](/docs/common/tools/tool-approval#toolapproval)).
+
+The runtime operates in streaming mode via `stream()`, yielding [RuntimeEvent](/docs/common/core-types/runtime-event#runtimeevent) objects
+as the conversation progresses. It enforces resource limits: max concurrent streams,
+rate limiting ([SlidingWindowRateLimiter](/docs/runtime/infrastructure/sliding-window-rate-limiter#slidingwindowratelimiter)), tool execution concurrency, and approval
+timeouts. Configuration is validated and normalized at construction via [normalizeRuntimeConfig](/docs/runtime/infrastructure/normalize-runtime-config#normalizeruntimeconfig).
+
+Typical flow:
+1. Client calls `stream(input)` with user message
+2. Runtime selects active agent and builds tool list (local + handoff + MCP)
+3. LLM provider streams response, emitting text-delta and tool-call events
+4. Tools execute with approval checks and guards
+5. Handoff tools trigger agent switches, continuing the loop
+6. Stream completes with final message content
+
+Related: [RuntimeConfig](/docs/common/agent-config/runtime-config#runtimeconfig) configures the runtime, [RuntimeEvent](/docs/common/core-types/runtime-event#runtimeevent) is the event output,
+[SSETransport](/docs/react-core/transport/ssetransport#ssetransport) consumes events on the frontend, [createAgentHandler](/docs/runtime/agent-runtime/create-agent-handler#createagenthandler) wraps this
+for Next.js, [MCPManager](/docs/runtime/mcp/mcpmanager#mcpmanager) provides external tool integration.
+
+```ts
+class AgentRuntime {
+    constructor(config: RuntimeConfig)
+    initialize() => Promise<void>;
+    shutdown() => Promise<void>;
+    submitApproval(decision: ApprovalDecision) => boolean;
+    getPendingApprovals(conversationId?: string) => PendingApproval[];
+    stream(input: RuntimeInput) => AsyncGenerator<RuntimeEvent>;
+    invoke(input: RuntimeInput) => Promise<RuntimeOutput>;
+    resumeWithApproval(conversationId: string, approvals: ApprovalDecision[]) => AsyncGenerator<RuntimeEvent>;
+    getAgents() => AgentDefinition[];
+    getAgent(id: string) => AgentDefinition | undefined;
+    getMCPManager() => MCPManager | null;
+}
+```
+
+<div className="members-wrapper">
+
+### constructor
+
+<MemberInfo kind="method" type={`(config: <a href='/docs/common/agent-config/runtime-config#runtimeconfig'>RuntimeConfig</a>) => AgentRuntime`} />
+
+
+### initialize
+
+<MemberInfo kind="method" type={`() => Promise<void>`} />
+
+Initializes the runtime by connecting to configured MCP servers.
+
+Must be called before `stream()` or `invoke()`. Connects to non-lazy MCP servers
+and caches their tool lists. Idempotent — subsequent calls are no-ops.
+
+Related: [MCPManager](/docs/runtime/mcp/mcpmanager#mcpmanager).initialize() handles server connections.
+### shutdown
+
+<MemberInfo kind="method" type={`() => Promise<void>`} />
+
+Shuts down the runtime by disconnecting all MCP servers.
+
+Call this during application teardown to clean up child processes and connections.
+### submitApproval
+
+<MemberInfo kind="method" type={`(decision: <a href='/docs/react-core/tools/approval-decision#approvaldecision'>ApprovalDecision</a>) => boolean`} />
+
+Submits an approval or rejection decision for a pending tool call.
+
+Resolves the promise created by `waitForApproval()`, allowing the streaming
+conversation to continue. Returns false if no pending approval matches the
+provided `toolCallId`.
+
+Related: [ApprovalDecision](/docs/react-core/tools/approval-decision#approvaldecision) is the input, [createApprovalHandler](/docs/runtime/agent-runtime/create-approval-handler#createapprovalhandler)
+wraps this for HTTP endpoints, [useToolApproval](/docs/react-core/hooks/use-tool-approval#usetoolapproval) calls this from the frontend.
+### getPendingApprovals
+
+<MemberInfo kind="method" type={`(conversationId?: string) => PendingApproval[]`} />
+
+Returns all pending tool approval requests, optionally filtered by conversation.
+### stream
+
+<MemberInfo kind="method" type={`(input: <a href='/docs/common/runtime/runtime-input#runtimeinput'>RuntimeInput</a>) => AsyncGenerator<<a href='/docs/common/core-types/runtime-event#runtimeevent'>RuntimeEvent</a>>`} />
+
+Streams a conversation turn, yielding [RuntimeEvent](/docs/common/core-types/runtime-event#runtimeevent)s in real-time.
+
+Supports multi-agent handoffs: if a tool returns a [HandoffResult](/docs/common/tools/handoff-result#handoffresult), the runtime
+switches to the target agent and continues streaming. The loop terminates when no handoff
+occurs or the max handoff limit is reached.
+
+Resource limits enforced: max active streams (global and per-conversation), rate limiting,
+tool execution concurrency via [Semaphore](/docs/runtime/infrastructure/semaphore#semaphore), and approval timeouts.
+### invoke
+
+<MemberInfo kind="method" type={`(input: <a href='/docs/common/runtime/runtime-input#runtimeinput'>RuntimeInput</a>) => Promise<<a href='/docs/common/runtime/runtime-output#runtimeoutput'>RuntimeOutput</a>>`} />
+
+Executes a single conversation turn without streaming, returning the final result.
+
+Internally calls `stream()` and collects all events into a [RuntimeOutput](/docs/common/runtime/runtime-output#runtimeoutput).
+Useful for server-to-server calls where streaming is not needed.
+### resumeWithApproval
+
+<MemberInfo kind="method" type={`(conversationId: string, approvals: <a href='/docs/react-core/tools/approval-decision#approvaldecision'>ApprovalDecision</a>[]) => AsyncGenerator<<a href='/docs/common/core-types/runtime-event#runtimeevent'>RuntimeEvent</a>>`} />
+
+Resolves pending approvals for a conversation and signals completion.
+
+Applies each [ApprovalDecision](/docs/react-core/tools/approval-decision#approvaldecision) to its matching pending approval. Emits an error
+event if no approvals matched. Used when the client batches multiple approval decisions.
+### getAgents
+
+<MemberInfo kind="method" type={`() => <a href='/docs/common/agent-config/agent-definition#agentdefinition'>AgentDefinition</a>[]`} />
+
+Returns all registered agent definitions.
+### getAgent
+
+<MemberInfo kind="method" type={`(id: string) => <a href='/docs/common/agent-config/agent-definition#agentdefinition'>AgentDefinition</a> | undefined`} />
+
+Returns a specific agent definition by ID, or undefined if not found.
+### getMCPManager
+
+<MemberInfo kind="method" type={`() => <a href='/docs/runtime/mcp/mcpmanager#mcpmanager'>MCPManager</a> | null`} />
+
+Returns the [MCPManager](/docs/runtime/mcp/mcpmanager#mcpmanager) instance, or null if no MCP servers are configured.
+
+
+</div>
+
+---
+
+<LinkCard href="/docs/runtime/agent-runtime/create-agent-handler" title="Create Agent Handler" />
+<LinkCard href="/docs/runtime/agent-runtime/create-approval-handler" title="Create Approval Handler" />
+<LinkCard href="/docs/runtime/agent-runtime/create-express-handler" title="Create Express Handler" />

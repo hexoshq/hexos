@@ -1,0 +1,24 @@
+---
+title: "IsObject"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/shared-utils.ts" sourceLine="69" packageName="@hexos/common" />
+
+Type guard that checks whether a value is a plain object (not an array or primitive).
+
+Returns true for objects created via `{}`, `Object.create()`, or `new Object()`.
+Returns false for arrays, null, undefined, and primitive values.
+
+```ts
+function isObject(item: any): item is object
+```
+Parameters
+
+### item
+
+<MemberInfo kind="parameter" type={`any`} />
+

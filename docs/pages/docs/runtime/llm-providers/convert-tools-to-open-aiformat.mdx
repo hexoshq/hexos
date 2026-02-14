@@ -1,0 +1,29 @@
+---
+title: "ConvertToolsToOpenAIFormat"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/providers/openai/tools.ts" sourceLine="21" packageName="@hexos/runtime" />
+
+Converts Hexos tool definitions to OpenAI's chat completion tool format.
+
+Transforms internal ToolDefinition objects into the format expected by OpenAI's
+chat completion API. Each tool is mapped to a function definition with its name,
+description, and Zod schema converted to JSON Schema format.
+
+```ts
+function convertToolsToOpenAIFormat(tools: ToolDefinition[], toJsonSchema: (schema: unknown) => Record<string, unknown>): OpenAI.Chat.Completions.ChatCompletionTool[]
+```
+Parameters
+
+### tools
+
+<MemberInfo kind="parameter" type={`<a href='/docs/common/tools/tool-definition#tooldefinition'>ToolDefinition</a>[]`} />
+
+### toJsonSchema
+
+<MemberInfo kind="parameter" type={`(schema: unknown) => Record<string, unknown>`} />
+

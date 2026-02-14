@@ -1,0 +1,46 @@
+---
+title: "ApprovalDecision"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="677" packageName="@hexos/common" />
+
+User's response to a [ToolApproval](/docs/common/tools/tool-approval#toolapproval) request — approve or reject with optional reason.
+
+Submitted via [AgentRuntime](/docs/runtime/agent-runtime/#agentruntime).submitApproval() on the backend, or via
+[useToolApproval](/docs/react-core/hooks/use-tool-approval#usetoolapproval).approve() / reject() on the frontend. When rejected,
+the tool call fails with the provided reason.
+
+Related: [ToolApproval](/docs/common/tools/tool-approval#toolapproval) is the request, [ToolApprovalDialog](/docs/react-ui/ui-components/tool-approval-dialog#toolapprovaldialog) renders the UI.
+
+```ts
+interface ApprovalDecision {
+    toolCallId: string;
+    approved: boolean;
+    reason?: string;
+}
+```
+
+<div className="members-wrapper">
+
+### toolCallId
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### approved
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### reason
+
+<MemberInfo kind="property" type={`string`} />
+
+
+
+
+</div>

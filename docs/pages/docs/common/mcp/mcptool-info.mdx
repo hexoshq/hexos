@@ -1,0 +1,46 @@
+---
+title: "MCPToolInfo"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="492" packageName="@hexos/common" />
+
+Metadata for a tool discovered from an MCP server.
+
+Contains the tool name, optional description, and its JSON Schema input definition.
+Retrieved by [MCPManager](/docs/runtime/mcp/mcpmanager#mcpmanager) during server initialization and cached for reuse.
+
+Related: [MCPServerConfig](/docs/common/mcp/mcpserver-config#mcpserverconfig) configures the server, [ToolDefinition](/docs/common/tools/tool-definition#tooldefinition) is the
+runtime-native equivalent.
+
+```ts
+interface MCPToolInfo {
+    name: string;
+    description?: string;
+    inputSchema: unknown;
+}
+```
+
+<div className="members-wrapper">
+
+### name
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### description
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### inputSchema
+
+<MemberInfo kind="property" type={`unknown`} />
+
+
+
+
+</div>
