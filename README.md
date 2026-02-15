@@ -31,6 +31,20 @@ A React library for building AI agent chat applications with streaming, multi-ag
 npm install @hexos/react-core @hexos/react-ui @hexos/runtime @hexos/common
 ```
 
+### Install in Existing Next.js App
+
+Use the CLI when you already have a Next.js App Router project and want to add Hexos without scaffolding from scratch:
+
+```bash
+npx @hexos/cli install
+```
+
+Upgrade managed Hexos files and dependencies later with:
+
+```bash
+npx @hexos/cli upgrade
+```
+
 ### Backend (Next.js App Router)
 
 ```typescript

@@ -1,0 +1,46 @@
+{
+  "name": "@hexos/cli",
+  "version": "0.1.0",
+  "description": "CLI to install and upgrade Hexos in existing projects",
+  "license": "MIT",
+  "private": false,
+  "type": "commonjs",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "bin": {
+    "hexos": "dist/cli.js"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "build": "rimraf dist && tsc -p ./tsconfig.cli.json && ts-node ./build.ts",
+    "watch": "tsc -p ./tsconfig.cli.json --watch",
+    "test": "vitest run --config vitest.config.mts",
+    "e2e": "pnpm run build && vitest run --config e2e/vitest.e2e.config.mts",
+    "ci": "pnpm run build && pnpm run test && pnpm run e2e"
+  },
+  "dependencies": {
+    "@clack/prompts": "^0.11.0",
+    "@hexos/create": "0.1.1",
+    "@hexos/runtime": "0.3.2",
+    "commander": "^14.0.1",
+    "cross-spawn": "^7.0.6",
+    "fs-extra": "^11.2.0",
+    "handlebars": "^4.7.8",
+    "picocolors": "^1.1.1",
+    "semver": "^7.7.2"
+  },
+  "devDependencies": {
+    "@types/cross-spawn": "^6.0.6",
+    "@types/fs-extra": "^11.0.4",
+    "@types/handlebars": "^4.1.0",
+    "@types/semver": "^7.5.8",
+    "rimraf": "^5.0.5",
+    "ts-node": "^10.9.2",
+    "typescript": "5.8.2",
+    "vitest": "^2.1.0"
+  }
+}
