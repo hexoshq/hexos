@@ -13,7 +13,7 @@ if (process.argv.includes('--next') || process.env.npm_config_argv?.includes('pu
 /**
  * The types of commit which will be included in the changelog.
  */
-const VALID_TYPES = ['feat', 'fix', 'perf'];
+const VALID_TYPES = ['feature','feat', 'fix', 'perf', 'chore', 'docs', 'refactor'];
 
 /**
  * Define which packages to create changelog entries for.
@@ -41,6 +41,9 @@ function generateChangelogForPackage() {
     conventionalChangelogCore(
         {
             transform: (commit: any, context: any) => {
+                if (commit.type === 'chore' && commit.scope === 'changelog') {
+                    return context(null, null);
+                }
                 const includeCommit = VALID_TYPES.includes(commit.type) && scopeIsValid(commit.scope);
                 if (includeCommit) {
                     return context(null, commit);
@@ -52,7 +55,7 @@ function generateChangelogForPackage() {
             outputUnreleased: true,
         },
         {
-            version: require('../../lerna.json').version,
+            version: new Date().toISOString().slice(0, 10),
         },
         null,
         null,
@@ -77,8 +80,11 @@ function generateChangelogForPackage() {
 }
 
 function scopeIsValid(scope?: string): boolean {
+    if (!scope) {
+        return true;
+    }
     for (const validScope of VALID_SCOPES) {
-        if (scope && scope.includes(validScope)) {
+        if (scope.includes(validScope)) {
             return true;
         }
     }
@@ -95,7 +101,20 @@ function addHeaderToCommitGroup(commitGroup: any) {
             commitGroup.header = 'Fixes';
             break;
         case 'feat':
+        case 'feature':
             commitGroup.header = 'Features';
+            break;
+        case 'chore':
+            commitGroup.header = 'Chores';
+            break;
+        case 'docs':
+            commitGroup.header = 'Documentation';
+            break;
+        case 'refactor':
+            commitGroup.header = 'Refactoring';
+            break;
+        case 'perf':
+            commitGroup.header = 'Performance';
             break;
         default:
             commitGroup.header = commitGroup.title.charAt(0).toUpperCase() + commitGroup.title.slice(1);
