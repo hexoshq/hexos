@@ -1,0 +1,44 @@
+---
+title: "HexosError"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/errors.ts" sourceLine="33" packageName="@hexos/common" />
+
+Structured error info used across Hexos packages.
+
+The `message` field contains a sanitized, user-safe string. The `code` field preserves
+existing error codes (e.g., `RATE_LIMIT_EXCEEDED`). The `category` field enables
+UI-level display logic and error classification.
+
+```ts
+interface HexosError {
+    message: string;
+    code?: string;
+    category: ErrorCategory;
+}
+```
+
+<div className="members-wrapper">
+
+### message
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### code
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### category
+
+<MemberInfo kind="property" type={`<a href='/docs/runtime/utils/error-category#errorcategory'>ErrorCategory</a>`} />
+
+
+
+
+</div>

@@ -1,0 +1,25 @@
+---
+title: "ErrorCategory"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/runtime/src/utils/errorSanitizer.ts" sourceLine="6" packageName="@hexos/runtime" />
+
+
+
+```ts
+enum ErrorCategory {
+    Auth = 'auth'
+    Validation = 'validation'
+    RateLimit = 'rate_limit'
+    Timeout = 'timeout'
+    Network = 'network'
+    Server = 'server'
+    AgentConfig = 'agent_config'
+    ToolExecution = 'tool_execution'
+    Unknown = 'unknown'
+}
+```
