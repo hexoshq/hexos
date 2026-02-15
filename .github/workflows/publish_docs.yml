@@ -1,0 +1,13 @@
+name: Publish Docs (Temporarily Disabled)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  disabled:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish workflow is disabled
+        run: |
+          echo "Disabled until Hexos release flow is defined."
+          echo "Legacy vendure/vendure-io publish integration has been removed."

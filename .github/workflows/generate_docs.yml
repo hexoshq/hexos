@@ -1,0 +1,72 @@
+name: Generate Docs
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+    paths:
+      - "packages/**/*.ts"
+      - "packages/**/*.tsx"
+
+env:
+  PNPM_VERSION: 9.15.0
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  generate:
+    name: Generate and validate docs
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.x"
+
+      - name: Enable pnpm (Corepack)
+        shell: bash
+        run: |
+          corepack enable
+          corepack prepare pnpm@${PNPM_VERSION} --activate
+          pnpm --version
+
+      - name: Resolve pnpm store path
+        id: pnpm-store
+        shell: bash
+        run: echo "path=$(pnpm store path)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache pnpm store
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-store.outputs.path }}
+          key: ${{ runner.os }}-node-22.x-pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-node-22.x-pnpm-store-
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate TypeScript docs
+        run: pnpm run docs:generate-typescript-docs
+
+      - name: Check docs drift
+        run: |
+          git diff --exit-code -- docs/pages/docs || (
+            echo "Generated docs are out of sync. Run 'pnpm run docs:generate-typescript-docs' and commit docs/pages/docs changes.";
+            exit 1
+          )
+
+      - name: Typecheck docs
+        run: pnpm --filter docs typecheck
+
+      - name: Build docs
+        run: pnpm --filter docs build
