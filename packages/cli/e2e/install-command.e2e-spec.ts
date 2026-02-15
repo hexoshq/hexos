@@ -18,6 +18,9 @@ describe('hexos install e2e', () => {
         expect(result.exitCode).toBe(0);
 
         expect(project.fileExists('app/chat/page.tsx')).toBe(true);
+        expect(project.fileExists('app/chat/layout.tsx')).toBe(true);
+        expect(project.readFile('app/chat/layout.tsx')).toContain("@hexos/react-ui/styles.css");
+        expect(project.fileExists('app/chat/hexos.css')).toBe(false);
         expect(project.fileExists('app/page.tsx')).toBe(true);
         expect(project.readFile('app/page.tsx')).toContain('Home');
 
@@ -36,6 +39,10 @@ describe('hexos install e2e', () => {
         expect(project.fileExists('app/api/mcp/route.ts')).toBe(true);
         expect(project.fileExists('lib/mcp-server-store.ts')).toBe(true);
         expect(project.fileExists('.mcp-servers.local.json')).toBe(true);
+        expect(project.fileExists('app/chat/layout.tsx')).toBe(true);
+        expect(project.readFile('app/chat/layout.tsx')).toContain("./hexos.css");
+        expect(project.fileExists('app/chat/hexos.css')).toBe(true);
+        expect(project.readFile('app/chat/hexos.css')).toContain('.mcp-page');
     });
 
     it('fails in non-interactive mode when conflicts exist', async () => {

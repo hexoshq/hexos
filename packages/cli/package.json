@@ -1,5 +1,5 @@
 {
-  "name": "@hexos/cli",
+  "name": "hexos",
   "version": "0.1.0",
   "description": "CLI to install and upgrade Hexos in existing projects",
   "license": "MIT",
