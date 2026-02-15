@@ -3,7 +3,6 @@ import {
   LLMProvider,
   OpenAIModel,
   type RuntimeConfig,
-  type ToolContext,
 } from '@hexos/runtime';
 
 import { z } from 'zod';
@@ -41,29 +40,51 @@ function createRuntime(mcpServers: NonNullable<RuntimeConfig['mcpServers']>): Ag
     mcpServers,
 
     agents: [
-      // Main orchestrator agent
+      // Hexos Expert agent - knows the project inside and out
       {
         id: 'main',
-        name: 'Orquestrador',
-        description: 'Assistente principal que coordena outros agentes especialistas',
+        name: 'Hexos Expert',
+        description: 'AI specialist on the Hexos framework, its architecture, and how to use it',
         model: {
           provider: LLMProvider.OpenAI,
           model: OpenAIModel.GPT4oMini,
         },
-        systemPrompt: `Você é um assistente orquestrador chamado "Orquestrador".
+        systemPrompt: `You are "Hexos Expert", an AI specialist on the Hexos project — a React library for building AI agent chat applications.
 
-Suas responsabilidades:
-- Para perguntas gerais, responda diretamente
-- Para tarefas de CÓDIGO (criar funções, debug, programação), use handoff_to_code
-- Para perguntas sobre HORA/DATA ou CÁLCULOS, use as tools disponíveis
-- Para ENVIAR EMAILS, use a tool send_email (requer aprovação do usuário)
-- Para ADICIONAR ITENS À LISTA de tarefas, use a tool add_todo_item
-- Para ALTERNAR O TEMA (dark/light mode), use a tool toggle_theme
-- Para LER ou LISTAR ARQUIVOS na pasta public, use as tools do filesystem MCP
+You have deep knowledge of the project architecture and should help developers understand and use it.
 
-As tools add_todo_item e toggle_theme são executadas no frontend e atualizam a interface imediatamente.
+## Project Overview
+Hexos is a pnpm monorepo with Turborepo orchestration:
 
-Seja conciso e amigável. Quando delegar, explique brevemente o motivo.`,
+**Packages:**
+- \`@hexos/common\` — Shared types, enums (LLMProvider, model enums), and utilities
+- \`@hexos/react-core\` — React hooks and Jotai atoms for state management. Key exports: \`useAgent()\`, \`useAgentTool()\`, \`useAgentContext()\`, \`useAgentAction()\`, \`useToolApproval()\`, \`AgentProvider\`. Atoms: \`messagesAtom\`, \`isStreamingAtom\`, \`activeAgentAtom\`, \`pendingApprovalsAtom\`
+- \`@hexos/react-ui\` — Pre-built chat UI components: \`ChatWindow\`, \`ToolApprovalContainer\`, \`AgentUIProvider\`. Depends on react-core
+- \`@hexos/runtime\` — Server-side agent runtime. \`AgentRuntime\` class orchestrates LLM calls and tool execution. Supports Anthropic, OpenAI, Ollama, Google, and Azure providers. Features: multi-agent swarm with handoffs, MCP client support, human-in-the-loop approval
+
+**Data Flow:**
+1. User input → \`useAgent().sendMessage()\` → SSE POST to server endpoint
+2. \`AgentRuntime.stream()\` → LLM provider → yields \`RuntimeEvent\`s
+3. Events streamed via SSE → Jotai atoms updated
+4. React re-renders with new messages/tool calls
+
+**Key Concepts:**
+- **Agents**: Each agent has an id, name, model config, system prompt, tools, and can hand off to other agents
+- **Tools**: Defined with Zod schemas, can require human approval (static or dynamic)
+- **Handoffs**: Multi-agent swarm pattern — agents declare \`canHandoffTo\` and get auto-generated \`handoff_to_<agent>\` tools
+- **MCP**: Model Context Protocol support via stdio or SSE transport for external tool servers
+- **Frontend Actions**: Tools that execute in the browser via \`useAgentAction()\` hook
+- **SSE Transport**: Real-time streaming from server to client
+
+## Your Responsibilities
+- Answer questions about Hexos architecture, packages, and concepts
+- Explain how to set up and configure the framework
+- Guide developers through common patterns (creating agents, defining tools, setting up MCP, etc.)
+- For CODE examples and implementation details, use handoff_to_code to delegate to the Code Expert
+- For date/time or calculations, use the available tools
+- For reading/listing files from the public folder, use filesystem MCP tools if available
+
+Be friendly, clear, and concise. When delegating to the Code Expert, briefly explain why.`,
         allowedMcpServers: ['filesystem', 'example-nestjs'],
         tools: [
           {
@@ -96,68 +117,8 @@ Seja conciso e amigável. Quando delegar, explique brevemente o motivo.`,
                 const result = Function(`"use strict"; return (${sanitized})`)();
                 return { result, expression };
               } catch (_error) {
-                return { error: 'Expressão inválida' };
+                return { error: 'Invalid expression' };
               }
-            },
-          },
-          {
-            name: 'send_email',
-            description: 'Send an email to someone. May require user approval depending on client settings.',
-            inputSchema: z.object({
-              to: z.string().describe('Email recipient'),
-              subject: z.string().describe('Email subject'),
-              body: z.string().describe('Email body content'),
-            }),
-            // Dynamic approval based on client configuration
-            // If client hasn't set a preference, defaults to requiring approval
-            requiresApproval: (context: ToolContext) => {
-              const clientConfig = context.frontendContext as
-                | { requireToolApproval?: boolean }
-                | undefined;
-              // Default to true (require approval) if not explicitly set to false
-              return clientConfig?.requireToolApproval !== false;
-            },
-            execute: async (input) => {
-              const { to, subject, body } = input as { to: string; subject: string; body: string };
-              // Simulated email sending
-              console.log(`[Email] Sending to: ${to}, Subject: ${subject}`);
-              return {
-                success: true,
-                message: `Email sent to ${to} with subject "${subject}"`,
-                preview: body.substring(0, 100) + (body.length > 100 ? '...' : ''),
-              };
-            },
-          },
-          // Frontend actions - these are executed in the browser
-          // The execute function here is a no-op; the actual execution happens in the frontend
-          {
-            name: 'add_todo_item',
-            description:
-              'Add a new item to the todo list. This action updates the UI immediately with optimistic updates.',
-            inputSchema: z.object({
-              title: z.string().describe('Title of the todo item'),
-              priority: z.enum(['low', 'medium', 'high']).optional().describe('Priority level'),
-            }),
-            execute: async (input) => {
-              // This is a frontend action - the actual execution happens in the browser
-              // The frontend will intercept this tool call and execute it locally
-              return {
-                success: true,
-                message: 'Item added to todo list',
-                item: input,
-              };
-            },
-          },
-          {
-            name: 'toggle_theme',
-            description: 'Toggle between light and dark theme. Updates the UI immediately.',
-            inputSchema: z.object({}),
-            execute: async () => {
-              // Frontend action - executed in the browser
-              return {
-                success: true,
-                message: 'Theme toggled',
-              };
             },
           },
         ],
@@ -165,25 +126,34 @@ Seja conciso e amigável. Quando delegar, explique brevemente o motivo.`,
         maxIterations: 5,
       },
 
-      // Code specialist agent
+      // Code Expert agent - shows code examples for Hexos
       {
         id: 'code',
-        name: 'Programador',
-        description: 'Especialista em programação, cria e explica código',
+        name: 'Code Expert',
+        description: 'Specialist in Hexos code examples, implementation patterns, and best practices',
         model: {
           provider: LLMProvider.OpenAI,
           model: OpenAIModel.GPT4oMini,
         },
-        systemPrompt: `Você é um especialista em programação chamado "Programador".
+        systemPrompt: `You are "Code Expert", a coding specialist for the Hexos framework.
 
-Suas responsabilidades:
-- Criar funções e código em qualquer linguagem
-- Explicar conceitos de programação
-- Debugar e corrigir código
-- Sugerir melhores práticas
+You help developers write code using Hexos packages. You know:
 
-Quando terminar a tarefa de código, use handoff_to_main para devolver ao orquestrador.
-Seja técnico mas acessível. Inclua exemplos de código quando apropriado.`,
+- How to set up \`AgentRuntime\` with agents, tools, and MCP servers
+- How to define tools with Zod schemas and approval flows
+- How to use React hooks: \`useAgent()\`, \`useAgentTool()\`, \`useAgentAction()\`, \`useToolApproval()\`
+- How to configure \`AgentProvider\` and \`ChatWindow\` components
+- How to implement multi-agent handoffs
+- How to set up SSE streaming endpoints (Next.js, NestJS)
+- How to integrate MCP servers (stdio and SSE transport)
+
+When showing code examples:
+- Use TypeScript
+- Use ESM imports
+- Use Zod for schemas
+- Follow the patterns established in the Hexos codebase
+
+When done with a coding task, use handoff_to_main to return to the Hexos Expert.`,
         tools: [
           {
             name: 'run_code',
@@ -194,13 +164,12 @@ Seja técnico mas acessível. Inclua exemplos de código quando apropriado.`,
             execute: async (input) => {
               const { code } = input as { code: string };
               try {
-                // Safe eval for demo purposes only
                 const result = Function(`"use strict"; return (${code})`)();
                 return { success: true, result: String(result) };
               } catch (error) {
                 return {
                   success: false,
-                  error: error instanceof Error ? error.message : 'Erro ao executar',
+                  error: error instanceof Error ? error.message : 'Execution error',
                 };
               }
             },

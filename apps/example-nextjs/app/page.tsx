@@ -1,9 +1,8 @@
 'use client';
 
 import { type FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
-import { AgentProvider, useAgentAction } from '@hexos/react-core';
+import { AgentProvider } from '@hexos/react-core';
 import { AgentUIProvider, ChatWindow, ToolApprovalContainer, type AgentInfo } from '@hexos/react-ui';
-import { z } from 'zod';
 
 interface MCPServerStatus {
   name: string;
@@ -42,17 +41,15 @@ interface ExampleServerSeed {
 const agents: AgentInfo[] = [
   {
     id: 'main',
-    name: 'Orquestrador Agent',
-    description: 'Responsible for coordinating interactions and delegating tasks among agents',
+    name: 'Hexos Expert',
+    description: 'AI specialist on the Hexos framework — explains architecture, concepts, and guides developers',
   },
   {
     id: 'code',
-    name: 'Code Agent',
-    description: 'Specializes in coding tasks, such as writing, debugging, and optimizing code based on instructions from the Orquestrador agent',
+    name: 'Code Expert',
+    description: 'Shows code examples, implementation patterns, and best practices for building with Hexos',
   },
 ];
-
-const toggleThemeSchema = z.object({});
 
 const exampleConfigurations: ExampleConfiguration[] = [
   {
@@ -182,19 +179,6 @@ function toExampleServerSeed(config: Record<string, unknown>): { ok: true; seed:
   };
 }
 
-function FrontendActions() {
-  useAgentAction({
-    name: 'toggle_theme',
-    description: 'Toggle between light and dark theme',
-    inputSchema: toggleThemeSchema,
-    handler: async () => {
-      await new Promise((resolve) => setTimeout(resolve, 200));
-      console.log('[Action] Theme toggled');
-    },
-  });
-
-  return null;
-}
 
 function ServerRows({
   servers,
@@ -555,16 +539,14 @@ export default function Home() {
           enableReasoning: true,
         }}
       >
-        <FrontendActions />
-
         <main className="mcp-page">
           <div className="mcp-layout">
             <section className="mcp-main-panel">
               <header className="mcp-header">
                 <div>
-                  <h1>Hexos - MCP Client</h1>
+                  <h1>Hexos Demo</h1>
                   <p>
-                    Manage and configure your MCP servers.
+                    Explore the Hexos framework with an AI assistant that knows the project inside and out.
                     <a href="https://github.com/hexoshq/hexos" target="_blank" rel="noreferrer">
                       GitHub Repo
                     </a>
@@ -659,13 +641,13 @@ export default function Home() {
                   handoffVariant="inline"
                   agents={agents}
                   placeholder="Type a message..."
-                  suggestions={['List server tools', 'Read files from public', 'What is the current time?']}
+                  suggestions={['What is Hexos?', 'How does the agent runtime work?', 'Show me how to create a custom tool']}
                   suggestionsTitle=""
                   emptyState={
                     <div className="chat-empty-state">
                       <p className="chat-empty-title">Welcome to Hexos</p>
                       <p className="chat-empty-description">
-                        This demo showcases MCP server integration and multi-agent handoff.
+                        Ask me anything about the Hexos framework — architecture, packages, how to build agents, and more.
                       </p>
                     </div>
                   }
