@@ -1,0 +1,28 @@
+---
+title: "GetUserFriendlyErrorMessage"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/errors.ts" sourceLine="88" packageName="@hexos/common" />
+
+Returns a user-friendly error message for a given error category and optional code.
+
+Prefers code-specific messages (e.g., `CONVERSATION_BUSY` → specific message),
+then falls back to the default message for the category.
+
+```ts
+function getUserFriendlyErrorMessage(category: ErrorCategory, code?: string): string
+```
+Parameters
+
+### category
+
+<MemberInfo kind="parameter" type={`<a href='/docs/runtime/utils/error-category#errorcategory'>ErrorCategory</a>`} />
+
+### code
+
+<MemberInfo kind="parameter" type={`string`} />
+

@@ -1,0 +1,43 @@
+---
+title: "AgentError"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/react-core/src/types.ts" sourceLine="69" packageName="@hexos/react-core" />
+
+Structured error information from the agent runtime.
+
+Provides a sanitized, user-friendly error message along with optional error code
+and category for programmatic handling and display logic.
+
+```ts
+interface AgentError {
+    message: string;
+    code?: string;
+    category?: string;
+}
+```
+
+<div className="members-wrapper">
+
+### message
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### code
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### category
+
+<MemberInfo kind="property" type={`string`} />
+
+
+
+
+</div>

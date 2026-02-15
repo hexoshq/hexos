@@ -643,7 +643,8 @@ describe('AgentRuntime hardening', () => {
     const retryFailError = retryFailEvents.find(
       (event) => (event as { type: string }).type === 'error'
     ) as { type: string; error: string };
-    expect(retryFailError.error).toContain('bad request');
+    // Error is sanitized — raw "bad request" is replaced with user-friendly message
+    expect(retryFailError.error).toContain('Invalid request');
   });
 
   it('applies MCP timeout in STDIO and SSE clients', async () => {

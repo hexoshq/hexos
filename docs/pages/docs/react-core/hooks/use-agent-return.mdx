@@ -6,7 +6,7 @@ generated: true
 import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
 import { MemberInfo } from '@/docs/components/docs/MemberInfo'
 
-<GenerationInfo sourceFile="packages/react-core/src/hooks/useAgent.ts" sourceLine="51" packageName="@hexos/react-core" />
+<GenerationInfo sourceFile="packages/react-core/src/hooks/useAgent.ts" sourceLine="53" packageName="@hexos/react-core" />
 
 Return type of the [useAgent](/docs/react-core/hooks/use-agent#useagent) hook, providing full agent interaction controls and state.
 
@@ -20,6 +20,7 @@ interface UseAgentReturn {
     isStreaming: boolean;
     activeAgent: string | null;
     error: Error | null;
+    errorInfo: AgentError | null;
     clearError: () => void;
     reset: () => void;
     stop: () => void;
@@ -57,6 +58,11 @@ interface UseAgentReturn {
 ### error
 
 <MemberInfo kind="property" type={`Error | null`} />
+
+
+### errorInfo
+
+<MemberInfo kind="property" type={`<a href='/docs/react-core/core-types/agent-error#agenterror'>AgentError</a> | null`} />
 
 
 ### clearError

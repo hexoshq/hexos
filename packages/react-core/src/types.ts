@@ -55,6 +55,23 @@ export type MessagePart =
  */
 export type ToolCallState = 'pending' | 'executing' | 'awaiting-approval' | 'completed' | 'failed';
 
+// === Error Types ===
+
+/**
+ * @description
+ * Structured error information from the agent runtime.
+ *
+ * Provides a sanitized, user-friendly error message along with optional error code
+ * and category for programmatic handling and display logic.
+ *
+ * @docsCategory core-types
+ */
+export interface AgentError {
+  message: string;
+  code?: string;
+  category?: string;
+}
+
 // === Configuration ===
 
 /**
@@ -286,7 +303,7 @@ export type TransportEvent =
       agentId: string;
     }
   | { type: 'stream-complete'; conversationId: string }
-  | { type: 'error'; error: string; code?: string };
+  | { type: 'error'; error: string; code?: string; category?: string };
 
 /**
  * @description
