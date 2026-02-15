@@ -21,7 +21,7 @@
         "assets/**/*"
     ],
     "scripts": {
-        "dev": "ts-node src/create-hexos-app.ts",
+        "dev": "tsc -p ./tsconfig.build.json -w",
         "copy-assets": "rimraf assets && ts-node ./build.ts",
         "build": "pnpm run copy-assets && rimraf lib && tsc -p ./tsconfig.build.json",
         "watch": "pnpm run copy-assets && rimraf lib && tsc -p ./tsconfig.build.json -w",

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Feature Request
+    url: https://github.com/hexoshq/hexos/discussions/new?category=feature-requests
+    about: Suggest an idea or new feature for Hexos Core
+  - name: Support Request
+    url: https://hexos.xyz/contact?interestedIn=SUPPORT_SERVICES
+    about: Get professional support for your Hexos project

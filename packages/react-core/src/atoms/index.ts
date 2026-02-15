@@ -1,6 +1,7 @@
 import { atom } from 'jotai';
 import type {
   AgentConfig,
+  AgentError,
   AgentMessage,
   AgentTransport,
   ToolApprovalRequest,
@@ -77,6 +78,18 @@ export const pendingToolCallsAtom = atom<ToolApprovalRequest[]>([]);
  * @docsCategory state-management
  */
 export const errorAtom = atom<Error | null>(null);
+
+/**
+ * @description
+ * Stores structured error information from the agent runtime.
+ *
+ * Provides the sanitized error message, optional error code, and category for
+ * programmatic handling and UI display logic. Set alongside {@link errorAtom}
+ * when error events arrive. Cleared by {@link useAgent}.clearError().
+ *
+ * @docsCategory state-management
+ */
+export const errorInfoAtom = atom<AgentError | null>(null);
 
 /**
  * @description
