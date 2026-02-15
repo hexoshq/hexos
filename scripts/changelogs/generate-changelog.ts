@@ -3,7 +3,7 @@ import fs from 'fs-extra';
 import path from 'path';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const conventionalChangelogCore = require('conventional-changelog-core');
+const conventionalChangelogCore = require('conventional-changelog-core').default;
 
 let changelogFileName = 'CHANGELOG.md';
 if (process.argv.includes('--next') || process.env.npm_config_argv?.includes('publish-prerelease')) {
