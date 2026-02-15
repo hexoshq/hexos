@@ -86,6 +86,7 @@ export async function generateInstallFiles(options: {
         approveRouteSource,
         mcpRouteSource,
         mcpServerStoreSource,
+        mcpStylesSource,
     ] = await Promise.all([
         compileTemplate(path.join(assetsRoot, 'shared-runtime.hbs'), templateContext),
         compileTemplate(path.join(assetsRoot, pageTemplateName), templateContext),
@@ -95,6 +96,7 @@ export async function generateInstallFiles(options: {
         fs.readFile(path.join(assetsRoot, 'static', 'approve-route.ts'), 'utf8'),
         fs.readFile(path.join(assetsRoot, 'static', 'mcp-route.ts'), 'utf8'),
         fs.readFile(path.join(assetsRoot, 'static', 'mcp-server-store.ts'), 'utf8'),
+        fs.readFile(path.join(assetsRoot, 'static', 'globals.css'), 'utf8'),
     ]);
 
     const files: PlannedFile[] = [
@@ -116,6 +118,11 @@ export async function generateInstallFiles(options: {
         {
             relativePath: `app/${chatRoute}/page.tsx`,
             content: pageSource,
+            strategy: 'overwrite',
+        },
+        {
+            relativePath: `app/${chatRoute}/layout.tsx`,
+            content: renderChatRouteLayout(options.installConfig.includeMcpDashboard),
             strategy: 'overwrite',
         },
         {
@@ -147,6 +154,11 @@ export async function generateInstallFiles(options: {
             {
                 relativePath: '.mcp-servers.local.json',
                 content: '{}\n',
+                strategy: 'overwrite',
+            },
+            {
+                relativePath: `app/${chatRoute}/hexos.css`,
+                content: mcpStylesSource,
                 strategy: 'overwrite',
             },
         );
@@ -216,4 +228,10 @@ function toTitle(projectName: string): string {
 
 function ensureTrailingNewline(content: string): string {
     return content.endsWith('\n') ? content : `${content}\n`;
+}
+
+function renderChatRouteLayout(includeMcpDashboard: boolean): string {
+    return `import '@hexos/react-ui/styles.css';\n${
+        includeMcpDashboard ? "import './hexos.css';\n" : ''
+    }\nexport default function HexosChatLayout({ children }: { children: React.ReactNode }) {\n  return children;\n}\n`;
 }

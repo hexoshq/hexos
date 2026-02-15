@@ -58,15 +58,21 @@ export async function upgradeCommand(projectPath: string | undefined, options: U
 
     const generatedByPath = new Map(generatedFiles.map(file => [file.relativePath, file]));
     const managedPaths = Object.keys(manifest.managedFiles);
-    const plannedFiles = managedPaths
+    const plannedPaths = Array.from(new Set([...managedPaths, ...generatedByPath.keys()]));
+    const plannedFiles = plannedPaths
         .map(managedPath => generatedByPath.get(managedPath))
         .filter((file): file is NonNullable<typeof file> => Boolean(file));
+    const effectiveManifest = await buildEffectiveManifestForUpgrade(
+        projectInfo.rootDir,
+        manifest,
+        generatedByPath,
+    );
 
     const plans = await buildFileActionPlan({
         projectRoot: projectInfo.rootDir,
         plannedFiles,
         mode: 'upgrade',
-        manifest,
+        manifest: effectiveManifest,
         force: options.force,
     });
 
@@ -266,8 +272,15 @@ async function rebuildManifest(input: {
 }): Promise<HexosManifest> {
     const managedFiles: HexosManifest['managedFiles'] = {};
 
-    for (const [relativePath, metadata] of Object.entries(input.previousManifest.managedFiles)) {
-        const strategy = input.generatedByPath.get(relativePath)?.strategy ?? metadata.strategy;
+    const allManagedPaths = new Set([
+        ...Object.keys(input.previousManifest.managedFiles),
+        ...input.generatedByPath.keys(),
+    ]);
+
+    for (const relativePath of allManagedPaths) {
+        const previousMetadata = input.previousManifest.managedFiles[relativePath];
+        const strategy =
+            input.generatedByPath.get(relativePath)?.strategy ?? previousMetadata?.strategy ?? 'overwrite';
         const targetPath = path.join(input.projectRoot, relativePath);
         if (!(await fs.pathExists(targetPath))) {
             continue;
@@ -294,4 +307,33 @@ function extractProjectName(packageJsonName: string | undefined, projectRoot: st
     return scopeSeparatorIndex > -1
         ? packageJsonName.slice(scopeSeparatorIndex + 1)
         : packageJsonName;
+}
+
+async function buildEffectiveManifestForUpgrade(
+    projectRoot: string,
+    manifest: HexosManifest,
+    generatedByPath: Map<string, { content: string; strategy: 'overwrite' | 'merge-env' }>,
+): Promise<HexosManifest> {
+    const managedFiles = { ...manifest.managedFiles };
+
+    for (const [relativePath, generatedFile] of generatedByPath.entries()) {
+        if (managedFiles[relativePath]) {
+            continue;
+        }
+
+        const targetPath = path.join(projectRoot, relativePath);
+        if (!(await fs.pathExists(targetPath))) {
+            continue;
+        }
+
+        const existingContent = await fs.readFile(targetPath, 'utf8');
+        if (existingContent === generatedFile.content) {
+            managedFiles[relativePath] = buildManagedMetadata(existingContent, generatedFile.strategy);
+        }
+    }
+
+    return {
+        ...manifest,
+        managedFiles,
+    };
 }
