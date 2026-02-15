@@ -7,7 +7,7 @@ import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
 import { MemberInfo } from '@/docs/components/docs/MemberInfo'
 import { LinkCard } from '@/docs/components/docs/LinkCard'
 
-<GenerationInfo sourceFile="packages/runtime/src/AgentRuntime.ts" sourceLine="108" packageName="@hexos/runtime" />
+<GenerationInfo sourceFile="packages/runtime/src/AgentRuntime.ts" sourceLine="121" packageName="@hexos/runtime" />
 
 Central orchestrator for multi-agent conversations with LLM providers, tool execution,
 and human-in-the-loop approvals.
@@ -42,9 +42,9 @@ class AgentRuntime {
     shutdown() => Promise<void>;
     submitApproval(decision: ApprovalDecision) => boolean;
     getPendingApprovals(conversationId?: string) => PendingApproval[];
-    stream(input: RuntimeInput) => AsyncGenerator<RuntimeEvent>;
+    stream(input: RuntimeInput) => AsyncGenerator<RuntimeEventWithCategory>;
     invoke(input: RuntimeInput) => Promise<RuntimeOutput>;
-    resumeWithApproval(conversationId: string, approvals: ApprovalDecision[]) => AsyncGenerator<RuntimeEvent>;
+    resumeWithApproval(conversationId: string, approvals: ApprovalDecision[]) => AsyncGenerator<RuntimeEventWithCategory>;
     getAgents() => AgentDefinition[];
     getAgent(id: string) => AgentDefinition | undefined;
     getMCPManager() => MCPManager | null;
@@ -94,7 +94,7 @@ wraps this for HTTP endpoints, [useToolApproval](/docs/react-core/hooks/use-tool
 Returns all pending tool approval requests, optionally filtered by conversation.
 ### stream
 
-<MemberInfo kind="method" type={`(input: <a href='/docs/common/runtime/runtime-input#runtimeinput'>RuntimeInput</a>) => AsyncGenerator<<a href='/docs/common/core-types/runtime-event#runtimeevent'>RuntimeEvent</a>>`} />
+<MemberInfo kind="method" type={`(input: <a href='/docs/common/runtime/runtime-input#runtimeinput'>RuntimeInput</a>) => AsyncGenerator<RuntimeEventWithCategory>`} />
 
 Streams a conversation turn, yielding [RuntimeEvent](/docs/common/core-types/runtime-event#runtimeevent)s in real-time.
 
@@ -114,7 +114,7 @@ Internally calls `stream()` and collects all events into a [RuntimeOutput](/docs
 Useful for server-to-server calls where streaming is not needed.
 ### resumeWithApproval
 
-<MemberInfo kind="method" type={`(conversationId: string, approvals: <a href='/docs/react-core/tools/approval-decision#approvaldecision'>ApprovalDecision</a>[]) => AsyncGenerator<<a href='/docs/common/core-types/runtime-event#runtimeevent'>RuntimeEvent</a>>`} />
+<MemberInfo kind="method" type={`(conversationId: string, approvals: <a href='/docs/react-core/tools/approval-decision#approvaldecision'>ApprovalDecision</a>[]) => AsyncGenerator<RuntimeEventWithCategory>`} />
 
 Resolves pending approvals for a conversation and signals completion.
 

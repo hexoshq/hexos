@@ -5,7 +5,7 @@ generated: true
 
 import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
 
-<GenerationInfo sourceFile="packages/common/src/index.ts" sourceLine="316" packageName="@hexos/common" />
+<GenerationInfo sourceFile="packages/common/src/events.ts" sourceLine="22" packageName="@hexos/common" />
 
 Discriminated union of all events emitted during a streaming conversation turn.
 
@@ -42,5 +42,5 @@ type RuntimeEvent = | { type: 'message-start'; messageId: string; agentId: strin
       agentId: string;
     }
   | { type: 'stream-complete'; conversationId: string }
-  | { type: 'error'; error: string; code?: string }
+  | { type: 'error'; error: string; code?: string; category?: string }
 ```

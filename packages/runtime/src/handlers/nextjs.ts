@@ -1,5 +1,6 @@
 import type { AgentRuntime } from '../AgentRuntime.js';
 import type { RuntimeInput, RuntimeEvent, ApprovalDecision } from '../types.js';
+import { sanitizeError } from '../utils/errorSanitizer.js';
 
 /**
  * @description
@@ -57,9 +58,12 @@ export function createAgentHandler(runtime: AgentRuntime) {
               }
               controller.enqueue(encoder.encode('data: [DONE]\n\n'));
             } catch (error) {
-              const errorEvent: RuntimeEvent = {
-                type: 'error',
-                error: error instanceof Error ? error.message : String(error),
+              const sanitized = sanitizeError(error);
+              const errorEvent = {
+                type: 'error' as const,
+                error: sanitized.message,
+                code: sanitized.code,
+                category: sanitized.category,
               };
               controller.enqueue(encoder.encode(`data: ${JSON.stringify(errorEvent)}\n\n`));
             } finally {
@@ -77,9 +81,11 @@ export function createAgentHandler(runtime: AgentRuntime) {
           },
         });
       } catch (error) {
+        const sanitized = sanitizeError(error);
         return new Response(
           JSON.stringify({
-            error: error instanceof Error ? error.message : 'Internal server error',
+            error: sanitized.message,
+            code: sanitized.code,
           }),
           {
             status: 500,
@@ -145,9 +151,11 @@ export function createApprovalHandler(runtime: AgentRuntime) {
           headers: { 'Content-Type': 'application/json' },
         });
       } catch (error) {
+        const sanitized = sanitizeError(error);
         return new Response(
           JSON.stringify({
-            error: error instanceof Error ? error.message : 'Internal server error',
+            error: sanitized.message,
+            code: sanitized.code,
           }),
           {
             status: 500,
@@ -210,9 +218,12 @@ export function createExpressHandler(runtime: AgentRuntime) {
       }
       res.write('data: [DONE]\n\n');
     } catch (error) {
-      const errorEvent: RuntimeEvent = {
-        type: 'error',
-        error: error instanceof Error ? error.message : String(error),
+      const sanitized = sanitizeError(error);
+      const errorEvent = {
+        type: 'error' as const,
+        error: sanitized.message,
+        code: sanitized.code,
+        category: sanitized.category,
       };
       res.write(`data: ${JSON.stringify(errorEvent)}\n\n`);
     } finally {

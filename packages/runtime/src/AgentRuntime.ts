@@ -38,6 +38,7 @@ import { withTimeout } from './utils/timeout.js';
 import { Semaphore } from './utils/semaphore.js';
 import { SlidingWindowRateLimiter } from './utils/rateLimiter.js';
 import { normalizeRuntimeConfig, type NormalizedRuntimeConfig } from './utils/config.js';
+import { sanitizeError, ErrorCategory } from './utils/errorSanitizer.js';
 
 const ERROR_CODES = {
   MAX_HANDOFFS_EXCEEDED: 'MAX_HANDOFFS_EXCEEDED',
@@ -53,6 +54,18 @@ const ERROR_CODES = {
 } as const;
 
 type RuntimeErrorCode = (typeof ERROR_CODES)[keyof typeof ERROR_CODES] | 'NO_APPROVALS_APPLIED';
+
+/**
+ * Extended RuntimeEvent that includes optional error category.
+ * The `category` field on error events allows frontends to classify
+ * and display errors appropriately (auth, rate_limit, network, etc.).
+ */
+type RuntimeEventWithCategory = RuntimeEvent | {
+  type: 'error';
+  error: string;
+  code?: string;
+  category?: ErrorCategory;
+};
 
 interface ApprovalDecisionInternal extends ApprovalDecision {
   code?: RuntimeErrorCode;
@@ -72,7 +85,7 @@ interface PendingApproval {
 
 interface StreamSlot {
   release: () => void;
-  errorEvent?: RuntimeEvent;
+  errorEvent?: RuntimeEventWithCategory;
 }
 
 /**
@@ -549,6 +562,7 @@ export class AgentRuntime {
           type: 'error',
           error: `Maximum active streams limit (${this.config.maxActiveStreams}) reached.`,
           code: ERROR_CODES.MAX_ACTIVE_STREAMS_EXCEEDED,
+          category: ErrorCategory.RateLimit,
         },
       };
     }
@@ -561,6 +575,7 @@ export class AgentRuntime {
           type: 'error',
           error: `Conversation already has an active stream (limit ${this.config.maxActiveStreamsPerConversation}).`,
           code: ERROR_CODES.CONVERSATION_BUSY,
+          category: ErrorCategory.RateLimit,
         },
       };
     }
@@ -604,7 +619,7 @@ export class AgentRuntime {
     return input.userId ? `user:${input.userId}` : `conversation:${input.conversationId}`;
   }
 
-  private checkRateLimit(input: RuntimeInput): RuntimeEvent | null {
+  private checkRateLimit(input: RuntimeInput): RuntimeEventWithCategory | null {
     if (!this.rateLimiter) {
       return null;
     }
@@ -620,6 +635,7 @@ export class AgentRuntime {
       type: 'error',
       error: `Rate limit exceeded. Retry after ${result.retryAfterMs}ms.`,
       code: ERROR_CODES.RATE_LIMIT_EXCEEDED,
+      category: ErrorCategory.RateLimit,
     };
   }
 
@@ -637,7 +653,7 @@ export class AgentRuntime {
    * @param input - User message and conversation context
    * @returns AsyncGenerator yielding {@link RuntimeEvent} objects
    */
-  async *stream(input: RuntimeInput): AsyncGenerator<RuntimeEvent> {
+  async *stream(input: RuntimeInput): AsyncGenerator<RuntimeEventWithCategory> {
     const slot = this.acquireStreamSlot(input.conversationId);
     if (slot.errorEvent) {
       yield slot.errorEvent;
@@ -659,7 +675,7 @@ export class AgentRuntime {
         const agent = this.agents.get(currentAgentId);
 
         if (!agent) {
-          yield { type: 'error', error: `Agent "${currentAgentId}" not found` };
+          yield { type: 'error', error: `Agent "${currentAgentId}" not found`, category: ErrorCategory.AgentConfig };
           return;
         }
 
@@ -742,10 +758,18 @@ export class AgentRuntime {
             );
           }
 
+          // Sanitize error before sending to client to prevent leaking sensitive details
+          const sanitized = sanitizeError(error, info.code);
+
+          if (this.config.debug) {
+            console.error('[AgentRuntime] Error (raw):', info.message, 'Code:', info.code);
+          }
+
           yield {
             type: 'error',
-            error: info.message,
-            code: info.code,
+            error: sanitized.message,
+            code: sanitized.code,
+            category: sanitized.category,
           };
           return;
         }
@@ -756,6 +780,7 @@ export class AgentRuntime {
           type: 'error',
           error: `Maximum handoff limit (${maxHandoffs}) reached. Possible infinite loop.`,
           code: ERROR_CODES.MAX_HANDOFFS_EXCEEDED,
+          category: ErrorCategory.AgentConfig,
         };
         return;
       }
@@ -828,7 +853,7 @@ export class AgentRuntime {
   async *resumeWithApproval(
     conversationId: string,
     approvals: ApprovalDecision[]
-  ): AsyncGenerator<RuntimeEvent> {
+  ): AsyncGenerator<RuntimeEventWithCategory> {
     let appliedCount = 0;
 
     for (const decision of approvals) {
@@ -843,6 +868,7 @@ export class AgentRuntime {
         type: 'error',
         error: 'No matching pending approvals found for this conversation',
         code: 'NO_APPROVALS_APPLIED',
+        category: ErrorCategory.Validation,
       };
       return;
     }

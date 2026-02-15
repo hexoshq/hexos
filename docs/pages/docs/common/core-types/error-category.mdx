@@ -1,0 +1,29 @@
+---
+title: "ErrorCategory"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/common/src/errors.ts" sourceLine="11" packageName="@hexos/common" />
+
+Categories for classifying runtime errors by their nature.
+
+Used by the error sanitizer in `@hexos/runtime` to classify errors before they reach
+the client, and by frontend components to display appropriate UI (e.g., different
+icons or retry behavior based on category).
+
+```ts
+enum ErrorCategory {
+    Auth = 'auth'
+    Validation = 'validation'
+    RateLimit = 'rate_limit'
+    Timeout = 'timeout'
+    Network = 'network'
+    Server = 'server'
+    AgentConfig = 'agent_config'
+    ToolExecution = 'tool_execution'
+    Unknown = 'unknown'
+}
+```

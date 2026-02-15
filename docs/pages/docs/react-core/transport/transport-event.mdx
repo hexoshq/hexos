@@ -5,7 +5,7 @@ generated: true
 
 import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
 
-<GenerationInfo sourceFile="packages/react-core/src/types.ts" sourceLine="271" packageName="@hexos/react-core" />
+<GenerationInfo sourceFile="packages/react-core/src/types.ts" sourceLine="288" packageName="@hexos/react-core" />
 
 Discriminated union of events received from the server via the transport layer.
 
@@ -29,5 +29,5 @@ type TransportEvent = | { type: 'message-start'; messageId: string; agentId: str
       agentId: string;
     }
   | { type: 'stream-complete'; conversationId: string }
-  | { type: 'error'; error: string; code?: string }
+  | { type: 'error'; error: string; code?: string; category?: string }
 ```

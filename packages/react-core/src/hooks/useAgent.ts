@@ -5,6 +5,7 @@ import {
   isStreamingAtom,
   activeAgentAtom,
   errorAtom,
+  errorInfoAtom,
   conversationIdAtom,
   streamingMessageAtom,
   frontendContextAtom,
@@ -24,6 +25,7 @@ import {
 import { SSETransport } from '../transport/SSETransport.js';
 import type {
   AgentConfig,
+  AgentError,
   AgentMessage,
   TransportEvent,
   Attachment,
@@ -54,6 +56,7 @@ export interface UseAgentReturn {
   isStreaming: boolean;
   activeAgent: string | null;
   error: Error | null;
+  errorInfo: AgentError | null;
   clearError: () => void;
   reset: () => void;
   stop: () => void;
@@ -98,6 +101,7 @@ export function useAgent(config: AgentConfig): UseAgentReturn {
   const [isStreaming, setIsStreaming] = useAtom(isStreamingAtom);
   const [activeAgent, setActiveAgent] = useAtom(activeAgentAtom);
   const [error, setError] = useAtom(errorAtom);
+  const [errorInfo, setErrorInfo] = useAtom(errorInfoAtom);
   const [conversationId, setConversationId] = useAtom(conversationIdAtom);
   const [streamingMessage, setStreamingMessage] = useAtom(streamingMessageAtom);
   const frontendContext = useAtomValue(frontendContextAtom);
@@ -132,6 +136,7 @@ export function useAgent(config: AgentConfig): UseAgentReturn {
     setStreamingMessage,
     addMessage,
     setError,
+    setErrorInfo,
     addHandoff,
     addPendingApproval,
   });
@@ -141,6 +146,7 @@ export function useAgent(config: AgentConfig): UseAgentReturn {
     setStreamingMessage,
     addMessage,
     setError,
+    setErrorInfo,
     addHandoff,
     addPendingApproval,
   };
@@ -342,6 +348,11 @@ export function useAgent(config: AgentConfig): UseAgentReturn {
           callbacks.setIsStreaming(false);
           callbacks.setStreamingMessage(null);
           callbacks.setError(new Error(event.error));
+          callbacks.setErrorInfo({
+            message: event.error,
+            code: event.code,
+            category: event.category,
+          });
           currentMessageIdRef.current = null;
           break;
       }
@@ -365,6 +376,7 @@ export function useAgent(config: AgentConfig): UseAgentReturn {
 
       // Clear any previous error
       setError(null);
+      setErrorInfo(null);
 
       // Add user message optimistically
       const userMessage: AgentMessage = {
@@ -383,17 +395,19 @@ export function useAgent(config: AgentConfig): UseAgentReturn {
         context: frontendContext,
       });
     },
-    [conversationId, frontendContext, addMessage, setError]
+    [conversationId, frontendContext, addMessage, setError, setErrorInfo]
   );
 
   const clearError = useCallback(() => {
     setError(null);
-  }, [setError]);
+    setErrorInfo(null);
+  }, [setError, setErrorInfo]);
 
   const reset = useCallback(() => {
     clearMessages();
     clearHandoffs();
     setError(null);
+    setErrorInfo(null);
     setIsStreaming(false);
     setStreamingMessage(null);
     setConversationId(crypto.randomUUID());
@@ -401,6 +415,7 @@ export function useAgent(config: AgentConfig): UseAgentReturn {
     clearMessages,
     clearHandoffs,
     setError,
+    setErrorInfo,
     setIsStreaming,
     setStreamingMessage,
     setConversationId,
@@ -489,6 +504,7 @@ export function useAgent(config: AgentConfig): UseAgentReturn {
     isStreaming,
     activeAgent,
     error,
+    errorInfo,
     clearError,
     reset,
     stop,
