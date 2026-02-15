@@ -19,7 +19,7 @@
     "bootstrap": "pnpm install",
     "build:libs": "lerna run build --sort --stream",
     "publish:libs": "lerna publish from-package --yes",
-    "generate-changelog": "ts-node scripts/changelogs/generate-changelog.ts",
+    "generate-changelog": "TS_NODE_PROJECT=tsconfig.scripts.json ts-node scripts/changelogs/generate-changelog.ts",
     "publish-release": "lerna version --no-push --force-publish --exact -m \"chore(release): publish %s\"",
     "publish-prerelease": "pnpm run generate-changelog -- --next && lerna version prerelease --preid next --no-push --force-publish --exact -m \"chore(release): prerelease %s\"",
     "publish-local": "lerna version --force-publish --no-git-tag-version --no-push --exact",

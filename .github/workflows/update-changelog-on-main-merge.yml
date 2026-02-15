@@ -1,0 +1,101 @@
+name: Update Changelog On Main Merge
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  update-changelog:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect merge from develop
+        id: merge_check
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin develop --depth=1
+
+          is_merge_commit="false"
+          if git rev-parse -q --verify "${GITHUB_SHA}^2" >/dev/null; then
+            is_merge_commit="true"
+          fi
+
+          from_develop="false"
+          if [ "$is_merge_commit" = "true" ]; then
+            second_parent="$(git rev-parse "${GITHUB_SHA}^2")"
+            if git merge-base --is-ancestor "$second_parent" "origin/develop"; then
+              from_develop="true"
+            fi
+          fi
+
+          commit_message="$(git log -1 --pretty=%B)"
+          if echo "$commit_message" | grep -Eiq "(merge .*develop|from .*/develop|from develop)"; then
+            from_develop="true"
+          fi
+
+          should_run="false"
+          if [ "$is_merge_commit" = "true" ] && [ "$from_develop" = "true" ]; then
+            should_run="true"
+          fi
+
+          echo "should_run=$should_run" >> "$GITHUB_OUTPUT"
+          echo "is_merge_commit=$is_merge_commit" >> "$GITHUB_OUTPUT"
+          echo "from_develop=$from_develop" >> "$GITHUB_OUTPUT"
+
+      - name: Setup Node.js
+        if: steps.merge_check.outputs.should_run == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+
+      - name: Enable pnpm
+        if: steps.merge_check.outputs.should_run == 'true'
+        shell: bash
+        run: |
+          corepack enable
+          corepack prepare pnpm@9.15.0 --activate
+          pnpm --version
+
+      - name: Install dependencies
+        if: steps.merge_check.outputs.should_run == 'true'
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate changelog
+        if: steps.merge_check.outputs.should_run == 'true'
+        run: pnpm generate-changelog
+
+      - name: Commit and push changelog
+        if: steps.merge_check.outputs.should_run == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if [ -f CHANGELOG.md ]; then
+            git add CHANGELOG.md
+          fi
+
+          if [ -f CHANGELOG_NEXT.md ]; then
+            git add CHANGELOG_NEXT.md
+          fi
+
+          if git diff --cached --quiet; then
+            echo "No changelog changes to commit."
+            exit 0
+          fi
+
+          git commit -m "chore(changelog): update after develop merge [skip ci]"
+          git push origin "HEAD:main"

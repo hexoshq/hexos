@@ -1,0 +1,39 @@
+name: Validate Docs
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+    paths:
+      - "docs/**"
+
+jobs:
+  validate:
+    name: Validate docs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.x"
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Enable pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@9.15.0 --activate
+          pnpm --version
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck docs
+        run: pnpm --filter docs typecheck
+
+      - name: Build docs
+        run: pnpm --filter docs build
