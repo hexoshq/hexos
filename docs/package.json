@@ -16,6 +16,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@databuddy/sdk": "^2.3.29",
     "@vendure-io/docs-provider": "^0.10.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

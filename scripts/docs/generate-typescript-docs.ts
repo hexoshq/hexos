@@ -1,7 +1,7 @@
+import { DocsPage, TypeMap } from './typescript-docgen-types';
 import { deleteGeneratedDocs, generateFrontMatter, normalizeForUrlPart, processReadmeForMdx } from './docgen-utils';
 import path, { extname } from 'path';
 
-import { DocsPage, TypeMap } from './typescript-docgen-types';
 import { TypescriptDocsParser } from './typescript-docs-parser';
 import { TypescriptDocsRenderer } from './typescript-docs-renderer';
 /* eslint-disable no-console */
@@ -40,6 +40,13 @@ const sections: DocsSectionConfig[] = [
         outputPath: 'runtime',
         readmePath: 'packages/runtime/README.md',
     },
+     {
+        sourceDirs: ['packages/cli/src/'],
+        exclude: [/dist/, /__tests__/],
+        outputPath: 'cli',
+        readmePath: 'packages/cli/README.md',
+    },
+    
 ];
 
 generateTypescriptDocs(sections);

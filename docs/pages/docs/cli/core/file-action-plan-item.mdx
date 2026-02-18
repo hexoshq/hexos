@@ -1,0 +1,70 @@
+---
+title: "FileActionPlanItem"
+generated: true
+---
+
+import { GenerationInfo } from '@/docs/components/docs/GenerationInfo'
+import { MemberInfo } from '@/docs/components/docs/MemberInfo'
+
+<GenerationInfo sourceFile="packages/cli/src/core/conflict-resolution.ts" sourceLine="10" packageName="@hexos/cli" />
+
+
+
+```ts
+interface FileActionPlanItem {
+    relativePath: string;
+    strategy: PlannedFile['strategy'];
+    desiredContent: string;
+    finalContent: string;
+    changed: boolean;
+    reason: 'create' | 'update' | 'unchanged';
+    conflict: boolean;
+    conflictMessage?: string;
+}
+```
+
+<div className="members-wrapper">
+
+### relativePath
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### strategy
+
+<MemberInfo kind="property" type={`PlannedFile['strategy']`} />
+
+
+### desiredContent
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### finalContent
+
+<MemberInfo kind="property" type={`string`} />
+
+
+### changed
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### reason
+
+<MemberInfo kind="property" type={`'create' | 'update' | 'unchanged'`} />
+
+
+### conflict
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### conflictMessage
+
+<MemberInfo kind="property" type={`string`} />
+
+
+
+
+</div>
