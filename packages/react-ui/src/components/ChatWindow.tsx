@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAgent, type AgentConfig, type AgentMessage } from '@hexos/react-core';
 import { MessageList } from './MessageList.js';
 import { InputComposer } from './InputComposer.js';
@@ -50,6 +50,8 @@ export interface ChatWindowProps {
   suggestions?: string[];
   /** Optional heading above suggestion chips */
   suggestionsTitle?: string;
+  /** Show a toggle button for users to show/hide all tool calls at runtime */
+  showToolCallsControl?: boolean;
 }
 
 /**
@@ -98,6 +100,7 @@ export function ChatWindow({
   agents = [],
   suggestions = [],
   suggestionsTitle,
+  showToolCallsControl = false,
 }: ChatWindowProps): React.ReactElement {
   // Use the hook if config is provided, otherwise expect AgentProvider
   const defaultConfig: AgentConfig = config ?? {
@@ -106,6 +109,9 @@ export function ChatWindow({
 
   const { messages, sendMessage, isStreaming, activeAgent, error, clearError, handoffHistory } =
     useAgent(defaultConfig);
+
+  // Feature: runtime tool calls visibility toggle
+  const [toolCallsVisible, setToolCallsVisible] = useState<boolean>(true);
 
   // Find the active agent info
   const activeAgentInfo =
@@ -171,6 +177,7 @@ export function ChatWindow({
           handoffs={handoffHistory}
           showHandoffs={showHandoffs}
           handoffVariant={handoffVariant}
+          toolCallsVisible={toolCallsVisible}
         />
       )}
 
@@ -181,6 +188,44 @@ export function ChatWindow({
 
       {showSuggestions && (
         <QuickReplies suggestions={suggestions} title={suggestionsTitle} onSelect={handleSubmit} />
+      )}
+
+      {/* Tool calls visibility control */}
+      {showToolCallsControl && (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            padding: '0.25rem 0.75rem',
+            borderTop: '1px solid #f3f4f6',
+          }}
+        >
+          <button
+            type="button"
+            onClick={() => setToolCallsVisible((v) => !v)}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.375rem',
+              padding: '0.25rem 0.625rem',
+              fontSize: '0.75rem',
+              color: toolCallsVisible ? '#3b82f6' : '#9ca3af',
+              backgroundColor: 'transparent',
+              border: '1px solid',
+              borderColor: toolCallsVisible ? '#bfdbfe' : '#e5e7eb',
+              borderRadius: '9999px',
+              cursor: 'pointer',
+              transition: 'all 150ms ease',
+              lineHeight: 1,
+            }}
+            title={toolCallsVisible ? 'Hide tool calls' : 'Show tool calls'}
+          >
+            <span aria-hidden="true" style={{ fontSize: '0.875rem' }}>
+              {toolCallsVisible ? '⚙' : '○'}
+            </span>
+            <span>{toolCallsVisible ? 'Tool calls on' : 'Tool calls off'}</span>
+          </button>
+        </div>
       )}
 
       {/* Input */}

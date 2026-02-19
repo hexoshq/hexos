@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import * as Collapsible from '@radix-ui/react-collapsible';
 import type { ToolCallState } from '@hexos/react-core';
 import { useDisplayConfig, type ResolvedToolDisplayOptions } from '../theme/AgentUIProvider.js';
 
@@ -80,6 +81,18 @@ export function ToolCallRenderer({
   const displayConfig = useDisplayConfig();
   const displayOptions = displayConfig.toolDisplay;
 
+  // Collapse state - must be before any early returns (React rules)
+  const isActiveState = state === 'pending' || state === 'executing' || state === 'awaiting-approval';
+  const [isOpen, setIsOpen] = useState<boolean>(isActiveState);
+
+  useEffect(() => {
+    if (state === 'pending' || state === 'executing' || state === 'awaiting-approval') {
+      setIsOpen(true);
+    } else {
+      setIsOpen(false); // auto-collapse on completed/failed
+    }
+  }, [state]);
+
   // Check for custom renderer - pass display options
   const CustomRenderer = renderers?.[toolName];
   if (CustomRenderer) {
@@ -144,9 +157,11 @@ export function ToolCallRenderer({
     );
   }
 
-  // Full mode with conditional sections
+  // Full mode with collapsible behavior
   return (
-    <div
+    <Collapsible.Root
+      open={isOpen}
+      onOpenChange={setIsOpen}
       className={`hexos-tool-call ${className}`}
       style={{
         border: '1px solid #e5e7eb',
@@ -157,27 +172,49 @@ export function ToolCallRenderer({
         fontSize: '0.875rem',
       }}
     >
-      {/* Header */}
-      <div
+      {/* Header - clickable trigger to expand/collapse */}
+      <Collapsible.Trigger
         style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           padding: '0.5rem 0.75rem',
           backgroundColor: '#f9fafb',
-          borderBottom: '1px solid #e5e7eb',
+          borderBottom: isOpen ? '1px solid #e5e7eb' : 'none',
+          width: '100%',
+          cursor: 'pointer',
+          background: 'none',
+          border: 'none',
+          textAlign: 'left',
+          fontFamily: 'inherit',
+          fontSize: 'inherit',
+          color: 'inherit',
         }}
       >
-        {displayOptions.showToolName && (
+        <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <span
             style={{
-              fontFamily: 'monospace',
-              fontWeight: 500,
+              display: 'inline-block',
+              transition: 'transform 200ms ease',
+              transform: isOpen ? 'rotate(90deg)' : 'rotate(0deg)',
+              fontSize: '0.625rem',
+              color: '#9ca3af',
+              lineHeight: 1,
             }}
           >
-            {toolName}
+            ▶
           </span>
-        )}
+          {displayOptions.showToolName && (
+            <span
+              style={{
+                fontFamily: 'monospace',
+                fontWeight: 500,
+              }}
+            >
+              {toolName}
+            </span>
+          )}
+        </span>
         {displayOptions.showToolState && (
           <span
             style={{
@@ -199,73 +236,76 @@ export function ToolCallRenderer({
             {stateLabels[state]}
           </span>
         )}
-      </div>
+      </Collapsible.Trigger>
 
-      {/* Arguments */}
-      {displayOptions.showToolArgs && (
-        <div
-          style={{
-            padding: '0.5rem 0.75rem',
-            borderBottom: result !== undefined && displayOptions.showToolResult ? '1px solid #e5e7eb' : undefined,
-          }}
-        >
+      {/* Collapsible content - arguments and result */}
+      <Collapsible.Content>
+        {/* Arguments */}
+        {displayOptions.showToolArgs && (
           <div
             style={{
-              fontSize: '0.75rem',
-              color: '#6b7280',
-              marginBottom: '0.25rem',
+              padding: '0.5rem 0.75rem',
+              borderBottom: result !== undefined && displayOptions.showToolResult ? '1px solid #e5e7eb' : undefined,
             }}
           >
-            Arguments
+            <div
+              style={{
+                fontSize: '0.75rem',
+                color: '#6b7280',
+                marginBottom: '0.25rem',
+              }}
+            >
+              Arguments
+            </div>
+            <pre
+              style={{
+                margin: 0,
+                padding: '0.5rem',
+                backgroundColor: '#f9fafb',
+                borderRadius: '0.25rem',
+                overflow: 'auto',
+                fontSize: '0.75rem',
+                fontFamily: 'monospace',
+              }}
+            >
+              {JSON.stringify(args, null, 2)}
+            </pre>
           </div>
-          <pre
-            style={{
-              margin: 0,
-              padding: '0.5rem',
-              backgroundColor: '#f9fafb',
-              borderRadius: '0.25rem',
-              overflow: 'auto',
-              fontSize: '0.75rem',
-              fontFamily: 'monospace',
-            }}
-          >
-            {JSON.stringify(args, null, 2)}
-          </pre>
-        </div>
-      )}
+        )}
 
-      {/* Result */}
-      {displayOptions.showToolResult && result !== undefined && (
-        <div
-          style={{
-            padding: '0.5rem 0.75rem',
-          }}
-        >
+        {/* Result */}
+        {displayOptions.showToolResult && result !== undefined && (
           <div
             style={{
-              fontSize: '0.75rem',
-              color: '#6b7280',
-              marginBottom: '0.25rem',
+              padding: '0.5rem 0.75rem',
             }}
           >
-            Result
+            <div
+              style={{
+                fontSize: '0.75rem',
+                color: '#6b7280',
+                marginBottom: '0.25rem',
+              }}
+            >
+              Result
+            </div>
+            <pre
+              style={{
+                margin: 0,
+                padding: '0.5rem',
+                backgroundColor: state === 'failed' ? '#fef2f2' : '#f0fdf4',
+                borderRadius: '0.25rem',
+                overflow: 'auto',
+                fontSize: '0.75rem',
+                fontFamily: 'monospace',
+                color: state === 'failed' ? '#dc2626' : '#166534',
+              }}
+            >
+              {typeof result === 'string' ? result : JSON.stringify(result, null, 2)}
+            </pre>
           </div>
-          <pre
-            style={{
-              margin: 0,
-              padding: '0.5rem',
-              backgroundColor: state === 'failed' ? '#fef2f2' : '#f0fdf4',
-              borderRadius: '0.25rem',
-              overflow: 'auto',
-              fontSize: '0.75rem',
-              fontFamily: 'monospace',
-              color: state === 'failed' ? '#dc2626' : '#166534',
-            }}
-          >
-            {typeof result === 'string' ? result : JSON.stringify(result, null, 2)}
-          </pre>
-        </div>
-      )}
-    </div>
+        )}
+      </Collapsible.Content>
+    </Collapsible.Root>
   );
 }
