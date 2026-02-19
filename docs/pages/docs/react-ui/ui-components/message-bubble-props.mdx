@@ -17,6 +17,7 @@ interface MessageBubbleProps {
     showTimestamp?: boolean;
     showAgentName?: boolean;
     showToolCalls?: boolean;
+    toolCallsVisible?: boolean;
     showReasoning?: boolean;
     isStreaming?: boolean;
     toolRenderers?: Record<string, React.ComponentType<ToolCallRenderProps>>;
@@ -48,6 +49,11 @@ interface MessageBubbleProps {
 
 
 ### showToolCalls
+
+<MemberInfo kind="property" type={`boolean`} />
+
+
+### toolCallsVisible
 
 <MemberInfo kind="property" type={`boolean`} />
 
