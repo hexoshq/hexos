@@ -1,6 +1,6 @@
 {
   "name": "@hexos/react-core",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "React hooks and state management for Hexos",
   "type": "module",
   "main": "./dist/index.js",

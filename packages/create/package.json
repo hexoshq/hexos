@@ -1,6 +1,6 @@
 {
     "name": "@hexos/create",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "CLI tool to scaffold Hexos AI chat applications",
     "license": "MIT",
     "keywords": [
@@ -42,7 +42,7 @@
     },
     "dependencies": {
         "@clack/prompts": "^0.11.0",
-        "@hexos/common": "0.3.2",
+        "@hexos/common": "0.3.3",
         "commander": "^14.0.1",
         "cross-spawn": "^7.0.6",
         "fs-extra": "^11.2.0",

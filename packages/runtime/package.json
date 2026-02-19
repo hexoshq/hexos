@@ -1,6 +1,6 @@
 {
   "name": "@hexos/runtime",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "LangGraph-based agent runtime for Hexos",
   "type": "module",
   "main": "./dist/index.js",
@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.72.1",
-    "@hexos/common": "0.3.2",
+    "@hexos/common": "0.3.3",
     "@langchain/core": "^0.3.0",
     "@langchain/langgraph": "^0.2.0",
     "@modelcontextprotocol/sdk": "^1.21.0",

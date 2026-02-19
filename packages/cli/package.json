@@ -1,6 +1,6 @@
 {
   "name": "hexos",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "CLI to install and upgrade Hexos in existing projects",
   "license": "MIT",
   "private": false,
@@ -24,8 +24,8 @@
   },
   "dependencies": {
     "@clack/prompts": "^0.11.0",
-    "@hexos/create": "0.1.1",
-    "@hexos/runtime": "0.3.2",
+    "@hexos/create": "0.1.2",
+    "@hexos/runtime": "0.3.3",
     "commander": "^14.0.1",
     "cross-spawn": "^7.0.6",
     "fs-extra": "^11.2.0",
