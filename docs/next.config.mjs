@@ -18,7 +18,7 @@ export default withNextra({
   async redirects() {
     return [];
   },
-  transpilePackages: ['@hexos/runtime'],
+  transpilePackages: ['@hexos/react-core', '@hexos/react-ui', '@hexos/runtime'],
   basePath: IS_RELEASE_BRANCH
     ? `/v/${packageJson.version}`
     : process.env.NEXT_PUBLIC_IS_CANARY

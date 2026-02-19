@@ -16,6 +16,8 @@ export interface MessageBubbleProps {
   showTimestamp?: boolean;
   showAgentName?: boolean;
   showToolCalls?: boolean;
+  /** Runtime visibility toggle for all tool calls */
+  toolCallsVisible?: boolean;
   showReasoning?: boolean;
   /** Whether this message is currently streaming */
   isStreaming?: boolean;
@@ -59,6 +61,7 @@ export function MessageBubble({
   showTimestamp = false,
   showAgentName = false,
   showToolCalls = true,
+  toolCallsVisible = true,
   showReasoning = true,
   isStreaming = false,
   toolRenderers,
@@ -72,7 +75,7 @@ export function MessageBubble({
   // Determine effective showToolCalls based on both prop and config
   // If display config hides everything (no name, no indicator), effectively hide tool calls
   const configHidesToolCalls = !displayConfig.toolDisplay.showToolName && !displayConfig.toolDisplay.showActivityIndicator;
-  const effectiveShowToolCalls = showToolCalls && !configHidesToolCalls;
+  const effectiveShowToolCalls = showToolCalls && !configHidesToolCalls && toolCallsVisible;
 
   // Extract reasoning parts
   const reasoningParts = message.parts?.filter((p) => p.type === 'reasoning') ?? [];

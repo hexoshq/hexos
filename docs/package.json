@@ -16,6 +16,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@hexos/react-core": "0.3.2",
+    "@hexos/react-ui": "0.3.2",
+    "@hexos/runtime": "0.3.2",
     "@databuddy/sdk": "^2.3.29",
     "@vendure-io/docs-provider": "^0.10.0",
     "class-variance-authority": "^0.7.1",
@@ -29,6 +32,7 @@
     "react-dom": "^18.2.0",
     "tailwind-merge": "^3.4.0",
     "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.24.0",
     "zustand": "^5.0.3"
   },
   "devDependencies": {

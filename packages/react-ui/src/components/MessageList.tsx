@@ -23,6 +23,8 @@ export interface MessageListProps {
   autoScroll?: boolean;
   /** Whether the last message is currently streaming */
   isStreaming?: boolean;
+  /** Runtime visibility toggle for all tool calls */
+  toolCallsVisible?: boolean;
   /** Handoff events to display between messages */
   handoffs?: HandoffEvent[];
   /** Whether to show handoff indicators */
@@ -72,6 +74,7 @@ export function MessageList({
   showReasoning = true,
   autoScroll = true,
   isStreaming = false,
+  toolCallsVisible = true,
   handoffs = [],
   showHandoffs = true,
   handoffVariant = 'inline',
@@ -142,6 +145,7 @@ export function MessageList({
                         showAgentName={showAgentNames}
                         showReasoning={showReasoning}
                         isStreaming={messageIsStreaming}
+                        toolCallsVisible={toolCallsVisible}
                       />
                     );
                   })()}
