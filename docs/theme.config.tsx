@@ -3,6 +3,8 @@ import { DocsThemeConfig, ThemeSwitch, useConfig } from "nextra-theme-docs";
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useRouter } from "next/router";
 
+import { DocsAssistantLauncher } from "@/docs/components/DocsAssistantLauncher";
+
 const Head = () => {
   const { asPath, defaultLocale, locale } = useRouter();
   const { frontMatter, title } = useConfig();
@@ -93,7 +95,8 @@ const theme: DocsThemeConfig = {
   ),
   navbar: {
     extraContent: (
-      <div className="flex items-center">
+      <div className="docs-navbar-extra flex items-center gap-2">
+        <DocsAssistantLauncher />
         <ThemeSwitch lite />
       </div>
     ),
